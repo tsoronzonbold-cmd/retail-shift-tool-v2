@@ -1,0 +1,6 @@
+Retailer,Cost Center,Project Code,Store #,Street Address,City,State,Zip,Start Date,Start Time,End Time,Break,# of Workers,Team Lead Name,Team Lead Phone,Notes
+Smiths,CC1000,RO-2026-001,"1","5356 College Ave","Oakland",CA,94618,04/25/2026,06:00,14:00,30,2,"Adam Newton","(385) 371-3630",Week 17 reset
+Smiths,CC1001,RO-2026-002,"2","8444 Miralani Dr","San Diego",CA,92126,04/25/2026,06:00,14:00,30,2,"Adia Dennis","(385) 485-9849",Week 17 reset
+Smiths,CC1002,RO-2026-003,"3","390 Washington Ave","Nutley",NJ,07110,04/25/2026,06:00,14:00,30,2,"Angelica","(505) 264-6389",Week 17 reset
+Smiths,CC1003,RO-2026-004,"4","5201 W Lovers Ln","Dallas",TX,75209,04/25/2026,06:00,14:00,30,2,"Angelica","(801) 680-6116",Week 17 reset
+Smiths,CC9999,RO-2026-NEW,"500","999 Future Store Dr","Newcity",CA,99999,04/25/2026,06:00,14:00,30,2,"Sarah Johnson","(555) 000-1234",NEW LOCATION

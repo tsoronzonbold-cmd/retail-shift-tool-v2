@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+{% block title_suffix %} - Contact Matching{% endblock %}
+{% block step1_class %}done{% endblock %}
+{% block step2_class %}done{% endblock %}
+{% block step3_class %}done{% endblock %}
+{% block step4_class %}done{% endblock %}
+{% block step5_class %}active{% endblock %}
+
+{% block content %}
+{% if error_msg %}
+<div class="flash flash-error">{{ error_msg }}</div>
+{% endif %}
+
+<div class="card">
+    <h2>Contact Matching — {{ company_name }}</h2>
+    <p style="color: var(--text-muted); margin-bottom: 16px;">
+        Will create <strong>{{ total_shifts }}</strong> shift rows from <strong>{{ source_rows }}</strong> source rows
+    </p>
+
+    <div class="stats">
+        <div class="stat stat-green">
+            <div class="stat-number">{{ exact_count }}</div>
+            <div class="stat-label">Exact matches</div>
+        </div>
+        <div class="stat stat-orange">
+            <div class="stat-number">{{ fallback_count }}</div>
+            <div class="stat-label">Fallback matches</div>
+        </div>
+        <div class="stat" style="background: #fef2f2;">
+            <div class="stat-number" style="color: #991b1b;">{{ unmatched_count }}</div>
+            <div class="stat-label">Unmatched</div>
+        </div>
+    </div>
+</div>
+
+{% if contact_matches %}
+<div class="card">
+    <h3>Contact Matches</h3>
+    <p style="color: var(--text-muted); font-size: 13px; margin-bottom: 12px;">
+        Review contact matches based on email, phone, and name
+    </p>
+
+    <div class="table-wrapper">
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Query Name</th>
+                    <th>Matched User</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for match in contact_matches %}
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td>{{ match.query_name }}</td>
+                    <td>
+                        {% if match.user %}
+                            <strong>{{ match.user.first_name }} {{ match.user.last_name }}</strong><br>
+                            <span style="font-size: 12px; color: var(--text-muted);">
+                                ID: {{ match.user.cuser_id }}
+                                {% if match.user.phone_number %}
+                                <br>{{ match.user.phone_number }}
+                                {% endif %}
+                            </span>
+                        {% else %}
+                            <span style="color: var(--text-muted);">No match found</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if match.match_type == 'exact' %}
+                            <span class="badge badge-success">Exact</span>
+                        {% elif match.match_type == 'fallback' %}
+                            <span class="badge badge-warning">Fallback</span>
+                        {% else %}
+                            <span class="badge" style="background: #fef2f2; color: #991b1b;">Unmatched</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endif %}
+
+<form method="POST" action="{{ url_for('contacts_save') }}">
+    <div class="btn-group">
+        <button type="submit" class="btn btn-success btn-lg">Continue to Generate</button>
+        <a href="{{ url_for('shifts') }}" class="btn btn-outline">Back to Shift Details</a>
+    </div>
+</form>
+{% endblock %}

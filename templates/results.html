@@ -1,0 +1,281 @@
+{% extends "base.html" %}
+{% block title_suffix %} - Results{% endblock %}
+{% block step1_class %}done{% endblock %}
+{% block step2_class %}active{% endblock %}
+
+{% block content %}
+
+{% if redshift_error %}
+<div class="flash flash-error">Redshift: {{ redshift_error }}</div>
+{% endif %}
+
+<!-- ── Summary Bar ── -->
+<div class="card">
+    <h2>{{ company_name }}</h2>
+    <div class="stats">
+        <div class="stat stat-blue">
+            <div class="stat-number">{{ total_rows }}</div>
+            <div class="stat-label">Rows Parsed</div>
+        </div>
+        <div class="stat stat-green">
+            <div class="stat-number">{{ num_existing }}</div>
+            <div class="stat-label">Existing Stores</div>
+        </div>
+        <div class="stat stat-orange">
+            <div class="stat-number">{{ num_new }}</div>
+            <div class="stat-label">New Stores</div>
+        </div>
+        <div class="stat stat-blue">
+            <div class="stat-number">{{ total_shifts }}</div>
+            <div class="stat-label">Total Shifts</div>
+        </div>
+        <div class="stat" style="background: {% if unmatched_contacts == 0 %}#f0fdf4{% else %}#fef9c3{% endif %};">
+            <div class="stat-number">{{ exact_contacts + fallback_contacts }}/{{ exact_contacts + fallback_contacts + unmatched_contacts }}</div>
+            <div class="stat-label">Contacts Matched</div>
+        </div>
+    </div>
+</div>
+
+<!-- ── Downloads ── -->
+<div class="card" style="background: #f0fdf4; border: 2px solid #bbf7d0;">
+    <h3 style="margin-top: 0;">Downloads</h3>
+    <div style="display: flex; gap: 16px; flex-wrap: wrap;">
+        {% if has_biz_csv %}
+        <div style="flex: 1; min-width: 200px; background: white; border: 1px solid #d1d5db; border-radius: 8px; padding: 16px;">
+            <div style="font-weight: 600; margin-bottom: 4px;">Step 1: New Businesses</div>
+            <div style="font-size: 13px; color: var(--text-muted); margin-bottom: 12px;">{{ num_new }} new locations — upload to Django first</div>
+            <a href="{{ url_for('download_businesses') }}" class="btn btn-warning" style="width: 100%; text-align: center;">Download Business CSV</a>
+            <a href="{{ django_links.business_import }}" target="_blank" style="display: block; text-align: center; font-size: 12px; margin-top: 8px; color: var(--primary);">Open Django Business Import</a>
+        </div>
+
+        <div style="flex: 1; min-width: 200px; background: white; border: 1px solid #fde68a; border-radius: 8px; padding: 16px;">
+            <div style="font-weight: 600; margin-bottom: 4px;">Step 2: Re-check</div>
+            <div style="font-size: 13px; color: var(--text-muted); margin-bottom: 12px;">After Django import, re-check to get Location IDs</div>
+            <form method="POST" action="{{ url_for('recheck') }}">
+                <button type="submit" class="btn btn-primary" style="width: 100%;">Re-check Businesses</button>
+            </form>
+        </div>
+        {% endif %}
+
+        <div style="flex: 1; min-width: 200px; background: white; border: 1px solid #d1d5db; border-radius: 8px; padding: 16px;">
+            <div style="font-weight: 600; margin-bottom: 4px;">{% if has_biz_csv %}Step 3{% else %}Download{% endif %}: Shift Import</div>
+            <div style="font-size: 13px; color: var(--text-muted); margin-bottom: 12px;">
+                {% if num_new > 0 and total_shifts == 0 %}
+                    Waiting — upload new businesses first, then re-check
+                {% elif num_new > 0 %}
+                    {{ total_shifts }} shifts ready ({{ num_new }} stores still pending)
+                {% else %}
+                    {{ total_shifts }} shifts ready for bulk upload
+                {% endif %}
+            </div>
+            <a href="{{ url_for('download_shifts') }}" class="btn btn-success{% if total_shifts == 0 %} btn-disabled{% endif %}" style="width: 100%; text-align: center;">Download Shift CSV</a>
+            <a href="{{ django_links.bulk_import }}" target="_blank" style="display: block; text-align: center; font-size: 12px; margin-top: 8px; color: var(--primary);">Open Django Bulk Import</a>
+        </div>
+    </div>
+</div>
+
+<!-- ── Partner Config (pre-filled, read-only confirmation) ── -->
+<div class="card">
+    <details open>
+        <summary style="cursor: pointer; font-weight: 600; font-size: 16px;">Partner Configuration</summary>
+        <div style="margin-top: 12px; display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 12px;">
+            <div>
+                <div style="font-size: 11px; color: var(--text-muted); text-transform: uppercase;">Position ID</div>
+                <div style="font-weight: 600;">{{ config.get('default_position_id', 29) }}</div>
+            </div>
+            <div>
+                <div style="font-size: 11px; color: var(--text-muted); text-transform: uppercase;">Position Tiering</div>
+                <div style="font-weight: 600;">{{ config.get('default_position_tiering_id') or '—' }}</div>
+            </div>
+            <div>
+                <div style="font-size: 11px; color: var(--text-muted); text-transform: uppercase;">Pay Rate</div>
+                <div style="font-weight: 600;">{{ ('$' + config.get('adjusted_base_rate')|string) if config.get('adjusted_base_rate') else 'From CSV' }}</div>
+            </div>
+            <div>
+                <div style="font-size: 11px; color: var(--text-muted); text-transform: uppercase;">Break</div>
+                <div style="font-weight: 600;">{{ config.get('default_break_length', 30) }} min</div>
+            </div>
+            <div>
+                <div style="font-size: 11px; color: var(--text-muted); text-transform: uppercase;">Parking</div>
+                <div style="font-weight: 600;">{{ config.get('default_parking', 2) }}</div>
+            </div>
+            <div>
+                <div style="font-size: 11px; color: var(--text-muted); text-transform: uppercase;">Contact ID</div>
+                <div style="font-weight: 600;">{{ config.get('default_contact_id') or 'From CSV' }}</div>
+            </div>
+            <div>
+                <div style="font-size: 11px; color: var(--text-muted); text-transform: uppercase;">Creator ID</div>
+                <div style="font-weight: 600;">{{ config.get('default_creator_id') or '—' }}</div>
+            </div>
+        </div>
+
+        {% if config.get('default_position_duties') %}
+        <div style="margin-top: 12px;">
+            <div style="font-size: 11px; color: var(--text-muted); text-transform: uppercase; margin-bottom: 4px;">Position Duties</div>
+            <div style="background: #f8fafc; border: 1px solid var(--border); border-radius: 6px; padding: 10px; font-size: 12px; max-height: 80px; overflow-y: auto; white-space: pre-wrap;">{{ config.get('default_position_duties') }}</div>
+        </div>
+        {% endif %}
+
+        {% if config.get('default_attire') %}
+        <div style="margin-top: 8px;">
+            <div style="font-size: 11px; color: var(--text-muted); text-transform: uppercase; margin-bottom: 4px;">Attire</div>
+            <div style="background: #f8fafc; border: 1px solid var(--border); border-radius: 6px; padding: 10px; font-size: 12px;">{{ config.get('default_attire') }}</div>
+        </div>
+        {% endif %}
+
+        {% if config.get('default_position_instructions') %}
+        <div style="margin-top: 8px;">
+            <div style="font-size: 11px; color: var(--text-muted); text-transform: uppercase; margin-bottom: 4px;">Position Instructions</div>
+            <div style="background: #f8fafc; border: 1px solid var(--border); border-radius: 6px; padding: 10px; font-size: 12px; max-height: 80px; overflow-y: auto; white-space: pre-wrap;">{{ config.get('default_position_instructions') }}</div>
+        </div>
+        {% endif %}
+
+        {% if config.get('default_location_instructions') %}
+        <div style="margin-top: 8px;">
+            <div style="font-size: 11px; color: var(--text-muted); text-transform: uppercase; margin-bottom: 4px;">Location Instructions</div>
+            <div style="background: #f8fafc; border: 1px solid var(--border); border-radius: 6px; padding: 10px; font-size: 12px;">{{ config.get('default_location_instructions') }}</div>
+        </div>
+        {% endif %}
+
+        {% if not config.get('default_position_duties') and not config.get('default_attire') and not config.get('default_position_instructions') %}
+        <div style="margin-top: 12px; padding: 12px; background: #fef9c3; border: 1px solid #fde047; border-radius: 6px; font-size: 13px;">
+            No position duties or instructions configured. <a href="{{ url_for('view_config', company_id=company_id) }}">Edit partner config</a> to pre-fill these.
+        </div>
+        {% endif %}
+
+        <div style="margin-top: 8px; text-align: right;">
+            <a href="{{ url_for('view_config', company_id=company_id) }}" style="font-size: 12px; color: var(--primary);">Edit config</a>
+        </div>
+    </details>
+</div>
+
+<!-- ── Existing Stores ── -->
+{% if unique_matched %}
+<div class="card">
+    <details>
+        <summary style="cursor: pointer; font-weight: 600; font-size: 16px;">
+            Existing Stores <span class="badge badge-success">{{ num_existing }}</span>
+        </summary>
+        <div class="table-wrapper" style="margin-top: 8px;">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Retailer</th>
+                        <th>Store #</th>
+                        <th>Business Name</th>
+                        <th>Location ID</th>
+                        <th>Match</th>
+                        <th>Address</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in unique_matched %}
+                    <tr>
+                        <td>{{ row.retailer or '—' }}</td>
+                        <td>{{ row.store_number }}</td>
+                        <td>{{ row._business.business_name }}</td>
+                        <td><span class="badge badge-info">{{ row._business.business_id }}</span></td>
+                        <td><span class="badge badge-success" style="font-size:11px">{{ row._match_method or 'exact' }}</span></td>
+                        <td style="font-size: 12px;">{{ row.address }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </details>
+</div>
+{% endif %}
+
+<!-- ── New Stores ── -->
+{% if unique_unmatched %}
+<div class="card">
+    <details open>
+        <summary style="cursor: pointer; font-weight: 600; font-size: 16px;">
+            New Stores <span class="badge badge-warning">{{ num_new }}</span>
+            <span style="font-weight: 400; font-size: 13px; color: var(--text-muted);"> — need Django import, or enter existing IDs below</span>
+        </summary>
+        <div style="background: #eff6ff; border: 1px solid #bfdbfe; padding: 10px 12px; border-radius: 6px; font-size: 13px; margin: 8px 0;">
+            If a store already exists in Django but wasn't detected, enter its Location ID below and click <strong>Apply Overrides</strong>. The store will move to "existing" and be included in the shift CSV.
+        </div>
+        <form method="POST" action="{{ url_for('override_business_ids') }}">
+            <div class="table-wrapper" style="margin-top: 8px;">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Expected Name</th>
+                            <th>Store #</th>
+                            <th>Address</th>
+                            <th>City</th>
+                            <th>State</th>
+                            <th style="width: 120px;">Location ID</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for row in unique_unmatched %}
+                        <tr>
+                            <td><strong>{{ row._expected_name or row.retailer or '—' }}</strong></td>
+                            <td>{{ row.store_number }}</td>
+                            <td>{{ row.address }}</td>
+                            <td>{{ row.city }}</td>
+                            <td>{{ row.state }}</td>
+                            <td>
+                                <input type="number" name="override_{{ row.store_number }}"
+                                       placeholder="e.g. 314252"
+                                       style="width: 110px; padding: 4px 8px; font-size: 13px; margin: 0;">
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div style="margin-top: 8px; display: flex; gap: 8px;">
+                <button type="submit" class="btn btn-primary">Apply Overrides</button>
+                <span style="font-size: 12px; color: var(--text-muted); align-self: center;">Only stores with a Location ID entered will be moved to existing</span>
+            </div>
+        </form>
+    </details>
+</div>
+{% endif %}
+
+<!-- ── Contacts ── -->
+{% if contact_matches %}
+<div class="card">
+    <details>
+        <summary style="cursor: pointer; font-weight: 600; font-size: 16px;">
+            Contacts
+            <span class="badge badge-success">{{ exact_contacts }} exact</span>
+            {% if fallback_contacts %}<span class="badge badge-info">{{ fallback_contacts }} fuzzy</span>{% endif %}
+            {% if unmatched_contacts %}<span class="badge badge-warning">{{ unmatched_contacts }} unmatched</span>{% endif %}
+        </summary>
+        <div class="table-wrapper" style="margin-top: 8px;">
+            <table>
+                <thead>
+                    <tr><th>CSV Name</th><th>Match</th><th>Contact ID</th><th>Name</th><th>Role</th></tr>
+                </thead>
+                <tbody>
+                    {% for m in contact_matches %}
+                    <tr>
+                        <td>{{ m.query_name }}</td>
+                        <td>
+                            {% if m.match_type == 'exact' %}<span class="badge badge-success">exact</span>
+                            {% elif m.match_type == 'fallback' %}<span class="badge badge-info">fuzzy</span>
+                            {% else %}<span class="badge badge-warning">unmatched</span>{% endif %}
+                        </td>
+                        <td>{{ m.user.cuser_id if m.user else '—' }}</td>
+                        <td>{{ (m.user.first_name + ' ' + m.user.last_name) if m.user else '—' }}</td>
+                        <td>{{ m.user.role if m.user else '—' }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </details>
+</div>
+{% endif %}
+
+<!-- ── Start Over ── -->
+<div style="text-align: center; margin-top: 24px;">
+    <a href="{{ url_for('index') }}" class="btn btn-outline">Start New Upload</a>
+</div>
+
+{% endblock %}

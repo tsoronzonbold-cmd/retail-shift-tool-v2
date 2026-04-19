@@ -1,0 +1,9396 @@
+{
+  "78860": {
+    "special_requirements": [
+      {
+        "id": 279,
+        "name": "SAS 6 Hour Cancelation Policy",
+        "position": null
+      }
+    ],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 150,
+          "name": "McCormick Holiday Project Wave 1",
+          "position": 42
+        },
+        {
+          "id": 150,
+          "name": "McCormick Holiday Project Wave 1",
+          "position": 29
+        },
+        {
+          "id": 80,
+          "name": "McCormick Summer Grilling & Dry Mix Merchandising",
+          "position": 29
+        }
+      ],
+      "clockout": [
+        {
+          "id": 80,
+          "name": "McCormick Summer Grilling & Dry Mix Merchandising",
+          "position": 29
+        },
+        {
+          "id": 80,
+          "name": "McCormick Summer Grilling & Dry Mix Merchandising",
+          "position": 42
+        }
+      ]
+    },
+    "trainings": []
+  },
+  "75558": {
+    "special_requirements": [
+      {
+        "id": 259,
+        "name": "6HR cancellation policy",
+        "position": null
+      },
+      {
+        "id": 279,
+        "name": "SAS 6 Hour Cancelation Policy",
+        "position": null
+      }
+    ],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [],
+      "clockout": []
+    },
+    "trainings": []
+  },
+  "107025": {
+    "special_requirements": [
+      {
+        "id": 432,
+        "name": "Club Demo Services Strict Requirements",
+        "position": 29
+      },
+      {
+        "id": 432,
+        "name": "Club Demo Services Strict Requirements",
+        "position": 23
+      }
+    ],
+    "clockout_tasks": {
+      "clockin": [
+        {
+          "id": 195,
+          "name": "CDS Clock In Task",
+          "position": 29
+        },
+        {
+          "id": 195,
+          "name": "CDS Clock In Task",
+          "position": 23
+        }
+      ],
+      "during": [],
+      "clockout": [
+        {
+          "id": 196,
+          "name": "CDS Clock Out Task",
+          "position": 23
+        },
+        {
+          "id": 196,
+          "name": "CDS Clock Out Task",
+          "position": 29
+        }
+      ]
+    },
+    "trainings": [
+      {
+        "id": 139,
+        "name": "Costco CDS Demo Training",
+        "status": 1
+      }
+    ]
+  },
+  "75196": {
+    "special_requirements": [
+      {
+        "id": 373,
+        "name": "Footprint - Hours Description",
+        "position": 29
+      },
+      {
+        "id": 345,
+        "name": "Coaching Call Requirement: Footprint Solutions",
+        "position": 29
+      },
+      {
+        "id": 310,
+        "name": "Footprint Solutions Policies",
+        "position": 29
+      },
+      {
+        "id": 310,
+        "name": "Footprint Solutions Policies",
+        "position": 42
+      }
+    ],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 61,
+          "name": "Footprint Solutions Survey",
+          "position": 29
+        },
+        {
+          "id": 61,
+          "name": "Footprint Solutions Survey",
+          "position": 29
+        },
+        {
+          "id": 25,
+          "name": "Footprint Solutions Timesheet",
+          "position": 42
+        },
+        {
+          "id": 25,
+          "name": "Footprint Solutions Timesheet",
+          "position": 29
+        }
+      ],
+      "clockout": [
+        {
+          "id": 25,
+          "name": "Footprint Solutions Timesheet",
+          "position": 42
+        },
+        {
+          "id": 25,
+          "name": "Footprint Solutions Timesheet",
+          "position": 29
+        }
+      ]
+    },
+    "trainings": [
+      {
+        "id": 79,
+        "name": "Footprint Solutions - Dollar General Training",
+        "status": 1
+      }
+    ]
+  },
+  "79653": {
+    "special_requirements": [
+      {
+        "id": 388,
+        "name": "Heavy Lift Requirements",
+        "position": 42
+      },
+      {
+        "id": 388,
+        "name": "Heavy Lift Requirements",
+        "position": 29
+      }
+    ],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [],
+      "clockout": []
+    },
+    "trainings": []
+  },
+  "27596": {
+    "special_requirements": [
+      {
+        "id": 400,
+        "name": "Kendal Floral - harassment training",
+        "position": 42
+      },
+      {
+        "id": 400,
+        "name": "Kendal Floral - harassment training",
+        "position": 29
+      }
+    ],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 105,
+        "name": "Kendal Floral Training",
+        "status": 1
+      },
+      {
+        "id": 131,
+        "name": "Kendal Floral - harassment training",
+        "status": 1
+      }
+    ]
+  },
+  "103620": {
+    "special_requirements": [
+      {
+        "id": 410,
+        "name": "General Address Request for Materials",
+        "position": 29
+      }
+    ],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 165,
+          "name": "Peloton Audit",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": []
+  },
+  "94987": {
+    "special_requirements": [
+      {
+        "id": 435,
+        "name": "Mosaic Shift Commitment and Address Collection",
+        "position": 29
+      },
+      {
+        "id": 385,
+        "name": "Mosaic - Discover: Initial Quiz",
+        "position": 29
+      },
+      {
+        "id": 385,
+        "name": "Mosaic - Discover: Initial Quiz",
+        "position": 42
+      },
+      {
+        "id": 402,
+        "name": "Mosaic - Discover Program Social Media Policy and Guidelines",
+        "position": 29
+      }
+    ],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 123,
+          "name": "Discover - Mosaic",
+          "position": 29
+        },
+        {
+          "id": 197,
+          "name": "Mosaic Survey",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": []
+  },
+  "69765": {
+    "special_requirements": [
+      {
+        "id": 283,
+        "name": "Premium Retail Shift - Policies",
+        "position": 42
+      },
+      {
+        "id": 283,
+        "name": "Premium Retail Shift - Policies",
+        "position": 29
+      }
+    ],
+    "clockout_tasks": {
+      "clockin": [
+        {
+          "id": 84,
+          "name": "Premium Retail Projects Clock-IN",
+          "position": 29
+        },
+        {
+          "id": 84,
+          "name": "Premium Retail Projects Clock-IN",
+          "position": 42
+        }
+      ],
+      "during": [],
+      "clockout": [
+        {
+          "id": 85,
+          "name": "Premium Retail Clock Out Task",
+          "position": 42
+        },
+        {
+          "id": 85,
+          "name": "Premium Retail Clock Out Task",
+          "position": 29
+        }
+      ]
+    },
+    "trainings": [
+      {
+        "id": 63,
+        "name": "Premium Walgreens Cooler Reset",
+        "status": 1
+      }
+    ]
+  },
+  "55713": {
+    "special_requirements": [
+      {
+        "id": 410,
+        "name": "General Address Request for Materials",
+        "position": 42
+      },
+      {
+        "id": 410,
+        "name": "General Address Request for Materials",
+        "position": 29
+      }
+    ],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 145,
+          "name": "Product Connections Survey",
+          "position": 42
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": []
+  },
+  "69118": {
+    "special_requirements": [
+      {
+        "id": 274,
+        "name": "RaceTrac Attire Requirement",
+        "position": 42
+      }
+    ],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [],
+      "clockout": [
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 37
+        },
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        },
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 42
+        }
+      ]
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "72302": {
+    "special_requirements": [
+      {
+        "id": 274,
+        "name": "RaceTrac Attire Requirement",
+        "position": 42
+      }
+    ],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [],
+      "clockout": [
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 37
+        },
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 42
+        }
+      ]
+    },
+    "trainings": []
+  },
+  "72303": {
+    "special_requirements": [
+      {
+        "id": 274,
+        "name": "RaceTrac Attire Requirement",
+        "position": 42
+      }
+    ],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [],
+      "clockout": [
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 37
+        },
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 42
+        },
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 37
+        }
+      ]
+    },
+    "trainings": []
+  },
+  "72304": {
+    "special_requirements": [
+      {
+        "id": 274,
+        "name": "RaceTrac Attire Requirement",
+        "position": 42
+      }
+    ],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [],
+      "clockout": [
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 42
+        }
+      ]
+    },
+    "trainings": []
+  },
+  "72306": {
+    "special_requirements": [
+      {
+        "id": 274,
+        "name": "RaceTrac Attire Requirement",
+        "position": 42
+      }
+    ],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [],
+      "clockout": [
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 42
+        },
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 37
+        },
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 37
+        }
+      ]
+    },
+    "trainings": []
+  },
+  "89071": {
+    "special_requirements": [
+      {
+        "id": 274,
+        "name": "RaceTrac Attire Requirement",
+        "position": 29
+      },
+      {
+        "id": 274,
+        "name": "RaceTrac Attire Requirement",
+        "position": 42
+      }
+    ],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [],
+      "clockout": [
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 42
+        },
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 42
+        },
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        },
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        }
+      ]
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "72295": {
+    "special_requirements": [
+      {
+        "id": 274,
+        "name": "RaceTrac Attire Requirement",
+        "position": 42
+      }
+    ],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [],
+      "clockout": [
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 37
+        },
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 42
+        }
+      ]
+    },
+    "trainings": []
+  },
+  "72297": {
+    "special_requirements": [
+      {
+        "id": 274,
+        "name": "RaceTrac Attire Requirement",
+        "position": 42
+      }
+    ],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [],
+      "clockout": [
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 37
+        },
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 42
+        },
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 37
+        }
+      ]
+    },
+    "trainings": []
+  },
+  "89060": {
+    "special_requirements": [
+      {
+        "id": 274,
+        "name": "RaceTrac Attire Requirement",
+        "position": 29
+      },
+      {
+        "id": 274,
+        "name": "RaceTrac Attire Requirement",
+        "position": 42
+      }
+    ],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [],
+      "clockout": [
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 42
+        },
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        }
+      ]
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "72307": {
+    "special_requirements": [
+      {
+        "id": 274,
+        "name": "RaceTrac Attire Requirement",
+        "position": 42
+      }
+    ],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [],
+      "clockout": [
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 42
+        },
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 37
+        }
+      ]
+    },
+    "trainings": []
+  },
+  "72308": {
+    "special_requirements": [
+      {
+        "id": 274,
+        "name": "RaceTrac Attire Requirement",
+        "position": 42
+      }
+    ],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [],
+      "clockout": [
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 37
+        }
+      ]
+    },
+    "trainings": []
+  },
+  "72296": {
+    "special_requirements": [
+      {
+        "id": 274,
+        "name": "RaceTrac Attire Requirement",
+        "position": 42
+      }
+    ],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [],
+      "clockout": [
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 42
+        },
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 37
+        },
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 37
+        }
+      ]
+    },
+    "trainings": []
+  },
+  "72298": {
+    "special_requirements": [
+      {
+        "id": 274,
+        "name": "RaceTrac Attire Requirement",
+        "position": 42
+      }
+    ],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [],
+      "clockout": [
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 37
+        },
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 42
+        },
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 37
+        }
+      ]
+    },
+    "trainings": []
+  },
+  "88539": {
+    "special_requirements": [
+      {
+        "id": 279,
+        "name": "SAS 6 Hour Cancelation Policy",
+        "position": 42
+      },
+      {
+        "id": 259,
+        "name": "6HR cancellation policy",
+        "position": 42
+      }
+    ],
+    "clockout_tasks": {
+      "clockin": [
+        {
+          "id": 88,
+          "name": "Retail Odyssey Cincy - Clock-IN",
+          "position": 42
+        }
+      ],
+      "during": [],
+      "clockout": [
+        {
+          "id": 89,
+          "name": "Retail Odyssey Cincy - Clock-OUT",
+          "position": 42
+        }
+      ]
+    },
+    "trainings": []
+  },
+  "72828": {
+    "special_requirements": [
+      {
+        "id": 279,
+        "name": "SAS 6 Hour Cancelation Policy",
+        "position": 42
+      },
+      {
+        "id": 279,
+        "name": "SAS 6 Hour Cancelation Policy",
+        "position": 29
+      },
+      {
+        "id": 259,
+        "name": "6HR cancellation policy",
+        "position": 42
+      },
+      {
+        "id": 259,
+        "name": "6HR cancellation policy",
+        "position": 29
+      }
+    ],
+    "clockout_tasks": {
+      "clockin": [
+        {
+          "id": 114,
+          "name": "Retail Odyssey -Dillon Clock In Task",
+          "position": 42
+        },
+        {
+          "id": 114,
+          "name": "Retail Odyssey -Dillon Clock In Task",
+          "position": 29
+        },
+        {
+          "id": 114,
+          "name": "Retail Odyssey -Dillon Clock In Task",
+          "position": 29
+        },
+        {
+          "id": 114,
+          "name": "Retail Odyssey -Dillon Clock In Task",
+          "position": 42
+        }
+      ],
+      "during": [],
+      "clockout": [
+        {
+          "id": 115,
+          "name": "Retail Odyssey -Dillon Clock OUT Task",
+          "position": 42
+        },
+        {
+          "id": 115,
+          "name": "Retail Odyssey -Dillon Clock OUT Task",
+          "position": 29
+        },
+        {
+          "id": 115,
+          "name": "Retail Odyssey -Dillon Clock OUT Task",
+          "position": 29
+        },
+        {
+          "id": 115,
+          "name": "Retail Odyssey -Dillon Clock OUT Task",
+          "position": 42
+        }
+      ]
+    },
+    "trainings": []
+  },
+  "50683": {
+    "special_requirements": [
+      {
+        "id": 259,
+        "name": "6HR cancellation policy",
+        "position": 42
+      },
+      {
+        "id": 259,
+        "name": "6HR cancellation policy",
+        "position": 29
+      },
+      {
+        "id": 279,
+        "name": "SAS 6 Hour Cancelation Policy",
+        "position": 42
+      }
+    ],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [],
+      "clockout": [
+        {
+          "id": 14,
+          "name": "Retail Odyssey Hours Verification",
+          "position": 42
+        },
+        {
+          "id": 14,
+          "name": "Retail Odyssey Hours Verification",
+          "position": 29
+        }
+      ]
+    },
+    "trainings": []
+  },
+  "50684": {
+    "special_requirements": [
+      {
+        "id": 259,
+        "name": "6HR cancellation policy",
+        "position": 42
+      },
+      {
+        "id": 259,
+        "name": "6HR cancellation policy",
+        "position": 29
+      }
+    ],
+    "clockout_tasks": {
+      "clockin": [
+        {
+          "id": 99,
+          "name": "Retail Odyssey - King Sooper Clock In Task",
+          "position": 42
+        }
+      ],
+      "during": [],
+      "clockout": [
+        {
+          "id": 100,
+          "name": "Retail Odyssey - King Sooper Clock OUT Task",
+          "position": 42
+        },
+        {
+          "id": 14,
+          "name": "Retail Odyssey Hours Verification",
+          "position": 29
+        }
+      ]
+    },
+    "trainings": []
+  },
+  "88898": {
+    "special_requirements": [
+      {
+        "id": 259,
+        "name": "6HR cancellation policy",
+        "position": 42
+      },
+      {
+        "id": 259,
+        "name": "6HR cancellation policy",
+        "position": 29
+      }
+    ],
+    "clockout_tasks": {
+      "clockin": [
+        {
+          "id": 107,
+          "name": "Retail Odyssey - Michigan Clock In Task",
+          "position": 42
+        },
+        {
+          "id": 90,
+          "name": "Retail Odyssey - Fred Meyer Clock IN",
+          "position": 29
+        }
+      ],
+      "during": [],
+      "clockout": [
+        {
+          "id": 108,
+          "name": "Retail Odyssey - Michigan Clock OUT Task",
+          "position": 42
+        },
+        {
+          "id": 91,
+          "name": "Retail Odyssey - Fred Meyer Clock Out",
+          "position": 29
+        }
+      ]
+    },
+    "trainings": []
+  },
+  "88534": {
+    "special_requirements": [
+      {
+        "id": 259,
+        "name": "6HR cancellation policy",
+        "position": 42
+      },
+      {
+        "id": 259,
+        "name": "6HR cancellation policy",
+        "position": null
+      }
+    ],
+    "clockout_tasks": {
+      "clockin": [
+        {
+          "id": 90,
+          "name": "Retail Odyssey - Fred Meyer Clock IN",
+          "position": 42
+        },
+        {
+          "id": 90,
+          "name": "Retail Odyssey - Fred Meyer Clock IN",
+          "position": 29
+        },
+        {
+          "id": 103,
+          "name": "Retail Odyssey - Ralph's Clock In Task",
+          "position": 42
+        },
+        {
+          "id": 103,
+          "name": "Retail Odyssey - Ralph's Clock In Task",
+          "position": 29
+        }
+      ],
+      "during": [],
+      "clockout": [
+        {
+          "id": 91,
+          "name": "Retail Odyssey - Fred Meyer Clock Out",
+          "position": 29
+        },
+        {
+          "id": 91,
+          "name": "Retail Odyssey - Fred Meyer Clock Out",
+          "position": 42
+        },
+        {
+          "id": 104,
+          "name": "Retail Odyssey - Ralph's Clock OUT Task",
+          "position": 42
+        },
+        {
+          "id": 104,
+          "name": "Retail Odyssey - Ralph's Clock OUT Task",
+          "position": 29
+        }
+      ]
+    },
+    "trainings": []
+  },
+  "71973": {
+    "special_requirements": [
+      {
+        "id": 259,
+        "name": "6HR cancellation policy",
+        "position": 29
+      },
+      {
+        "id": 259,
+        "name": "6HR cancellation policy",
+        "position": 42
+      }
+    ],
+    "clockout_tasks": {
+      "clockin": [
+        {
+          "id": 105,
+          "name": "Retail Odyssey - Roundy's Clock In Task",
+          "position": 42
+        }
+      ],
+      "during": [],
+      "clockout": [
+        {
+          "id": 14,
+          "name": "Retail Odyssey Hours Verification",
+          "position": 29
+        },
+        {
+          "id": 106,
+          "name": "Retail Odyssey - Roundy's Clock OUT Task",
+          "position": 42
+        }
+      ]
+    },
+    "trainings": []
+  },
+  "88899": {
+    "special_requirements": [
+      {
+        "id": 259,
+        "name": "6HR cancellation policy",
+        "position": 42
+      },
+      {
+        "id": 259,
+        "name": "6HR cancellation policy",
+        "position": null
+      },
+      {
+        "id": 259,
+        "name": "6HR cancellation policy",
+        "position": 29
+      }
+    ],
+    "clockout_tasks": {
+      "clockin": [
+        {
+          "id": 109,
+          "name": "Retail Odyssey - Smith's Clock In Task",
+          "position": 42
+        },
+        {
+          "id": 109,
+          "name": "Retail Odyssey - Smith's Clock In Task",
+          "position": 42
+        },
+        {
+          "id": 109,
+          "name": "Retail Odyssey - Smith's Clock In Task",
+          "position": 29
+        },
+        {
+          "id": 90,
+          "name": "Retail Odyssey - Fred Meyer Clock IN",
+          "position": 29
+        },
+        {
+          "id": 109,
+          "name": "Retail Odyssey - Smith's Clock In Task",
+          "position": 29
+        }
+      ],
+      "during": [],
+      "clockout": [
+        {
+          "id": 110,
+          "name": "Retail Odyssey - Smith's Clock OUT Task",
+          "position": 42
+        },
+        {
+          "id": 110,
+          "name": "Retail Odyssey - Smith's Clock OUT Task",
+          "position": 29
+        },
+        {
+          "id": 110,
+          "name": "Retail Odyssey - Smith's Clock OUT Task",
+          "position": 42
+        },
+        {
+          "id": 91,
+          "name": "Retail Odyssey - Fred Meyer Clock Out",
+          "position": 29
+        },
+        {
+          "id": 110,
+          "name": "Retail Odyssey - Smith's Clock OUT Task",
+          "position": 29
+        }
+      ]
+    },
+    "trainings": []
+  },
+  "83636": {
+    "special_requirements": [
+      {
+        "id": 279,
+        "name": "SAS 6 Hour Cancelation Policy",
+        "position": 42
+      },
+      {
+        "id": 279,
+        "name": "SAS 6 Hour Cancelation Policy",
+        "position": 29
+      },
+      {
+        "id": 259,
+        "name": "6HR cancellation policy",
+        "position": 29
+      },
+      {
+        "id": 259,
+        "name": "6HR cancellation policy",
+        "position": 42
+      }
+    ],
+    "clockout_tasks": {
+      "clockin": [
+        {
+          "id": 114,
+          "name": "Retail Odyssey -Dillon Clock In Task",
+          "position": 42
+        },
+        {
+          "id": 114,
+          "name": "Retail Odyssey -Dillon Clock In Task",
+          "position": 29
+        }
+      ],
+      "during": [],
+      "clockout": [
+        {
+          "id": 115,
+          "name": "Retail Odyssey -Dillon Clock OUT Task",
+          "position": 42
+        },
+        {
+          "id": 115,
+          "name": "Retail Odyssey -Dillon Clock OUT Task",
+          "position": 29
+        }
+      ]
+    },
+    "trainings": []
+  },
+  "96782": {
+    "special_requirements": [
+      {
+        "id": 404,
+        "name": "SAS Michael - ZERO tolerance policy",
+        "position": 29
+      },
+      {
+        "id": 404,
+        "name": "SAS Michael - ZERO tolerance policy",
+        "position": 42
+      },
+      {
+        "id": 279,
+        "name": "SAS 6 Hour Cancelation Policy",
+        "position": 29
+      },
+      {
+        "id": 398,
+        "name": "SAS Michaels - Guidelines",
+        "position": 42
+      },
+      {
+        "id": 398,
+        "name": "SAS Michaels - Guidelines",
+        "position": 29
+      },
+      {
+        "id": 279,
+        "name": "SAS 6 Hour Cancelation Policy",
+        "position": 42
+      }
+    ],
+    "clockout_tasks": {
+      "clockin": [
+        {
+          "id": 81,
+          "name": "SAS Clock-In Task",
+          "position": 42
+        },
+        {
+          "id": 81,
+          "name": "SAS Clock-In Task",
+          "position": 29
+        }
+      ],
+      "during": [],
+      "clockout": [
+        {
+          "id": 82,
+          "name": "SAS Clock-Out Task",
+          "position": 29
+        },
+        {
+          "id": 82,
+          "name": "SAS Clock-Out Task",
+          "position": 42
+        }
+      ]
+    },
+    "trainings": []
+  },
+  "44350": {
+    "special_requirements": [
+      {
+        "id": 219,
+        "name": "SAS Cancellation Policy",
+        "position": 42
+      },
+      {
+        "id": 219,
+        "name": "SAS Cancellation Policy",
+        "position": 29
+      },
+      {
+        "id": 279,
+        "name": "SAS 6 Hour Cancelation Policy",
+        "position": 42
+      },
+      {
+        "id": 279,
+        "name": "SAS 6 Hour Cancelation Policy",
+        "position": 29
+      }
+    ],
+    "clockout_tasks": {
+      "clockin": [
+        {
+          "id": 81,
+          "name": "SAS Clock-In Task",
+          "position": 29
+        },
+        {
+          "id": 81,
+          "name": "SAS Clock-In Task",
+          "position": 42
+        }
+      ],
+      "during": [],
+      "clockout": [
+        {
+          "id": 82,
+          "name": "SAS Clock-Out Task",
+          "position": 42
+        },
+        {
+          "id": 82,
+          "name": "SAS Clock-Out Task",
+          "position": 29
+        }
+      ]
+    },
+    "trainings": []
+  },
+  "46105": {
+    "special_requirements": [
+      {
+        "id": 279,
+        "name": "SAS 6 Hour Cancelation Policy",
+        "position": null
+      },
+      {
+        "id": 279,
+        "name": "SAS 6 Hour Cancelation Policy",
+        "position": 42
+      },
+      {
+        "id": 279,
+        "name": "SAS 6 Hour Cancelation Policy",
+        "position": 29
+      }
+    ],
+    "clockout_tasks": {
+      "clockin": [
+        {
+          "id": 81,
+          "name": "SAS Clock-In Task",
+          "position": 42
+        },
+        {
+          "id": 81,
+          "name": "SAS Clock-In Task",
+          "position": 29
+        }
+      ],
+      "during": [],
+      "clockout": [
+        {
+          "id": 82,
+          "name": "SAS Clock-Out Task",
+          "position": 42
+        },
+        {
+          "id": 82,
+          "name": "SAS Clock-Out Task",
+          "position": 29
+        }
+      ]
+    },
+    "trainings": []
+  },
+  "48383": {
+    "special_requirements": [
+      {
+        "id": 279,
+        "name": "SAS 6 Hour Cancelation Policy",
+        "position": null
+      },
+      {
+        "id": 279,
+        "name": "SAS 6 Hour Cancelation Policy",
+        "position": 42
+      },
+      {
+        "id": 279,
+        "name": "SAS 6 Hour Cancelation Policy",
+        "position": 29
+      },
+      {
+        "id": 435,
+        "name": "Mosaic Shift Commitment and Address Collection",
+        "position": 29
+      },
+      {
+        "id": 435,
+        "name": "Mosaic Shift Commitment and Address Collection",
+        "position": 42
+      }
+    ],
+    "clockout_tasks": {
+      "clockin": [
+        {
+          "id": 81,
+          "name": "SAS Clock-In Task",
+          "position": 42
+        },
+        {
+          "id": 81,
+          "name": "SAS Clock-In Task",
+          "position": 29
+        }
+      ],
+      "during": [],
+      "clockout": [
+        {
+          "id": 82,
+          "name": "SAS Clock-Out Task",
+          "position": 29
+        },
+        {
+          "id": 82,
+          "name": "SAS Clock-Out Task",
+          "position": 42
+        }
+      ]
+    },
+    "trainings": []
+  },
+  "49416": {
+    "special_requirements": [
+      {
+        "id": 259,
+        "name": "6HR cancellation policy",
+        "position": 42
+      },
+      {
+        "id": 259,
+        "name": "6HR cancellation policy",
+        "position": 29
+      }
+    ],
+    "clockout_tasks": {
+      "clockin": [
+        {
+          "id": 81,
+          "name": "SAS Clock-In Task",
+          "position": 29
+        },
+        {
+          "id": 81,
+          "name": "SAS Clock-In Task",
+          "position": 42
+        }
+      ],
+      "during": [],
+      "clockout": [
+        {
+          "id": 82,
+          "name": "SAS Clock-Out Task",
+          "position": 42
+        },
+        {
+          "id": 82,
+          "name": "SAS Clock-Out Task",
+          "position": 29
+        }
+      ]
+    },
+    "trainings": []
+  },
+  "47621": {
+    "special_requirements": [
+      {
+        "id": 371,
+        "name": "SAS South Cali instructions",
+        "position": 42
+      },
+      {
+        "id": 309,
+        "name": "SAS SoCal Tools Requirement",
+        "position": 42
+      },
+      {
+        "id": 309,
+        "name": "SAS SoCal Tools Requirement",
+        "position": 29
+      },
+      {
+        "id": 219,
+        "name": "SAS Cancellation Policy",
+        "position": 42
+      },
+      {
+        "id": 219,
+        "name": "SAS Cancellation Policy",
+        "position": 29
+      },
+      {
+        "id": 290,
+        "name": "SAS Required 30 Minute Break",
+        "position": 29
+      },
+      {
+        "id": 290,
+        "name": "SAS Required 30 Minute Break",
+        "position": 42
+      },
+      {
+        "id": 279,
+        "name": "SAS 6 Hour Cancelation Policy",
+        "position": 42
+      },
+      {
+        "id": 279,
+        "name": "SAS 6 Hour Cancelation Policy",
+        "position": 29
+      },
+      {
+        "id": 259,
+        "name": "6HR cancellation policy",
+        "position": 29
+      },
+      {
+        "id": 259,
+        "name": "6HR cancellation policy",
+        "position": 42
+      }
+    ],
+    "clockout_tasks": {
+      "clockin": [
+        {
+          "id": 81,
+          "name": "SAS Clock-In Task",
+          "position": 29
+        },
+        {
+          "id": 81,
+          "name": "SAS Clock-In Task",
+          "position": 42
+        },
+        {
+          "id": 114,
+          "name": "Retail Odyssey -Dillon Clock In Task",
+          "position": 29
+        },
+        {
+          "id": 114,
+          "name": "Retail Odyssey -Dillon Clock In Task",
+          "position": 42
+        }
+      ],
+      "during": [],
+      "clockout": [
+        {
+          "id": 82,
+          "name": "SAS Clock-Out Task",
+          "position": 42
+        },
+        {
+          "id": 82,
+          "name": "SAS Clock-Out Task",
+          "position": 29
+        },
+        {
+          "id": 115,
+          "name": "Retail Odyssey -Dillon Clock OUT Task",
+          "position": 42
+        },
+        {
+          "id": 115,
+          "name": "Retail Odyssey -Dillon Clock OUT Task",
+          "position": 29
+        }
+      ]
+    },
+    "trainings": []
+  },
+  "50887": {
+    "special_requirements": [
+      {
+        "id": 279,
+        "name": "SAS 6 Hour Cancelation Policy",
+        "position": 29
+      },
+      {
+        "id": 279,
+        "name": "SAS 6 Hour Cancelation Policy",
+        "position": 42
+      }
+    ],
+    "clockout_tasks": {
+      "clockin": [
+        {
+          "id": 81,
+          "name": "SAS Clock-In Task",
+          "position": 29
+        },
+        {
+          "id": 81,
+          "name": "SAS Clock-In Task",
+          "position": 42
+        }
+      ],
+      "during": [],
+      "clockout": [
+        {
+          "id": 82,
+          "name": "SAS Clock-Out Task",
+          "position": 42
+        },
+        {
+          "id": 82,
+          "name": "SAS Clock-Out Task",
+          "position": 29
+        }
+      ]
+    },
+    "trainings": []
+  },
+  "56158": {
+    "special_requirements": [
+      {
+        "id": 280,
+        "name": "Must have a valid Driver's License",
+        "position": 29
+      }
+    ],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 69,
+        "name": "Tesla VRS Training",
+        "status": 1
+      }
+    ]
+  },
+  "87188": {
+    "special_requirements": [
+      {
+        "id": 280,
+        "name": "Must have a valid Driver's License",
+        "position": 29
+      }
+    ],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 69,
+        "name": "Tesla VRS Training",
+        "status": 1
+      }
+    ]
+  },
+  "71700": {
+    "special_requirements": [
+      {
+        "id": 280,
+        "name": "Must have a valid Driver's License",
+        "position": 29
+      }
+    ],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 69,
+        "name": "Tesla VRS Training",
+        "status": 1
+      }
+    ]
+  },
+  "79992": {
+    "special_requirements": [
+      {
+        "id": 280,
+        "name": "Must have a valid Driver's License",
+        "position": 29
+      }
+    ],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 69,
+        "name": "Tesla VRS Training",
+        "status": 1
+      }
+    ]
+  },
+  "54836": {
+    "special_requirements": [
+      {
+        "id": 280,
+        "name": "Must have a valid Driver's License",
+        "position": 29
+      }
+    ],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 69,
+        "name": "Tesla VRS Training",
+        "status": 1
+      }
+    ]
+  },
+  "68721": {
+    "special_requirements": [
+      {
+        "id": 280,
+        "name": "Must have a valid Driver's License",
+        "position": 29
+      }
+    ],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 69,
+        "name": "Tesla VRS Training",
+        "status": 1
+      }
+    ]
+  },
+  "84810": {
+    "special_requirements": [
+      {
+        "id": 280,
+        "name": "Must have a valid Driver's License",
+        "position": 29
+      }
+    ],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 69,
+        "name": "Tesla VRS Training",
+        "status": 1
+      }
+    ]
+  },
+  "21787": {
+    "special_requirements": [
+      {
+        "id": 280,
+        "name": "Must have a valid Driver's License",
+        "position": 29
+      }
+    ],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 69,
+        "name": "Tesla VRS Training",
+        "status": 1
+      }
+    ]
+  },
+  "54840": {
+    "special_requirements": [
+      {
+        "id": 280,
+        "name": "Must have a valid Driver's License",
+        "position": 29
+      }
+    ],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 69,
+        "name": "Tesla VRS Training",
+        "status": 1
+      }
+    ]
+  },
+  "79548": {
+    "special_requirements": [
+      {
+        "id": 280,
+        "name": "Must have a valid Driver's License",
+        "position": 29
+      }
+    ],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 69,
+        "name": "Tesla VRS Training",
+        "status": 1
+      }
+    ]
+  },
+  "68722": {
+    "special_requirements": [
+      {
+        "id": 280,
+        "name": "Must have a valid Driver's License",
+        "position": 29
+      }
+    ],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 69,
+        "name": "Tesla VRS Training",
+        "status": 1
+      }
+    ]
+  },
+  "72041": {
+    "special_requirements": [
+      {
+        "id": 280,
+        "name": "Must have a valid Driver's License",
+        "position": 29
+      }
+    ],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 69,
+        "name": "Tesla VRS Training",
+        "status": 1
+      }
+    ]
+  },
+  "75004": {
+    "special_requirements": [
+      {
+        "id": 280,
+        "name": "Must have a valid Driver's License",
+        "position": 29
+      }
+    ],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 69,
+        "name": "Tesla VRS Training",
+        "status": 1
+      }
+    ]
+  },
+  "85472": {
+    "special_requirements": [
+      {
+        "id": 280,
+        "name": "Must have a valid Driver's License",
+        "position": 29
+      }
+    ],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 69,
+        "name": "Tesla VRS Training",
+        "status": 1
+      }
+    ]
+  },
+  "34421": {
+    "special_requirements": [
+      {
+        "id": 280,
+        "name": "Must have a valid Driver's License",
+        "position": 29
+      }
+    ],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 69,
+        "name": "Tesla VRS Training",
+        "status": 1
+      }
+    ]
+  },
+  "60601": {
+    "special_requirements": [
+      {
+        "id": 280,
+        "name": "Must have a valid Driver's License",
+        "position": 29
+      }
+    ],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 69,
+        "name": "Tesla VRS Training",
+        "status": 1
+      }
+    ]
+  },
+  "75965": {
+    "special_requirements": [
+      {
+        "id": 280,
+        "name": "Must have a valid Driver's License",
+        "position": 29
+      }
+    ],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 69,
+        "name": "Tesla VRS Training",
+        "status": 1
+      }
+    ]
+  },
+  "56843": {
+    "special_requirements": [
+      {
+        "id": 280,
+        "name": "Must have a valid Driver's License",
+        "position": 29
+      }
+    ],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 69,
+        "name": "Tesla VRS Training",
+        "status": 1
+      }
+    ]
+  },
+  "75500": {
+    "special_requirements": [
+      {
+        "id": 280,
+        "name": "Must have a valid Driver's License",
+        "position": 29
+      }
+    ],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 69,
+        "name": "Tesla VRS Training",
+        "status": 1
+      }
+    ]
+  },
+  "68724": {
+    "special_requirements": [
+      {
+        "id": 280,
+        "name": "Must have a valid Driver's License",
+        "position": 29
+      }
+    ],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 69,
+        "name": "Tesla VRS Training",
+        "status": 1
+      }
+    ]
+  },
+  "67391": {
+    "special_requirements": [
+      {
+        "id": 280,
+        "name": "Must have a valid Driver's License",
+        "position": 29
+      }
+    ],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 69,
+        "name": "Tesla VRS Training",
+        "status": 1
+      }
+    ]
+  },
+  "68723": {
+    "special_requirements": [
+      {
+        "id": 280,
+        "name": "Must have a valid Driver's License",
+        "position": 29
+      }
+    ],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 69,
+        "name": "Tesla VRS Training",
+        "status": 1
+      }
+    ]
+  },
+  "62808": {
+    "special_requirements": [
+      {
+        "id": 280,
+        "name": "Must have a valid Driver's License",
+        "position": 29
+      }
+    ],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 69,
+        "name": "Tesla VRS Training",
+        "status": 1
+      }
+    ]
+  },
+  "71743": {
+    "special_requirements": [
+      {
+        "id": 280,
+        "name": "Must have a valid Driver's License",
+        "position": 29
+      }
+    ],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 69,
+        "name": "Tesla VRS Training",
+        "status": 1
+      }
+    ]
+  },
+  "80563": {
+    "special_requirements": [
+      {
+        "id": 280,
+        "name": "Must have a valid Driver's License",
+        "position": 29
+      }
+    ],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 69,
+        "name": "Tesla VRS Training",
+        "status": 1
+      }
+    ]
+  },
+  "21784": {
+    "special_requirements": [
+      {
+        "id": 280,
+        "name": "Must have a valid Driver's License",
+        "position": 29
+      }
+    ],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 69,
+        "name": "Tesla VRS Training",
+        "status": 1
+      }
+    ]
+  },
+  "58877": {
+    "special_requirements": [
+      {
+        "id": 280,
+        "name": "Must have a valid Driver's License",
+        "position": 29
+      }
+    ],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 69,
+        "name": "Tesla VRS Training",
+        "status": 1
+      }
+    ]
+  },
+  "68729": {
+    "special_requirements": [
+      {
+        "id": 280,
+        "name": "Must have a valid Driver's License",
+        "position": 29
+      }
+    ],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 69,
+        "name": "Tesla VRS Training",
+        "status": 1
+      }
+    ]
+  },
+  "68726": {
+    "special_requirements": [
+      {
+        "id": 280,
+        "name": "Must have a valid Driver's License",
+        "position": 29
+      }
+    ],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 69,
+        "name": "Tesla VRS Training",
+        "status": 1
+      }
+    ]
+  },
+  "68882": {
+    "special_requirements": [
+      {
+        "id": 280,
+        "name": "Must have a valid Driver's License",
+        "position": 29
+      }
+    ],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 69,
+        "name": "Tesla VRS Training",
+        "status": 1
+      }
+    ]
+  },
+  "94058": {
+    "special_requirements": [
+      {
+        "id": 413,
+        "name": "Urban Remedy Uniform Special Requirement",
+        "position": 29
+      },
+      {
+        "id": 413,
+        "name": "Urban Remedy Uniform Special Requirement",
+        "position": 42
+      }
+    ],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 169,
+          "name": "Urban Remedy Audit W/o Inventory",
+          "position": 42
+        },
+        {
+          "id": 169,
+          "name": "Urban Remedy Audit W/o Inventory",
+          "position": 29
+        },
+        {
+          "id": 122,
+          "name": "Urban Remedy",
+          "position": 42
+        },
+        {
+          "id": 122,
+          "name": "Urban Remedy",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 111,
+        "name": "Urban Remedy",
+        "status": 1
+      }
+    ]
+  },
+  "27126": {
+    "special_requirements": [
+      {
+        "id": 411,
+        "name": "Dippin' Dots Plastic Scraper",
+        "position": 29
+      }
+    ],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 120,
+          "name": "Dippin Dots",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": []
+  },
+  "109562": {
+    "special_requirements": [
+      {
+        "id": 219,
+        "name": "6HR cancellation policy",
+        "position": 42
+      },
+      {
+        "id": 219,
+        "name": "6HR cancellation policy",
+        "position": 29
+      }
+    ],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [],
+      "clockout": []
+    },
+    "trainings": []
+  },
+  "71970": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 144,
+          "name": "2020 Companies - Secret Shopper",
+          "position": 29
+        },
+        {
+          "id": 144,
+          "name": "2020 Companies - Secret Shopper",
+          "position": 42
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": []
+  },
+  "92330": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [
+        {
+          "id": 195,
+          "name": "CDS Clock In Task",
+          "position": 23
+        }
+      ],
+      "during": [
+        {
+          "id": 194,
+          "name": "Costco Demo Services Survey",
+          "position": 23
+        }
+      ],
+      "clockout": [
+        {
+          "id": 196,
+          "name": "CDS Clock Out Task",
+          "position": 23
+        },
+        {
+          "id": 82,
+          "name": "SAS Clock-Out Task",
+          "position": 29
+        }
+      ]
+    },
+    "trainings": []
+  },
+  "96745": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 199,
+          "name": "CA Fortune Tumaro's and Joseph's",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": []
+  },
+  "94283": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 126,
+          "name": "Chobani Grab n' Go Cooler Merchandising Survey",
+          "position": 42
+        },
+        {
+          "id": 126,
+          "name": "Chobani Grab n' Go Cooler Merchandising Survey",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": []
+  },
+  "92317": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [
+        {
+          "id": 117,
+          "name": "Tie's cleaning clock-in",
+          "position": 29
+        },
+        {
+          "id": 117,
+          "name": "Tie's cleaning clock-in",
+          "position": 42
+        },
+        {
+          "id": 167,
+          "name": "Tie's Clock In (2)",
+          "position": 29
+        },
+        {
+          "id": 117,
+          "name": "Tie's cleaning clock-in",
+          "position": 29
+        },
+        {
+          "id": 117,
+          "name": "Tie's cleaning clock-in",
+          "position": 42
+        }
+      ],
+      "during": [],
+      "clockout": [
+        {
+          "id": 118,
+          "name": "Tie's Cleaning Clockout Task",
+          "position": 29
+        },
+        {
+          "id": 118,
+          "name": "Tie's Cleaning Clockout Task",
+          "position": 42
+        },
+        {
+          "id": 118,
+          "name": "Tie's Cleaning Clockout Task",
+          "position": 29
+        },
+        {
+          "id": 118,
+          "name": "Tie's Cleaning Clockout Task",
+          "position": 42
+        }
+      ]
+    },
+    "trainings": []
+  },
+  "83633": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 200,
+          "name": "Hallmark Photo Task",
+          "position": 42
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": []
+  },
+  "91856": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 181,
+          "name": "KIND Nut Bars Caramel Almond & Sea Salt Gluten Free Snack Bars - 16.8oz/12ct - False Stock",
+          "position": 42
+        },
+        {
+          "id": 181,
+          "name": "KIND Nut Bars Caramel Almond & Sea Salt Gluten Free Snack Bars - 16.8oz/12ct - False Stock",
+          "position": 29
+        },
+        {
+          "id": 182,
+          "name": "KIND Protein Bars Peanut Butter Dark Chocolate + Protein Nutrition Snacks - 16.8oz/12ct - False Stock",
+          "position": 29
+        },
+        {
+          "id": 177,
+          "name": "KIND Health Grains Energy Strawberry Banana Protein Bars - 5ct - False Stock",
+          "position": 29
+        },
+        {
+          "id": 186,
+          "name": "KIND Healthy Grains Energy Peanut Butter Dark Chocolate Protein Bars - 10ct - False Stock",
+          "position": 42
+        },
+        {
+          "id": 177,
+          "name": "KIND Health Grains Energy Strawberry Banana Protein Bars - 5ct - False Stock",
+          "position": 42
+        },
+        {
+          "id": 180,
+          "name": "KIND Zero Caramel Almond & Sea Salt Bars - 6.2oz/5ct - False Stock",
+          "position": 42
+        },
+        {
+          "id": 186,
+          "name": "KIND Healthy Grains Energy Peanut Butter Dark Chocolate Protein Bars - 10ct - False Stock",
+          "position": 29
+        },
+        {
+          "id": 185,
+          "name": "KIND Protein Peanut Butter - 8.8oz/5ct - False Stock",
+          "position": 42
+        },
+        {
+          "id": 182,
+          "name": "KIND Protein Bars Peanut Butter Dark Chocolate + Protein Nutrition Snacks - 16.8oz/12ct - False Stock",
+          "position": 42
+        },
+        {
+          "id": 178,
+          "name": "Kind Breakfast Peanut Butter Bars - 10.58oz - Total Out Of Stock",
+          "position": 42
+        },
+        {
+          "id": 185,
+          "name": "KIND Protein Peanut Butter - 8.8oz/5ct - False Stock",
+          "position": 29
+        },
+        {
+          "id": 180,
+          "name": "KIND Zero Caramel Almond & Sea Salt Bars - 6.2oz/5ct - False Stock",
+          "position": 29
+        },
+        {
+          "id": 178,
+          "name": "Kind Breakfast Peanut Butter Bars - 10.58oz - Total Out Of Stock",
+          "position": 29
+        },
+        {
+          "id": 183,
+          "name": "KIND Nutrition Bars Variety Pack - 12ct - False Stock",
+          "position": 42
+        },
+        {
+          "id": 184,
+          "name": "KIND Zero Dark Chocolate Nuts & Sea Salt Bars - 6.2oz/5ct - False Stock",
+          "position": 42
+        },
+        {
+          "id": 171,
+          "name": "KIND Minis Salted Caramel Dark Chocolate + Dark Chocolate Almond Coconut - 14.1oz/ 20ct - False Stock",
+          "position": 42
+        },
+        {
+          "id": 189,
+          "name": "KIND Bars Cranberry Almond Gluten Free Snacks - 16.8oz/12ct - False Stock",
+          "position": 42
+        },
+        {
+          "id": 190,
+          "name": "KIND Bars Strawberry Sunflower Seed Gluten Free Snacks - 8.4oz/6ct - Total Out Of Stock",
+          "position": 29
+        },
+        {
+          "id": 176,
+          "name": "KIND Health Grains Energy Mixed Berry Protein Bars - 5ct - Total Out Of Stock",
+          "position": 29
+        },
+        {
+          "id": 176,
+          "name": "KIND Health Grains Energy Mixed Berry Protein Bars - 5ct - Total Out Of Stock",
+          "position": 42
+        },
+        {
+          "id": 173,
+          "name": "KIND Bars Cranberry Almond Gluten Free Snacks - 16.8oz/12ct - Total Out Of Stock",
+          "position": 29
+        },
+        {
+          "id": 175,
+          "name": "KIND Health Grains Energy Mixed Berry Protein Bars - 5ct - False Stock",
+          "position": 29
+        },
+        {
+          "id": 172,
+          "name": "KIND Minis Dark Chocolate & Caramel Almond - 14oz/20ct - False Stock",
+          "position": 42
+        },
+        {
+          "id": 174,
+          "name": "KIND Bars Caramel Almond & Sea Salt Gluten Free Snacks - 6ct - False Stock",
+          "position": 42
+        },
+        {
+          "id": 192,
+          "name": "KIND Protein Max Chocolate Peanut Butter Protein Bars - 8.7oz/4pk - False Stock",
+          "position": 29
+        },
+        {
+          "id": 172,
+          "name": "KIND Minis Dark Chocolate & Caramel Almond - 14oz/20ct - False Stock",
+          "position": 29
+        },
+        {
+          "id": 192,
+          "name": "KIND Protein Max Chocolate Peanut Butter Protein Bars - 8.7oz/4pk - False Stock",
+          "position": 42
+        },
+        {
+          "id": 187,
+          "name": "KIND Minis Salted Caramel Dark Chocolate + Dark Chocolate Almond Coconut - 14.1oz/ 20ct - Total Out Of Stock",
+          "position": 29
+        },
+        {
+          "id": 190,
+          "name": "KIND Bars Strawberry Sunflower Seed Gluten Free Snacks - 8.4oz/6ct - Total Out Of Stock",
+          "position": 42
+        },
+        {
+          "id": 183,
+          "name": "KIND Nutrition Bars Variety Pack - 12ct - False Stock",
+          "position": 29
+        },
+        {
+          "id": 188,
+          "name": "KIND Bars Dark Chocolate Raspberry Pumpkin Seed Gluten Free Snacks - 8.4oz/6ct - False Stock",
+          "position": 42
+        },
+        {
+          "id": 187,
+          "name": "KIND Minis Salted Caramel Dark Chocolate + Dark Chocolate Almond Coconut - 14.1oz/ 20ct - Total Out Of Stock",
+          "position": 42
+        },
+        {
+          "id": 189,
+          "name": "KIND Bars Cranberry Almond Gluten Free Snacks - 16.8oz/12ct - False Stock",
+          "position": 29
+        },
+        {
+          "id": 184,
+          "name": "KIND Zero Dark Chocolate Nuts & Sea Salt Bars - 6.2oz/5ct - False Stock",
+          "position": 29
+        },
+        {
+          "id": 174,
+          "name": "KIND Bars Caramel Almond & Sea Salt Gluten Free Snacks - 6ct - False Stock",
+          "position": 29
+        },
+        {
+          "id": 179,
+          "name": "Kind Breakfast Honey Oat Breakfast Bars - 10.58oz/6ct - Total Out Of Stock",
+          "position": 42
+        },
+        {
+          "id": 171,
+          "name": "KIND Minis Salted Caramel Dark Chocolate + Dark Chocolate Almond Coconut - 14.1oz/ 20ct - False Stock",
+          "position": 29
+        },
+        {
+          "id": 188,
+          "name": "KIND Bars Dark Chocolate Raspberry Pumpkin Seed Gluten Free Snacks - 8.4oz/6ct - False Stock",
+          "position": 29
+        },
+        {
+          "id": 173,
+          "name": "KIND Bars Cranberry Almond Gluten Free Snacks - 16.8oz/12ct - Total Out Of Stock",
+          "position": 42
+        },
+        {
+          "id": 179,
+          "name": "Kind Breakfast Honey Oat Breakfast Bars - 10.58oz/6ct - Total Out Of Stock",
+          "position": 29
+        },
+        {
+          "id": 191,
+          "name": "Kind Breakfast Blueberry Almond Bars - 6ct - Total Out Of Stock",
+          "position": 42
+        },
+        {
+          "id": 191,
+          "name": "Kind Breakfast Blueberry Almond Bars - 6ct - Total Out Of Stock",
+          "position": 29
+        },
+        {
+          "id": 175,
+          "name": "KIND Health Grains Energy Mixed Berry Protein Bars - 5ct - False Stock",
+          "position": 42
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": []
+  },
+  "83638": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [],
+      "clockout": [
+        {
+          "id": 92,
+          "name": "KeHE (SD) Tasks",
+          "position": 42
+        },
+        {
+          "id": 86,
+          "name": "KeHE Training Videos",
+          "position": 42
+        }
+      ]
+    },
+    "trainings": []
+  },
+  "81465": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [],
+      "clockout": [
+        {
+          "id": 50,
+          "name": "KeHE Merchandising",
+          "position": 42
+        }
+      ]
+    },
+    "trainings": []
+  },
+  "99890": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 143,
+          "name": "KraftHeinz Cooler Pack-Out Survey",
+          "position": 42
+        },
+        {
+          "id": 143,
+          "name": "KraftHeinz Cooler Pack-Out Survey",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": []
+  },
+  "85068": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 132,
+          "name": "Lindenmeyr Inventory - Comoto",
+          "position": 29
+        },
+        {
+          "id": 132,
+          "name": "Lindenmeyr Inventory - Comoto",
+          "position": 42
+        },
+        {
+          "id": 137,
+          "name": "Lindenmeyr Munroe Tesla - Fountain Inn",
+          "position": 42
+        },
+        {
+          "id": 137,
+          "name": "Lindenmeyr Munroe Tesla - Fountain Inn",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": []
+  },
+  "75505": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 198,
+          "name": "Latchlight Audit",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": []
+  },
+  "104628": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 164,
+          "name": "Mondelez Merchandising",
+          "position": 42
+        },
+        {
+          "id": 164,
+          "name": "Mondelez Merchandising",
+          "position": 29
+        },
+        {
+          "id": 164,
+          "name": "Mondelez Merchandising",
+          "position": 42
+        },
+        {
+          "id": 164,
+          "name": "Mondelez Merchandising",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": []
+  },
+  "106134": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 164,
+          "name": "Mondelez Merchandising",
+          "position": 42
+        },
+        {
+          "id": 164,
+          "name": "Mondelez Merchandising",
+          "position": 29
+        },
+        {
+          "id": 149,
+          "name": "Mondelez Merchandising Training",
+          "position": 42
+        },
+        {
+          "id": 149,
+          "name": "Mondelez Merchandising Training",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 138,
+        "name": "Mondelez Merchandising",
+        "status": 1
+      }
+    ]
+  },
+  "106135": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 164,
+          "name": "Mondelez Merchandising",
+          "position": 42
+        },
+        {
+          "id": 164,
+          "name": "Mondelez Merchandising",
+          "position": 42
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": []
+  },
+  "108379": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        },
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        },
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108381": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        },
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        },
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108382": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        },
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        },
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108383": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        },
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        },
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108384": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        },
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        },
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108385": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        },
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        },
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108386": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        },
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        },
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108387": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        },
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        },
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108388": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        },
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        },
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108389": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        },
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        },
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108390": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        },
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        },
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108391": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        },
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        },
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108392": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        },
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        },
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108393": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        },
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        },
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108394": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        },
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        },
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108395": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        },
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        },
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108396": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        },
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        },
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108397": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        },
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        },
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108398": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        },
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        },
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108400": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        },
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        },
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108402": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        },
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        },
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108404": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        },
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        },
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108406": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        },
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        },
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108408": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        },
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        },
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108410": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        },
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        },
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108412": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        },
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        },
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108414": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        },
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        },
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108416": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        },
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        },
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108418": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        },
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        },
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108420": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        },
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        },
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108422": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        },
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        },
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108424": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        },
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        },
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108427": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        },
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        },
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108429": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        },
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        },
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108431": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        },
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        },
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108433": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        },
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        },
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108435": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        },
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        },
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108437": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        },
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        },
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108439": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        },
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        },
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108441": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        },
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        },
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108443": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        },
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        },
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108445": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        },
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        },
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108447": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        },
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        },
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108449": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        },
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        },
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108451": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        },
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        },
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108453": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        },
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        },
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108455": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        },
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        },
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108457": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        },
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        },
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108459": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        },
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        },
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108461": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        },
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        },
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108463": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        },
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        },
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108465": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        },
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        },
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108467": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        },
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        },
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108470": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        },
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        },
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108472": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        },
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        },
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108475": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        },
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        },
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108477": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        },
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        },
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108479": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        },
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        },
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108480": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        },
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        },
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108482": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        },
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        },
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108484": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        },
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        },
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108486": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        },
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        },
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108488": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        },
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        },
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108490": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        },
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        },
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108492": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        },
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        },
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108494": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        },
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        },
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108496": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        },
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        },
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108498": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        },
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        },
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108500": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        },
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        },
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108502": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        },
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        },
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108504": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        },
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        },
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108506": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        },
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        },
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108508": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        },
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        },
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108510": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        },
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        },
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108512": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        },
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        },
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108514": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        },
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        },
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108516": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        },
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        },
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108518": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        },
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        },
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108520": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        },
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        },
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108522": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        },
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        },
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108524": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        },
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        },
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108526": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        },
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        },
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108528": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        },
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        },
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108530": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        },
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        },
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108532": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        },
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        },
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108534": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        },
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        },
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108536": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        },
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        },
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108538": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        },
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        },
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108540": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        },
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        },
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108542": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        },
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        },
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108544": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        },
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        },
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108546": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        },
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        },
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108548": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        },
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        },
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108550": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        },
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        },
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108552": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        },
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        },
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108554": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        },
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        },
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108556": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        },
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        },
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108558": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        },
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        },
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108560": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        },
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        },
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108562": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        },
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        },
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108564": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        },
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        },
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108566": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        },
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        },
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108568": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        },
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        },
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108570": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        },
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        },
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108572": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        },
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        },
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108399": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        },
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        },
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108401": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        },
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        },
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108403": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        },
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        },
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108405": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        },
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        },
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108407": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        },
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        },
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108409": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        },
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        },
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108411": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        },
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        },
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108413": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        },
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        },
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108415": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        },
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        },
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108417": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        },
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        },
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108419": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        },
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        },
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108421": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        },
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        },
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108423": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        },
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        },
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108425": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        },
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        },
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108426": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        },
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        },
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108428": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        },
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        },
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108430": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        },
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        },
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108432": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        },
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        },
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108434": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        },
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        },
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108436": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        },
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        },
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108438": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        },
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        },
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108440": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        },
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        },
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108442": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        },
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        },
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108444": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        },
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        },
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108446": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        },
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        },
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108448": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        },
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        },
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108450": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        },
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        },
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108452": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        },
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        },
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108454": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        },
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        },
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108456": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        },
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        },
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108458": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        },
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        },
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108460": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        },
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        },
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108462": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        },
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        },
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108464": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        },
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        },
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108466": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        },
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        },
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108468": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        },
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        },
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108469": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        },
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        },
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108471": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        },
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        },
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108473": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        },
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        },
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108474": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        },
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        },
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108476": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        },
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        },
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108478": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        },
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        },
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108481": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        },
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        },
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108483": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        },
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        },
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108485": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        },
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        },
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108487": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        },
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        },
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108489": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        },
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        },
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108491": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        },
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        },
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108493": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        },
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        },
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108495": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        },
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        },
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108497": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        },
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        },
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108499": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        },
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        },
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108501": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        },
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        },
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108503": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        },
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        },
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108505": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        },
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        },
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108507": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        },
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        },
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108509": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        },
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        },
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108511": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        },
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        },
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108513": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        },
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        },
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108515": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        },
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        },
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108517": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        },
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        },
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108519": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        },
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        },
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108521": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        },
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        },
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108523": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        },
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        },
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108525": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        },
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        },
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108527": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        },
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        },
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108529": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        },
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        },
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108531": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        },
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        },
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108533": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        },
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        },
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108535": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        },
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        },
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108537": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        },
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        },
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108539": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        },
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        },
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108541": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        },
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        },
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108543": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        },
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        },
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108545": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        },
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        },
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108547": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        },
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        },
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108549": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        },
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        },
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108551": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        },
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        },
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108553": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        },
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        },
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108555": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        },
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        },
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108557": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        },
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        },
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108559": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        },
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        },
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108561": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        },
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        },
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108563": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        },
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        },
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108565": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        },
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        },
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108567": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        },
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        },
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108569": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        },
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        },
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108571": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        },
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        },
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108573": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        },
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        },
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108574": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        },
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        },
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108575": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        },
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        },
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108576": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        },
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        },
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108577": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        },
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        },
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108578": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        },
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        },
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108579": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        },
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        },
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108580": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        },
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        },
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108581": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        },
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        },
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108582": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        },
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        },
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108583": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        },
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        },
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "108584": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 10,
+          "name": "RaceTrac - Merchandising & Cleaning",
+          "position": 29
+        },
+        {
+          "id": 12,
+          "name": "RaceTrac - External Cleaning",
+          "position": 29
+        },
+        {
+          "id": 11,
+          "name": "RaceTrac - Interior Cleaning",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 66,
+        "name": "RaceTrac Training",
+        "status": 1
+      }
+    ]
+  },
+  "88900": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [
+        {
+          "id": 111,
+          "name": "Retail Odyssey - Mid Atlantic Clock In Task",
+          "position": 42
+        }
+      ],
+      "during": [],
+      "clockout": [
+        {
+          "id": 112,
+          "name": "Retail Odyssey - Mid Atlantic Clock OUT Task",
+          "position": 29
+        }
+      ]
+    },
+    "trainings": []
+  },
+  "105187": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [
+        {
+          "id": 166,
+          "name": "Rwazi Vape Audit",
+          "position": 29
+        }
+      ],
+      "clockout": []
+    },
+    "trainings": []
+  },
+  "107247": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [
+        {
+          "id": 81,
+          "name": "SAS Clock-In Task",
+          "position": 42
+        },
+        {
+          "id": 81,
+          "name": "SAS Clock-In Task",
+          "position": 29
+        }
+      ],
+      "during": [],
+      "clockout": [
+        {
+          "id": 82,
+          "name": "SAS Clock-Out Task",
+          "position": 29
+        },
+        {
+          "id": 82,
+          "name": "SAS Clock-Out Task",
+          "position": 42
+        }
+      ]
+    },
+    "trainings": []
+  },
+  "80724": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [],
+      "clockout": []
+    },
+    "trainings": [
+      {
+        "id": 86,
+        "name": "Ferguson Training 3",
+        "status": 2
+      },
+      {
+        "id": 88,
+        "name": "Ferguson Training 5",
+        "status": 2
+      },
+      {
+        "id": 84,
+        "name": "Ferguson Training 1",
+        "status": 2
+      },
+      {
+        "id": 87,
+        "name": "Ferguson Training 4",
+        "status": 2
+      },
+      {
+        "id": 90,
+        "name": "Ferguson Training 7",
+        "status": 2
+      },
+      {
+        "id": 89,
+        "name": "Ferguson Training 6",
+        "status": 2
+      },
+      {
+        "id": 85,
+        "name": "Ferguson Training 2",
+        "status": 2
+      }
+    ]
+  },
+  "107665": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [],
+      "clockout": []
+    },
+    "trainings": []
+  },
+  "76436": {
+    "special_requirements": [],
+    "clockout_tasks": {
+      "clockin": [],
+      "during": [],
+      "clockout": []
+    },
+    "trainings": []
+  }
+}

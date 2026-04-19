@@ -1,0 +1,39 @@
+RETAILER,team #,STORE #,SCHEDULE NAME (Optional),STREET ADDRESS,CITY,STATE,ZIP,START DATE,START TIME,END TIME,QUANTITY NEEDED,ONSITE CONTACT,PHONE,WORKER PAY,LOCATION INSTRUCTIONS,ATTIRE INSTRUCTIONS
+Price Chopper,113,199,Bread / Isotonics,5701 EAST CIRCLE DRIVE,CICERO,NY,13039,4/20/2026,6:00 AM,3:30 PM,3,mike,315-886-0931,$18/hr,Meet at Customer Service,black/blue/tan pants blue or black shirt
+Price Chopper,124,213,Bread / Isotonics,142 GENESEE ST,ONEIDA,NY,13421,4/20/2026,6:00 AM,3:30 PM,4,Jenn,,$18/hr,Meet at Customer Service,black/blue/tan pants blue or black shirt
+Price Chopper,128,94,Bread / Isotonics,"1 PRICE CHOPPER PLAZA, RTE 4 & 67",MECHANICVILLE,NY,12118,4/20/2026,6:00 AM,3:30 PM,4,Al,,$18/hr,Meet at Customer Service,black/blue/tan pants blue or black shirt
+,129,28,Bread / Isotonics,2080 WESTERN AVE.,GUILDERLAND,NY,12084,4/20/2026,6:00 AM,3:30 PM,2,Rudy,,$18/hr,Meet at Customer Service,black/blue/tan pants blue or black shirt
+Price Chopper,134,134,Bread / Isotonics,5626 STATE HWY 7,ONEONTA,NY,13820,4/20/2026,6:00 AM,3:30 PM,4,Danny,,$18/hr,Meet at Customer Service,black/blue/tan pants blue or black shirt
+Price Chopper,123,241,Bread / Isotonics,43449 NYS ROUTE 12,ALEXANDRIA BAY,NY,13607,4/21/2026,6:00 AM,3:30 PM,4,Mary,,$18/hr,Meet at Customer Service,black/blue/tan pants blue or black shirt
+Price Chopper,124,44,Bread / Isotonics,"50 AUERT AVE, N. UTICA SHOPPING CTR",UTICA,NY,13501,4/21/2026,6:00 AM,3:30 PM,4,Jenn,,$18/hr,Meet at Customer Service,black/blue/tan pants blue or black shirt
+Price Chopper,125,30,Bread / Isotonics,2981 FORD ST EXT,OGDENSBURG,NY,13669,4/21/2026,6:00 AM,3:30 PM,4,casey,,$18/hr,Meet at Customer Service,black/blue/tan pants blue or black shirt
+,126,166,Bread / Isotonics,53 FINNEY BLVD,MALONE,NY,12953,4/21/2026,6:00 AM,3:30 PM,4,Robyn,,$18/hr,Meet at Customer Service,black/blue/tan pants blue or black shirt
+Price Chopper,128,112,Bread / Isotonics,RTE 146 & PLANK RD,CLIFTON PARK,NY,12065,4/21/2026,6:00 AM,3:30 PM,4,Al,,$18/hr,Meet at Customer Service,black/blue/tan pants blue or black shirt
+,129,47,Bread / Isotonics,2333 NOTT ST E,NISKAYUNA,NY,12309,4/21/2026,6:00 AM,3:30 PM,2,Rudy,,$18/hr,Meet at Customer Service,black/blue/tan pants blue or black shirt
+,130,111,Bread / Isotonics,501 COLUMBIA TURNPIKE,RENSSELAER,NY,12144,4/21/2026,6:00 AM,3:30 PM,4,Lisa,,$18/hr,Meet at Customer Service,black/blue/tan pants blue or black shirt
+Price Chopper,136,178,Bread / Isotonics,854 STATE RTE 13,Cortland,NY,13045,4/21/2026,6:00 AM,3:30 PM,4,Donald,,$18/hr,Meet at Customer Service,black/blue/tan pants blue or black shirt
+Price Chopper,136,178,Bread / Isotonics,854 STATE RTE 13,Cortland,NY,13045,4/21/2026,6:00 AM,3:30 PM,4,Donald,,$18/hr,Meet at Customer Service,black/blue/tan pants blue or black shirt
+Price Chopper,125,29,Bread / Isotonics,201 MARKET ST,POTSDAM,NY,13676,4/22/2026,6:00 AM,3:30 PM,4,casey,,$18/hr,Meet at Customer Service,black/blue/tan pants blue or black shirt
+,126,168,Bread / Isotonics,19 Center Drive,PLATTSBURGH,NY,12901,4/22/2026,6:00 AM,3:30 PM,4,Robyn,,$18/hr,Meet at Customer Service,black/blue/tan pants blue or black shirt
+,129,183,Bread / Isotonics,1706 WESTERN AVE,GUILDERLAND,NY,12203,4/22/2026,6:00 AM,3:30 PM,2,Rudy,,$18/hr,Meet at Customer Service,black/blue/tan pants blue or black shirt
+Price Chopper,136,215,Bread / Isotonics,165 DELAWARE AVE,SIDNEY,NY,13838,4/22/2026,6:00 AM,3:30 PM,4,Donald,,$18/hr,Meet at Customer Service,black/blue/tan pants blue or black shirt
+Price Chopper,136,215,Bread / Isotonics,165 DELAWARE AVE,SIDNEY,NY,13838,4/22/2026,6:00 AM,3:30 PM,4,Donald,,$18/hr,Meet at Customer Service,black/blue/tan pants blue or black shirt
+Price Chopper,137,533,Bread / Isotonics,16 JON J WAHNER WAY,LAGRANGEVILLE,NY,12540,4/22/2026,6:00 AM,3:30 PM,3,Danny,,$18/hr,Meet at Customer Service,black/blue/tan pants blue or black shirt
+Price Chopper,113,172,Bread / Isotonics,2515 ERIE BLVD,SYRACUSE,NY,13224,4/23/2026,6:00 AM,3:30 PM,3,mike,315-886-0931,$18/hr,Meet at Customer Service,black/blue/tan pants blue or black shirt
+Price Chopper,116,214,Bread / Isotonics,12 W FIRST ST SOUTH,FULTON,NY,13069,4/23/2026,6:00 AM,3:30 PM,4,Phyllis,,$18/hr,Meet at Customer Service,black/blue/tan pants blue or black shirt
+Price Chopper,123,24,Bread / Isotonics,60 HIGH ST,WEST CARTHAGE,NY,13619,4/23/2026,6:00 AM,3:30 PM,4,Mary,,$18/hr,Meet at Customer Service,black/blue/tan pants blue or black shirt
+Price Chopper,124,206,Bread / Isotonics,1790 BLACK RIVER BLVD,ROME,NY,13440,4/23/2026,6:00 AM,3:30 PM,4,Jenn,,$18/hr,Meet at Customer Service,black/blue/tan pants blue or black shirt
+Price Chopper,128,38,Bread / Isotonics,290 SARATOGA RD,SCOTIA,NY,12302,4/23/2026,6:00 AM,3:30 PM,4,Al,,$18/hr,Meet at Customer Service,black/blue/tan pants blue or black shirt
+,130,54,Bread / Isotonics,102 VAN RENSSELAER SQUARE,RENSSELAER,NY,12144,4/23/2026,6:00 AM,3:30 PM,4,Lisa,,$18/hr,Meet at Customer Service,black/blue/tan pants blue or black shirt
+Price Chopper,134,235,Bread / Isotonics,113 CHESTNUT ST,COOPERSTOWN,NY,13326,4/23/2026,6:00 AM,3:30 PM,4,Danny,,$18/hr,Meet at Customer Service,black/blue/tan pants blue or black shirt
+Price Chopper,145,142,Bread / Isotonics,115 TEMPLE HILL RD,NEW WINDSOR,NY,12553,4/23/2026,6:00 AM,3:30 PM,3,Josh,,$18/hr,Meet at Customer Service,black/blue/tan pants blue or black shirt
+Price Chopper,128,184,Bread / Isotonics,2 KENDALL WAY,MALTA,NY,12021,4/24/2026,6:00 AM,3:30 PM,4,Al,,$18/hr,Meet at Customer Service,black/blue/tan pants blue or black shirt
+Price Chopper,116,226,Bread / Isotonics,137 STATE RT 104,OSWEGO,NY,13126,4/27/2026,6:00 AM,3:30 PM,4,Phyllis,,$18/hr,Meet at Customer Service,black/blue/tan pants blue or black shirt
+Price Chopper,134,218,Bread / Isotonics,3 MAIN ST,DELHI,NY,13753,4/27/2026,6:00 AM,3:30 PM,4,Bobby,,$18/hr,Meet at Customer Service,black/blue/tan pants blue or black shirt
+Price Chopper,123,102,Bread / Isotonics,1283 ARSENAL ST,WATERTOWN,NY,13601,4/28/2026,6:00 AM,3:30 PM,4,Mary,,$18/hr,Meet at Customer Service,black/blue/tan pants blue or black shirt
+Price Chopper,124,207,Bread / Isotonics,4535 COMMERCIAL DR,NEW HARTFORD,NY,13413,4/28/2026,6:00 AM,3:30 PM,4,Jenn,,$18/hr,Meet at Customer Service,black/blue/tan pants blue or black shirt
+,130,3,Bread / Isotonics,716 HOOSICK RD,TROY,NY,12180,4/28/2026,6:00 AM,3:30 PM,4,Lisa,,$18/hr,Meet at Customer Service,black/blue/tan pants blue or black shirt
+Price Chopper,134,116,Bread / Isotonics,105 PLAZA LANE,COBLESKILL,NY,12043,4/29/2026,6:00 AM,3:30 PM,4,Bobby,,$18/hr,Meet at Customer Service,black/blue/tan pants blue or black shirt
+Price Chopper,137,535,Bread / Isotonics,1836 US 6,CARMEL,NY,10512,4/29/2026,6:00 AM,3:30 PM,3,Danny,,$18/hr,Meet at Customer Service,black/blue/tan pants blue or black shirt
+Price Chopper,145,202,Bread / Isotonics,1025 PENNSYLVANIE AVE,MATAMORAS,PA,18336,4/29/2026,6:00 AM,3:30 PM,4,Josh,,$18/hr,Meet at Customer Service,black/blue/tan pants blue or black shirt
+,130,181,Bread / Isotonics,79 VANDERBURGH AVE,TROY,NY,12180,4/30/2026,6:00 AM,3:30 PM,4,Lisa,,$18/hr,Meet at Customer Service,black/blue/tan pants blue or black shirt

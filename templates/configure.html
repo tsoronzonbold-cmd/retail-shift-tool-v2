@@ -1,0 +1,169 @@
+{% extends "base.html" %}
+{% block title_suffix %} - Configure{% endblock %}
+{% block step1_class %}done{% endblock %}
+{% block step2_class %}done{% endblock %}
+{% block step3_class %}done{% endblock %}
+{% block step4_class %}active{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h2>Confirm Configuration — {{ company_name }}</h2>
+    <p style="color: var(--text-muted); margin-bottom: 16px;">
+        These settings will apply to all <strong>{{ new_businesses|length }}</strong> new locations. Everything is pre-filled from the partner profile — just confirm and generate.
+    </p>
+
+    <form method="POST" action="{{ url_for('configure_save') }}">
+
+        <!-- Pre-filled Shift Settings (from partner config) -->
+        <div style="background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px; padding: 20px; margin-bottom: 20px;">
+            <h3 style="margin-top: 0; color: #166534;">Shift Settings (Pre-filled)</h3>
+            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-bottom: 16px;">
+                <div>
+                    <label style="font-size: 12px; color: var(--text-muted);">Position ID</label>
+                    <div style="font-weight: 600;">{{ config.get('default_position_id', 29) }}</div>
+                </div>
+                <div>
+                    <label style="font-size: 12px; color: var(--text-muted);">Position Tiering</label>
+                    <div style="font-weight: 600;">{{ config.get('default_position_tiering_id') or 'None' }}</div>
+                </div>
+                <div>
+                    <label style="font-size: 12px; color: var(--text-muted);">Pay Rate</label>
+                    <div style="font-weight: 600;">{{ ('$' + config.get('adjusted_base_rate')|string) if config.get('adjusted_base_rate') else 'From CSV' }}</div>
+                </div>
+                <div>
+                    <label style="font-size: 12px; color: var(--text-muted);">Break Length</label>
+                    <div style="font-weight: 600;">{{ config.get('default_break_length', 30) }} min</div>
+                </div>
+                <div>
+                    <label style="font-size: 12px; color: var(--text-muted);">Parking</label>
+                    <div style="font-weight: 600;">{{ config.get('default_parking', 2) }}</div>
+                </div>
+                <div>
+                    <label style="font-size: 12px; color: var(--text-muted);">Contact ID</label>
+                    <div style="font-weight: 600;">{{ config.get('default_contact_id') or 'From CSV' }}</div>
+                </div>
+            </div>
+
+            {% if config.get('default_position_duties') %}
+            <div style="margin-bottom: 12px;">
+                <label style="font-size: 12px; color: var(--text-muted);">Position Duties</label>
+                <div style="background: white; border: 1px solid #d1d5db; border-radius: 6px; padding: 10px; font-size: 13px; max-height: 120px; overflow-y: auto; white-space: pre-wrap;">{{ config.get('default_position_duties') }}</div>
+            </div>
+            {% endif %}
+
+            {% if config.get('default_position_instructions') %}
+            <div style="margin-bottom: 12px;">
+                <label style="font-size: 12px; color: var(--text-muted);">Position Instructions</label>
+                <div style="background: white; border: 1px solid #d1d5db; border-radius: 6px; padding: 10px; font-size: 13px; max-height: 120px; overflow-y: auto; white-space: pre-wrap;">{{ config.get('default_position_instructions') }}</div>
+            </div>
+            {% endif %}
+
+            {% if config.get('default_attire') %}
+            <div style="margin-bottom: 12px;">
+                <label style="font-size: 12px; color: var(--text-muted);">Attire</label>
+                <div style="background: white; border: 1px solid #d1d5db; border-radius: 6px; padding: 10px; font-size: 13px;">{{ config.get('default_attire') }}</div>
+            </div>
+            {% endif %}
+
+            {% if config.get('default_location_instructions') %}
+            <div style="margin-bottom: 0;">
+                <label style="font-size: 12px; color: var(--text-muted);">Location Instructions</label>
+                <div style="background: white; border: 1px solid #d1d5db; border-radius: 6px; padding: 10px; font-size: 13px;">{{ config.get('default_location_instructions') }}</div>
+            </div>
+            {% endif %}
+
+            {% if not config.get('default_position_duties') and not config.get('default_attire') and not config.get('default_position_instructions') %}
+            <div style="color: #b45309; font-size: 13px;">
+                No position duties, attire, or instructions configured yet. Consider running <strong>Bootstrap Partner</strong> from the home page to auto-fill from the most recent gig template.
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- Business Creation Settings -->
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
+            <div>
+                <h3>Business Import Settings</h3>
+                <div class="form-row">
+                    <div>
+                        <label>
+                            <input type="checkbox" name="automated_overbooking" {% if config.get('automated_overbooking') %}checked{% endif %}>
+                            Automated Overbooking
+                        </label>
+                    </div>
+                </div>
+                <label>Worker Instructions (business-level)</label>
+                <textarea name="worker_instructions" rows="3" placeholder="e.g. Meet at Customer Service">{{ config.get('worker_instructions') or config.get('default_location_instructions') or '' }}</textarea>
+            </div>
+
+            <div>
+                <h3>Tasks & Requirements</h3>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+                    <div>
+                        <label style="font-size: 12px;">Special Requirement IDs</label>
+                        <input type="text" name="special_requirement_ids" value="{{ config.special_requirement_ids | join(', ') }}" placeholder="e.g. 1, 2">
+                    </div>
+                    <div>
+                        <label style="font-size: 12px;">Task Position IDs</label>
+                        <input type="text" name="task_position_ids" value="{{ config.get('task_position_ids', []) | join(', ') }}" placeholder="e.g. 29, 42">
+                    </div>
+                    <div>
+                        <label style="font-size: 12px;">Clock-In IDs</label>
+                        <input type="text" name="clock_in_task_ids" value="{{ config.get('clock_in_task_ids', []) | join(', ') }}" placeholder="e.g. 789">
+                    </div>
+                    <div>
+                        <label style="font-size: 12px;">During IDs</label>
+                        <input type="text" name="during_task_ids" value="{{ config.get('during_task_ids', []) | join(', ') }}" placeholder="e.g. 2">
+                    </div>
+                    <div>
+                        <label style="font-size: 12px;">Clock-Out IDs</label>
+                        <input type="text" name="clock_out_task_ids" value="{{ config.clock_out_task_ids | join(', ') }}" placeholder="e.g. 102">
+                    </div>
+                    <div>
+                        <label style="font-size: 12px;">Training IDs</label>
+                        <input type="text" name="training_ids" value="{{ config.training_ids | join(', ') }}" placeholder="e.g. 456">
+                    </div>
+                    <div>
+                        <label style="font-size: 12px;">Certification IDs</label>
+                        <input type="text" name="certification_ids" value="{{ config.certification_ids | join(', ') }}" placeholder="e.g. 123">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- New Businesses List (collapsible) -->
+        <details style="margin-bottom: 20px;">
+            <summary style="cursor: pointer; font-weight: 600; padding: 8px 0;">
+                {{ new_businesses|length }} New Locations to Create
+            </summary>
+            <div class="table-wrapper" style="margin-top: 8px;">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Expected Name</th>
+                            <th>Store #</th>
+                            <th>Address</th>
+                            <th>City</th>
+                            <th>State</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for biz in new_businesses %}
+                        <tr>
+                            <td><strong>{{ biz._expected_name or biz.retailer or '-' }}</strong></td>
+                            <td>{{ biz.store_number }}</td>
+                            <td>{{ biz.address }}</td>
+                            <td>{{ biz.city }}</td>
+                            <td>{{ biz.state }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </details>
+
+        <div class="btn-group">
+            <button type="submit" class="btn btn-success btn-lg">Confirm & Generate Business CSV</button>
+        </div>
+    </form>
+</div>
+{% endblock %}

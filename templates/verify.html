@@ -1,0 +1,162 @@
+{% extends "base.html" %}
+{% block title_suffix %} - Verify Import{% endblock %}
+{% block step1_class %}done{% endblock %}
+{% block step2_class %}done{% endblock %}
+{% block step3_class %}done{% endblock %}
+{% block step4_class %}active{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h2 id="page-title">Generate New Business CSV</h2>
+    <p id="page-subtitle" style="color: var(--text-muted); margin-bottom: 20px;">
+        Download, import to Django, then we'll auto-detect when it's synced
+    </p>
+
+    <!-- Download Section -->
+    <div style="background: #f8fafc; border: 1px solid var(--border); border-radius: 10px; padding: 20px; margin-bottom: 20px; text-align: center;">
+        <div style="font-size: 16px; font-weight: 600; margin-bottom: 8px;">{{ num_new }} new businesses</div>
+        <a href="{{ url_for('download_business_import') }}" class="btn btn-outline" style="margin-bottom: 8px;">
+            Download CSV
+        </a>
+        <div style="font-size: 12px; color: var(--text-muted); margin-top: 8px;">
+            <a href="{{ django_links.business_import }}" target="_blank" style="color: var(--primary);">
+                Open Django Business Import →
+            </a>
+        </div>
+    </div>
+
+    <!-- Auto-polling status (always visible while polling) -->
+    <div id="poll-state" style="text-align: center; padding: 30px;">
+        <div style="font-size: 18px; font-weight: 600; margin-bottom: 6px;" id="poll-title">Waiting for sync...</div>
+        <p style="color: var(--text-muted); margin-bottom: 14px; font-size: 13px;" id="poll-subtitle">
+            Auto-checking Redshift every 15s. Upload your CSV to Django and we'll detect when the new businesses appear.
+        </p>
+        <div style="width: 100%; max-width: 480px; margin: 0 auto 12px; height: 8px; background: #e2e8f0; border-radius: 4px; overflow: hidden;">
+            <div id="progress-bar" style="width: 0%; height: 100%; background: var(--primary); border-radius: 4px; transition: width 0.5s;"></div>
+        </div>
+        <div style="font-size: 13px; color: var(--text-muted);">
+            <span id="verified-count">0</span> of <span id="total-count">{{ num_new }}</span> verified
+            · <span id="check-count">0</span> checks
+            · last: <span id="last-check">never</span>
+        </div>
+        <div style="margin-top: 16px;">
+            <button id="pause-btn" class="btn btn-outline" style="padding: 6px 14px; font-size: 13px;" onclick="togglePolling()">Pause auto-poll</button>
+            <button class="btn btn-outline" style="padding: 6px 14px; font-size: 13px;" onclick="checkNow()">Check Now</button>
+        </div>
+    </div>
+
+    <!-- Success State (hidden by default) -->
+    <div id="success-state" style="display: none; text-align: center; padding: 40px;">
+        <div style="width: 64px; height: 64px; border-radius: 50%; background: #dcfce7; margin: 0 auto 16px; display: flex; align-items: center; justify-content: center;">
+            <svg width="32" height="32" fill="none" stroke="#16a34a" stroke-width="3" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>
+        </div>
+        <div style="font-size: 22px; font-weight: 600; color: var(--success);" id="verified-text">0 new businesses verified</div>
+        <p style="color: var(--text-muted); font-size: 13px; margin-top: 4px;">All new businesses are live in Redshift</p>
+
+        <hr style="margin: 24px 0; border: none; border-top: 1px solid var(--border);">
+        <div style="font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted); margin-bottom: 12px;">New Business Attribute CSVs</div>
+
+        <div id="tasks-download" style="display: none; background: #f8fafc; border: 1px solid var(--border); border-radius: 10px; padding: 16px; max-width: 320px; margin: 0 auto 20px;">
+            <div style="font-weight: 600; margin-bottom: 8px;">Tasks</div>
+            <a href="{{ url_for('download_tasks_import') }}" class="btn btn-outline">Download Tasks CSV</a>
+            <div style="font-size: 12px; color: var(--text-muted); margin-top: 8px;">
+                <a href="{{ django_links.clockout_task }}" target="_blank" style="color: var(--primary);">Open Django Task Import →</a>
+            </div>
+        </div>
+
+        <a href="{{ url_for('shifts') }}" class="btn btn-success btn-lg">Map Shift Details →</a>
+    </div>
+</div>
+
+{% block scripts %}
+<script>
+const POLL_INTERVAL_MS = 15000;
+const TOTAL = {{ num_new }};
+let pollTimer = null;
+let pollPaused = false;
+let checkCount = 0;
+let inFlight = false;
+
+function setPollTitle(text) {
+    document.getElementById('poll-title').textContent = text;
+}
+
+async function doCheck() {
+    if (inFlight) return;
+    inFlight = true;
+    setPollTitle('Checking Redshift...');
+    try {
+        const r = await fetch('{{ url_for("api_verify_businesses") }}', { method: 'POST' });
+        const data = await r.json();
+        checkCount++;
+        document.getElementById('check-count').textContent = checkCount;
+        const now = new Date();
+        document.getElementById('last-check').textContent = now.toLocaleTimeString();
+
+        if (data.error) {
+            setPollTitle('Error: ' + data.error);
+            return;
+        }
+
+        const verified = (data.verified || []).length;
+        const total = data.total || TOTAL;
+        document.getElementById('verified-count').textContent = verified;
+        document.getElementById('total-count').textContent = total;
+        document.getElementById('progress-bar').style.width = (total ? (verified / total * 100) : 0) + '%';
+
+        if (data.all_verified) {
+            stopPolling();
+            document.getElementById('poll-state').style.display = 'none';
+            document.getElementById('success-state').style.display = 'block';
+            document.getElementById('verified-text').textContent = verified + ' new businesses verified';
+            document.getElementById('page-title').textContent = 'Import Verified';
+            document.getElementById('page-subtitle').textContent = '';
+            if (data.has_tasks) {
+                document.getElementById('tasks-download').style.display = 'block';
+            }
+        } else {
+            const pending = (data.pending || []).length;
+            setPollTitle(`Waiting for sync — ${pending} still pending`);
+        }
+    } catch (e) {
+        setPollTitle('Network error, will retry');
+    } finally {
+        inFlight = false;
+    }
+}
+
+function startPolling() {
+    if (pollTimer) return;
+    pollPaused = false;
+    document.getElementById('pause-btn').textContent = 'Pause auto-poll';
+    pollTimer = setInterval(doCheck, POLL_INTERVAL_MS);
+    doCheck(); // run one immediately
+}
+
+function stopPolling() {
+    if (pollTimer) {
+        clearInterval(pollTimer);
+        pollTimer = null;
+    }
+}
+
+function togglePolling() {
+    if (pollPaused) {
+        startPolling();
+    } else {
+        stopPolling();
+        pollPaused = true;
+        setPollTitle('Auto-poll paused');
+        document.getElementById('pause-btn').textContent = 'Resume auto-poll';
+    }
+}
+
+function checkNow() {
+    doCheck();
+}
+
+// Kick off auto-polling on page load
+startPolling();
+</script>
+{% endblock %}
+{% endblock %}

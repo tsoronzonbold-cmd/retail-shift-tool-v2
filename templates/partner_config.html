@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% block title_suffix %} - Partner Config{% endblock %}
+
+{% block steps %}{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h2>Partner Configuration — {{ config.name or ('Company ' + company_id) }}</h2>
+
+    <form method="POST" action="{{ url_for('save_config', company_id=company_id) }}">
+        <div class="form-row">
+            <div>
+                <label>Partner Name</label>
+                <input type="text" name="name" value="{{ config.name }}">
+            </div>
+            <div>
+                <label>Company ID</label>
+                <input type="text" value="{{ company_id }}" disabled>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div>
+                <label>Default Position ID</label>
+                <input type="number" name="default_position_id" value="{{ config.default_position_id }}">
+                <small style="color: var(--text-muted);">29 = General Labor, 42 = Merchandiser</small>
+            </div>
+            <div>
+                <label>Default Break Length (min)</label>
+                <input type="number" name="default_break_length" value="{{ config.default_break_length }}">
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div>
+                <label>Default Parking</label>
+                <select name="default_parking">
+                    <option value="0" {% if config.default_parking == 0 %}selected{% endif %}>0 - No parking</option>
+                    <option value="1" {% if config.default_parking == 1 %}selected{% endif %}>1 - Street parking</option>
+                    <option value="2" {% if config.default_parking == 2 %}selected{% endif %}>2 - Free parking</option>
+                </select>
+            </div>
+            <div>
+                <label>Adjusted Base Rate ($)</label>
+                <input type="text" name="adjusted_base_rate" value="{{ config.adjusted_base_rate or '' }}">
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div>
+                <label>Default Creator ID</label>
+                <input type="text" name="default_creator_id" value="{{ config.default_creator_id or '' }}">
+            </div>
+            <div>
+                <label>Default Contact ID</label>
+                <input type="text" name="default_contact_id" value="{{ config.default_contact_id or '' }}">
+            </div>
+        </div>
+
+        <label>Default Attire Instructions</label>
+        <textarea name="default_attire">{{ config.default_attire }}</textarea>
+
+        <label>Default Location Instructions</label>
+        <textarea name="default_location_instructions">{{ config.default_location_instructions }}</textarea>
+
+        <label>Default Position Instructions</label>
+        <textarea name="default_position_instructions" style="min-height: 120px;">{{ config.default_position_instructions }}</textarea>
+
+        <div class="btn-group">
+            <button type="submit" class="btn btn-primary btn-lg">Save Configuration</button>
+            <a href="{{ url_for('index') }}" class="btn btn-outline">Back to Upload</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

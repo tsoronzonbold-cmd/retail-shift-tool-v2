@@ -1,0 +1,21 @@
+run = "bash start.sh"
+entrypoint = "app.py"
+modules = ["python-3.11"]
+hidden = [".pythonlibs"]
+
+[nix]
+channel = "stable-24_05"
+
+[env]
+PORT = "8080"
+AWS_REGION = "us-west-2"
+REDSHIFT_DB_USER = "cursor_analytics"
+PYTHONUNBUFFERED = "1"
+
+[[ports]]
+localPort = 8080
+externalPort = 80
+
+[deployment]
+run = ["sh", "-c", "gunicorn --bind 0.0.0.0:$PORT --workers 2 --timeout 120 app:app"]
+deploymentTarget = "autoscale"

@@ -1,0 +1,129 @@
+{% extends "base.html" %}
+{% block title_suffix %} - Shift Details{% endblock %}
+{% block step1_class %}done{% endblock %}
+{% block step2_class %}done{% endblock %}
+{% block step3_class %}done{% endblock %}
+{% block step4_class %}done{% endblock %}
+{% block step5_class %}active{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h2>Map Shift Details — {{ company_name }}</h2>
+    <p style="color: var(--text-muted); margin-bottom: 4px;">
+        Will create <strong>{{ total_shifts }}</strong> shift rows from <strong>{{ source_rows }}</strong> source rows
+    </p>
+</div>
+
+<div class="card">
+    <h3>Overrides</h3>
+    <p style="color: var(--text-muted); font-size: 13px; margin-bottom: 12px;">
+        Set fixed values that apply to all rows (leave blank to use column data)
+    </p>
+    <form method="POST" action="{{ url_for('shifts_save') }}">
+        <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px;">
+            <div>
+                <label>Workers</label>
+                <input type="text" name="override_workers" placeholder="e.g. 2">
+            </div>
+            <div>
+                <label>Break</label>
+                <input type="text" name="override_break" value="{{ config.default_break_length }}" placeholder="30">
+            </div>
+            <div>
+                <label>Contact Name</label>
+                <input type="text" name="override_contact" placeholder="Manager Name">
+            </div>
+            <div>
+                <label>Contact Phone</label>
+                <input type="text" name="override_phone" placeholder="555-123-4567">
+            </div>
+            <div>
+                <label>Contact Email</label>
+                <input type="text" name="override_email" placeholder="manager@store.com">
+            </div>
+        </div>
+
+        <hr style="margin: 24px 0; border: none; border-top: 1px solid var(--border);">
+
+        <h3>AI-Normalized Shift Data</h3>
+        <p style="color: var(--text-muted); font-size: 13px; margin-bottom: 12px;">
+            Click any cell to edit, and changes are saved automatically
+        </p>
+
+        <div class="table-wrapper">
+            <table id="shift-table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Business Name</th>
+                        <th>Workers</th>
+                        <th>Date</th>
+                        <th>Start</th>
+                        <th>End</th>
+                        <th>Break</th>
+                        <th>Contact Name</th>
+                        <th>Contact Phone</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in rows %}
+                    <tr data-index="{{ loop.index0 }}">
+                        <td>{{ loop.index }}</td>
+                        <td>
+                            {% if row._business %}
+                                {{ row._business.business_name }}
+                            {% else %}
+                                {{ row.store_number }}
+                            {% endif %}
+                        </td>
+                        <td contenteditable="true" data-field="quantity">{{ row.quantity or 1 }}</td>
+                        <td contenteditable="true" data-field="start_date">{{ row.start_date }}</td>
+                        <td contenteditable="true" data-field="start_time">{{ row.start_time }}</td>
+                        <td contenteditable="true" data-field="end_time">{{ row.end_time }}</td>
+                        <td contenteditable="true" data-field="break_length">{{ row.break_length or config.default_break_length }}</td>
+                        <td contenteditable="true" data-field="team_lead">{{ row.team_lead }}</td>
+                        <td contenteditable="true" data-field="team_lead_phone">{{ row.get('team_lead_phone', '') }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <style>
+            td[contenteditable="true"] { cursor: text; }
+            td[contenteditable="true"]:hover { background: #fef3c7; }
+            td[contenteditable="true"]:focus { background: #fef9c3; outline: 2px solid var(--primary); }
+            td.saving { background: #dbeafe !important; }
+            td.saved { background: #dcfce7 !important; transition: background 0.8s; }
+        </style>
+        <script>
+            document.querySelectorAll('#shift-table td[contenteditable="true"]').forEach(cell => {
+                cell.addEventListener('blur', async () => {
+                    const row = cell.closest('tr');
+                    const idx = parseInt(row.dataset.index, 10);
+                    const field = cell.dataset.field;
+                    const value = cell.textContent.trim();
+                    cell.classList.add('saving');
+                    try {
+                        const r = await fetch('{{ url_for("api_update_row") }}', {
+                            method: 'POST',
+                            headers: {'Content-Type': 'application/json'},
+                            body: JSON.stringify({index: idx, field, value}),
+                        });
+                        cell.classList.remove('saving');
+                        if (r.ok) {
+                            cell.classList.add('saved');
+                            setTimeout(() => cell.classList.remove('saved'), 800);
+                        }
+                    } catch (e) { cell.classList.remove('saving'); }
+                });
+            });
+        </script>
+        <p style="color: var(--text-muted); font-size: 12px;">Showing all {{ source_rows }} rows, use global overrides to apply values to all rows at once</p>
+
+        <div class="btn-group" style="margin-top: 16px;">
+            <button type="submit" class="btn btn-primary btn-lg">Continue to Contact Matching</button>
+            <a href="{{ url_for('generate') }}" class="btn btn-outline">Skip — Go to Generate</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

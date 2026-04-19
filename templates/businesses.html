@@ -1,0 +1,136 @@
+{% extends "base.html" %}
+{% block title_suffix %} - Businesses{% endblock %}
+{% block step1_class %}done{% endblock %}
+{% block step2_class %}done{% endblock %}
+{% block step3_class %}active{% endblock %}
+
+{% block content %}
+{% if error_msg %}
+<div class="flash flash-error">{{ error_msg }}</div>
+{% endif %}
+
+<div class="card">
+    <h2>Business Matching — {{ company_name }}</h2>
+
+    <div class="stats">
+        <div class="stat stat-blue">
+            <div class="stat-number">{{ total }}</div>
+            <div class="stat-label">Total Shift Rows</div>
+        </div>
+        <div class="stat stat-green">
+            <div class="stat-number">{{ num_existing }}</div>
+            <div class="stat-label">Existing Stores</div>
+        </div>
+        <div class="stat stat-orange">
+            <div class="stat-number">{{ num_new }}</div>
+            <div class="stat-label">New (Config Required)</div>
+        </div>
+    </div>
+</div>
+
+{% if matched %}
+{% set seen_matched = [] %}
+{% set unique_matched = [] %}
+{% for row in matched %}
+    {% set sn = row.store_number|string + '|' + (row.retailer or '') %}
+    {% if sn not in seen_matched %}
+        {% if seen_matched.append(sn) %}{% endif %}
+        {% if unique_matched.append(row) %}{% endif %}
+    {% endif %}
+{% endfor %}
+<div class="card">
+    <h3>Existing Businesses <span class="badge badge-success">{{ unique_matched|length }}</span></h3>
+    <div class="table-wrapper">
+        <table>
+            <thead>
+                <tr>
+                    <th>Retailer</th>
+                    <th>Store #</th>
+                    <th>Business Name</th>
+                    <th>Location ID</th>
+                    <th>Match</th>
+                    <th>Position</th>
+                    <th>Start Date</th>
+                    <th>Start Time</th>
+                    <th>End Time</th>
+                    <th>Qty</th>
+                    <th>Pay Rate</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in unique_matched %}
+                <tr>
+                    <td>{{ row.retailer or '-' }}</td>
+                    <td>{{ row.store_number }}</td>
+                    <td>{{ row._business.business_name }}</td>
+                    <td><span class="badge badge-info">{{ row._business.business_id }}</span></td>
+                    <td><span class="badge badge-success" style="font-size:11px">{{ row._match_method or 'exact' }}</span></td>
+                    <td>{{ row.position or '-' }}</td>
+                    <td>{{ row.start_date }}</td>
+                    <td>{{ row.start_time }}</td>
+                    <td>{{ row.end_time }}</td>
+                    <td>{{ row.quantity or row.requested_workers or 1 }}</td>
+                    <td>{{ row.worker_pay_rate or '-' }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endif %}
+
+{% if unmatched %}
+{% set seen_stores = [] %}
+{% set unique_unmatched = [] %}
+{% for row in unmatched %}
+    {% set sn = row.store_number|string + '|' + (row.retailer or '') %}
+    {% if sn not in seen_stores %}
+        {% if seen_stores.append(sn) %}{% endif %}
+        {% if unique_unmatched.append(row) %}{% endif %}
+    {% endif %}
+{% endfor %}
+<div class="card">
+    <h3>New Businesses <span class="badge badge-warning">{{ unique_unmatched|length }}</span></h3>
+    <p style="color: var(--text-muted); font-size: 13px; margin-bottom: 12px;">
+        These stores were not found in Redshift. They need to be created in Django first.
+    </p>
+    <div class="table-wrapper">
+        <table>
+            <thead>
+                <tr>
+                    <th>Expected Name</th>
+                    <th>Store #</th>
+                    <th>Address</th>
+                    <th>City</th>
+                    <th>State</th>
+                    <th>Zip</th>
+                    <th>Position</th>
+                    <th>Pay Rate</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in unique_unmatched %}
+                <tr>
+                    <td><strong>{{ row._expected_name or row.retailer or '-' }}</strong></td>
+                    <td>{{ row.store_number }}</td>
+                    <td>{{ row.address }}</td>
+                    <td>{{ row.city }}</td>
+                    <td>{{ row.state }}</td>
+                    <td>{{ row.zip }}</td>
+                    <td>{{ row.position or '-' }}</td>
+                    <td>{{ row.worker_pay_rate or '-' }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endif %}
+
+<div class="btn-group">
+    {% if unmatched %}
+    <a href="{{ url_for('configure') }}" class="btn btn-warning btn-lg">Configure New Businesses</a>
+    {% endif %}
+    <a href="{{ url_for('shifts') }}" class="btn btn-success btn-lg">Map Shift Details</a>
+</div>
+{% endblock %}

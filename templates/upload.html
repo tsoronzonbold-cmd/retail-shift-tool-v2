@@ -1,0 +1,170 @@
+{% extends "base.html" %}
+{% block title_suffix %} - Upload{% endblock %}
+{% block step1_class %}active{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h2>Upload Partner Request</h2>
+    <form method="POST" action="{{ url_for('upload') }}" enctype="multipart/form-data" id="upload-form">
+        <label for="company_search">Select Retail Partner</label>
+        <div style="position: relative;">
+            <input type="text" id="company_search" placeholder="Search by name or ID..." autocomplete="off" required
+                   style="width: 100%; padding-right: 80px;">
+            <span id="config-badge" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); font-size: 11px; display: none;"></span>
+        </div>
+        <div id="search-results" style="display: none; position: absolute; z-index: 100; background: white; border: 1px solid var(--border); border-top: none; border-radius: 0 0 8px 8px; max-height: 300px; overflow-y: auto; width: calc(100% - 48px); box-shadow: 0 4px 12px rgba(0,0,0,0.1);"></div>
+        <input type="hidden" name="company_id" id="company_id">
+
+        <label for="file" style="margin-top: 16px;">Upload Shift Request (CSV or Excel)</label>
+        <div class="upload-area" id="drop-area">
+            <input type="file" name="file" id="file" accept=".csv,.xlsx,.xls" required>
+            <p>CSV or Excel file with store locations, dates, and times</p>
+        </div>
+
+        <div style="background: #f8fafc; border: 1px solid var(--border); border-radius: 8px; padding: 14px; margin-bottom: 16px;">
+            <label style="display: flex; align-items: center; gap: 10px; margin-bottom: 0; cursor: pointer;">
+                <input type="checkbox" name="is_task_request" id="is_task_request" value="1" style="width: auto; margin: 0;" onchange="document.getElementById('task-options').style.display = this.checked ? 'block' : 'none';">
+                <div>
+                    <strong>Task-based (anytime) shifts</strong>
+                    <div style="font-size: 12px; color: var(--text-muted);">Flexible-window shifts — workers clock in anytime between Start Time and End Time.</div>
+                </div>
+            </label>
+            <div id="task-options" style="display: none; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border);">
+                <label>
+                    <input type="checkbox" name="is_anywhere" value="1" style="width: auto;">
+                    Is Anywhere (worker can complete task from any location)
+                </label>
+            </div>
+        </div>
+
+        <div class="btn-group">
+            <button type="submit" class="btn btn-primary btn-lg">Upload & Process</button>
+        </div>
+    </form>
+</div>
+
+<!-- Configured Partners with search -->
+<div class="card">
+    <h3>Configured Partners <span style="color: var(--text-muted); font-weight: 400;">({{ configured|length }})</span></h3>
+    <input type="text" id="config-search" placeholder="Search configured partners..." style="margin-bottom: 12px;">
+    <div style="max-height: 400px; overflow-y: auto;">
+        <table id="config-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Duties</th>
+                    <th>Attire</th>
+                    <th>Rate</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for company in configured %}
+                <tr>
+                    <td>{{ company.id }}</td>
+                    <td>{{ company.name }}</td>
+                    <td>{% if company.has_duties %}<span style="color: #16a34a;">Yes</span>{% else %}<span style="color: #d97706;">No</span>{% endif %}</td>
+                    <td>{% if company.has_attire %}<span style="color: #16a34a;">Yes</span>{% else %}<span style="color: #d97706;">No</span>{% endif %}</td>
+                    <td>{{ ('$' + company.rate|string) if company.rate else '—' }}</td>
+                    <td><a href="{{ url_for('view_config', company_id=company.id) }}" class="btn btn-outline" style="padding: 4px 12px; font-size: 12px;">Edit</a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <hr style="margin: 20px 0; border: none; border-top: 1px solid var(--border);">
+    <h3 style="font-size: 14px;">Pre-fill a New Partner from Past Postings</h3>
+    <p style="color: var(--text-muted); font-size: 13px; margin-bottom: 8px;">
+        Pulls the most recent shift template from Redshift and uses it as the partner defaults.
+    </p>
+    <form method="POST" action="{{ url_for('bootstrap_partner') }}" style="display: flex; gap: 8px;">
+        <input type="number" name="company_id" placeholder="Company ID (e.g. 75558)" required style="margin: 0; flex: 1;">
+        <button type="submit" class="btn btn-primary" style="margin: 0;">Pre-fill from History</button>
+    </form>
+</div>
+
+<script>
+// ── Partner search for upload ──
+const companies = [
+    {% for company in configured %}
+    {id: {{ company.id }}, name: {{ company.name|tojson }}, configured: true},
+    {% endfor %}
+    {% for company in companies %}
+    {% if company.id not in configured_ids %}
+    {id: {{ company.id }}, name: {{ company.name|tojson }}, configured: false},
+    {% endif %}
+    {% endfor %}
+];
+const seen = new Set();
+const uniqueCompanies = [];
+companies.forEach(c => { if (!seen.has(c.id)) { seen.add(c.id); uniqueCompanies.push(c); } });
+uniqueCompanies.sort((a, b) => {
+    if (a.configured !== b.configured) return a.configured ? -1 : 1;
+    return a.name.localeCompare(b.name);
+});
+
+const searchInput = document.getElementById('company_search');
+const resultsDiv = document.getElementById('search-results');
+const hiddenInput = document.getElementById('company_id');
+const badge = document.getElementById('config-badge');
+
+function renderResults(query) {
+    const q = query.toLowerCase().trim();
+    if (!q) { resultsDiv.style.display = 'none'; return; }
+    const matches = uniqueCompanies.filter(c =>
+        c.name.toLowerCase().includes(q) || String(c.id).includes(q)
+    ).slice(0, 20);
+    if (!matches.length) {
+        resultsDiv.innerHTML = '<div style="padding: 12px; color: var(--text-muted); font-size: 13px;">No partners found</div>';
+    } else {
+        resultsDiv.innerHTML = matches.map(c => `
+            <div class="search-item" data-id="${c.id}" data-name="${c.name}"
+                 style="padding: 10px 14px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #f1f5f9;"
+                 onmouseover="this.style.background='#f0f9ff'" onmouseout="this.style.background='white'">
+                <div>
+                    <div style="font-weight: 500;">${c.name}</div>
+                    <div style="font-size: 12px; color: var(--text-muted);">ID: ${c.id}</div>
+                </div>
+                ${c.configured
+                    ? '<span style="background: #dcfce7; color: #166534; padding: 2px 8px; border-radius: 12px; font-size: 11px;">Configured</span>'
+                    : '<span style="background: #fef9c3; color: #854d0e; padding: 2px 8px; border-radius: 12px; font-size: 11px;">New partner</span>'}
+            </div>
+        `).join('');
+    }
+    resultsDiv.style.display = 'block';
+}
+searchInput.addEventListener('input', () => renderResults(searchInput.value));
+searchInput.addEventListener('focus', () => { if (searchInput.value) renderResults(searchInput.value); });
+document.addEventListener('click', (e) => {
+    if (!e.target.closest('#search-results') && e.target !== searchInput) resultsDiv.style.display = 'none';
+});
+resultsDiv.addEventListener('click', (e) => {
+    const item = e.target.closest('.search-item');
+    if (item) {
+        searchInput.value = item.dataset.name;
+        hiddenInput.value = item.dataset.id;
+        resultsDiv.style.display = 'none';
+        const isConfigured = uniqueCompanies.find(c => c.id == item.dataset.id)?.configured;
+        badge.style.display = 'inline';
+        badge.innerHTML = isConfigured
+            ? '<span style="background: #dcfce7; color: #166534; padding: 2px 8px; border-radius: 12px;">Configured</span>'
+            : '<span style="background: #fef9c3; color: #854d0e; padding: 2px 8px; border-radius: 12px;">New partner</span>';
+    }
+});
+document.getElementById('upload-form').addEventListener('submit', (e) => {
+    if (!hiddenInput.value) { e.preventDefault(); alert('Please select a partner from the search results.'); }
+});
+
+// ── Config table search ──
+document.getElementById('config-search').addEventListener('input', function() {
+    const q = this.value.toLowerCase();
+    document.querySelectorAll('#config-table tbody tr').forEach(row => {
+        const text = row.textContent.toLowerCase();
+        row.style.display = text.includes(q) ? '' : 'none';
+    });
+});
+</script>
+
+{% endblock %}

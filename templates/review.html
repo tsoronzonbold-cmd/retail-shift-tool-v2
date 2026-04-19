@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block title_suffix %} - Review{% endblock %}
+{% block step1_class %}done{% endblock %}
+{% block step2_class %}active{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h2>Review Parsed Data — {{ company_name }}</h2>
+    <p style="color: var(--text-muted); margin-bottom: 16px;">{{ rows|length }} rows parsed. Verify column mapping below.</p>
+
+    <form method="POST" action="{{ url_for('review_update') }}">
+        <h3>Column Mapping</h3>
+        <p style="color: var(--text-muted); font-size: 13px; margin-bottom: 12px;">
+            Map each field to the correct column from your upload.
+        </p>
+        <div class="mapping-grid">
+            {% for key in normalized_keys %}
+            <label>{{ key | replace("_", " ") | title }}</label>
+            <select name="map_{{ key }}">
+                <option value="">-- not mapped --</option>
+                {% for col in raw_columns %}
+                <option value="{{ col }}" {% if mapping.get(key) == col %}selected{% endif %}>{{ col }}</option>
+                {% endfor %}
+            </select>
+            {% endfor %}
+        </div>
+
+        <div class="btn-group">
+            <button type="submit" class="btn btn-success btn-lg">Continue</button>
+        </div>
+    </form>
+</div>
+
+<div class="card">
+    <h3>Parsed Data Preview</h3>
+    <div class="table-wrapper">
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    {% for key in normalized_keys %}
+                    {% if mapping.get(key) %}
+                    <th>{{ key | replace("_", " ") | title }}</th>
+                    {% endif %}
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in rows %}
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    {% for key in normalized_keys %}
+                    {% if mapping.get(key) %}
+                    <td>{{ row.get(key, '') }}</td>
+                    {% endif %}
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
