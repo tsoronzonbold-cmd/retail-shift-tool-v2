@@ -27,6 +27,7 @@ import mode_client
 import partner_config as pc
 import csv_processor
 import contacts_db
+import google_places
 
 app = Flask(__name__)
 app.secret_key = config.SECRET_KEY
@@ -222,6 +223,14 @@ def upload():
         if tl in contact_lookup:
             row["_contact_id"] = contact_lookup[tl]
 
+    # Validate new business addresses via Google Places
+    address_validation = []
+    if unmatched:
+        try:
+            address_validation = google_places.validate_new_businesses(unmatched)
+        except Exception:
+            pass
+
     # Pre-generate business import CSV if there are new businesses
     cfg["_company_id"] = company_id
     biz_csv = None
@@ -246,6 +255,7 @@ def upload():
     session["shift_import_csv"] = shift_csv
     session["config"] = cfg
     session["redshift_error"] = redshift_error
+    session["address_validation"] = address_validation
     session["column_mapping"] = final_mapping
     session["raw_columns"] = raw_columns
 
@@ -295,6 +305,10 @@ def results():
     has_biz_csv = bool(session.get("business_import_csv"))
     has_shift_csv = bool(session.get("shift_import_csv"))
 
+    # Address validation lookup
+    address_validation = session.get("address_validation", [])
+    addr_by_store = {v["store_number"]: v for v in address_validation}
+
     return render_template(
         "results.html",
         company_name=company_name,
@@ -316,6 +330,7 @@ def results():
         has_shift_csv=has_shift_csv,
         redshift_error=redshift_error,
         django_links=DJANGO_LINKS,
+        addr_validation=addr_by_store,
     )
 
 
