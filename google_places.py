@@ -9,7 +9,7 @@ import os
 import requests
 from urllib.parse import urlencode
 
-GOOGLE_API_KEY = os.environ.get("GOOGLE_API_KEY", "AIzaSyDSmcyXYp668M3LzdfZB2G-zFVyl3cIsRc")
+GOOGLE_API_KEY = os.environ.get("GOOGLE_API_KEY", "")
 
 AUTOCOMPLETE_URL = "https://maps.googleapis.com/maps/api/place/autocomplete/json"
 FIND_PLACE_URL = "https://maps.googleapis.com/maps/api/place/findplacefromtext/json"
