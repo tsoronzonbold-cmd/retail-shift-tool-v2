@@ -30,6 +30,7 @@ import csv_processor
 import contacts_db
 import google_places
 import roster_db
+import ai_mapper
 
 app = Flask(__name__)
 app.secret_key = config.SECRET_KEY
@@ -159,6 +160,15 @@ def upload():
         df = pd.read_csv(io.StringIO(text))
 
     detected_mapping = csv_processor.auto_detect_columns(list(df.columns))
+
+    # If auto-detect matched < 5 columns, use Claude to fill gaps
+    if len(detected_mapping) < ai_mapper.MIN_AUTO_DETECT and ai_mapper.is_available():
+        sample = df.head(5).to_dict("records")
+        detected_mapping = ai_mapper.maybe_ai_map(
+            list(df.columns), sample, detected_mapping,
+            partner_name=cfg.get("name", "")
+        )
+
     final_mapping = {**detected_mapping, **{k: v for k, v in col_mapping.items() if v in df.columns}}
     rows, raw_columns = csv_processor.parse_upload(file_content, filename, final_mapping)
 
