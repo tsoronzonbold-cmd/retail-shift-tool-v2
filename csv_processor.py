@@ -160,7 +160,7 @@ def auto_detect_columns(df_columns):
         "end_time": [r"end\s*time"],
         "break_length": [r"^break$", r"^break\s*length", r"lunch"],
         "quantity": [r"^quantity", r"#\s*of\s*worker", r"\bqty\b", r"headcount", r"workers?\s*needed"],
-        "requested_workers": [r"requested\s*workers", r"workers?\s*requested"],
+        "requested_workers": [r"requested\s*workers", r"workers?\s*requested", r"any\s*requested"],
         "position": [r"^position$", r"^role$", r"^job\s*title$"],
         "schedule_name": [r"schedule\s*name", r"^schedule$", r"shift\s*name"],
         "team_lead": [r"on.?site\s*contact$", r"team\s*lead(?!\s*phone|\s*email)", r"^contact$", r"supervisor"],

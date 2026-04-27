@@ -24,6 +24,7 @@ import pandas as pd
 import config
 import redshift_client
 import mode_client
+import locations_db
 import partner_config as pc
 import csv_processor
 import contacts_db
@@ -160,22 +161,31 @@ def upload():
     final_mapping = {**detected_mapping, **{k: v for k, v in col_mapping.items() if v in df.columns}}
     rows, raw_columns = csv_processor.parse_upload(file_content, filename, final_mapping)
 
-    # Detect businesses — prefer Mode (queries business table directly),
-    # fall back to Redshift (queries gigtemplate, may miss stores)
+    # Detect businesses — 3-tier lookup:
+    #   1. Local DB (Christian's 127K locations, instant, by companyId-storeNumber)
+    #   2. Mode API (live Redshift query, handles name variations)
+    #   3. Direct Redshift (fallback, queries gigtemplate)
     redshift_error = None
-    matched, unmatched = [], rows  # default: all unmatched
-    if mode_client.is_available():
+    matched, unmatched = locations_db.match_businesses(company_id, rows)
+
+    # If local DB left unmatched rows, try Mode for those
+    if unmatched and mode_client.is_available():
         try:
-            matched, unmatched = mode_client.get_businesses_for_company(company_id, rows)
+            mode_matched, still_unmatched = mode_client.get_businesses_for_company(company_id, unmatched)
+            matched = matched + mode_matched
+            unmatched = still_unmatched
         except Exception as me:
             redshift_error = f"Mode error: {str(me)}"
-    if not matched and not redshift_error:
+
+    # Last resort: direct Redshift
+    if unmatched and not redshift_error:
         try:
             existing = redshift_client.get_businesses_for_company(company_id)
-            matched, unmatched = csv_processor.match_businesses(rows, existing)
-        except Exception as e:
-            if not redshift_error:
-                redshift_error = str(e)
+            rs_matched, still_unmatched = csv_processor.match_businesses(unmatched, existing)
+            matched = matched + rs_matched
+            unmatched = still_unmatched
+        except Exception:
+            pass  # Redshift unavailable is fine if we already got some matches
 
     # Match contacts
     seen = set()
@@ -582,22 +592,23 @@ def recheck():
         flash("No data. Please upload a file first.", "error")
         return redirect(url_for("index"))
 
-    # Re-query — prefer Mode, fall back to Redshift
-    matched, unmatched = [], parsed_rows
-    if mode_client.is_available():
+    # Re-query — same 3-tier lookup as upload
+    matched, unmatched = locations_db.match_businesses(company_id, parsed_rows)
+    if unmatched and mode_client.is_available():
         try:
-            matched, unmatched = mode_client.get_businesses_for_company(company_id, parsed_rows)
+            mode_matched, still_unmatched = mode_client.get_businesses_for_company(company_id, unmatched)
+            matched = matched + mode_matched
+            unmatched = still_unmatched
         except Exception as me:
             flash(f"Mode error: {str(me)}", "error")
-            return redirect(url_for("results"))
-    if not matched:
+    if unmatched:
         try:
             existing = redshift_client.get_businesses_for_company(company_id)
-            matched, unmatched = csv_processor.match_businesses(parsed_rows, existing)
+            rs_matched, still_unmatched = csv_processor.match_businesses(unmatched, existing)
+            matched = matched + rs_matched
+            unmatched = still_unmatched
         except Exception:
-            if not mode_client.is_available():
-                flash("Cannot connect to Redshift or Mode.", "error")
-                return redirect(url_for("results"))
+            pass
 
     # Re-match contacts
     contact_lookup = {}
