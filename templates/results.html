@@ -57,6 +57,15 @@
         </div>
         {% endif %}
 
+        {% if has_missing_contacts %}
+        <div style="flex: 1; min-width: 200px; background: white; border: 1px solid #fde68a; border-radius: 8px; padding: 16px;">
+            <div style="font-weight: 600; margin-bottom: 4px;">New Contacts</div>
+            <div style="font-size: 13px; color: var(--text-muted); margin-bottom: 12px;">{{ unmatched_contacts }} unmatched contact(s) — upload to Django</div>
+            <a href="{{ url_for('download_missing_contacts') }}" class="btn btn-warning" style="width: 100%; text-align: center;">Download Contacts CSV</a>
+            <a href="{{ django_links.company_user }}" target="_blank" style="display: block; text-align: center; font-size: 12px; margin-top: 8px; color: var(--primary);">Open Django Company User</a>
+        </div>
+        {% endif %}
+
         <div style="flex: 1; min-width: 200px; background: white; border: 1px solid #d1d5db; border-radius: 8px; padding: 16px;">
             <div style="font-weight: 600; margin-bottom: 4px;">{% if has_biz_csv %}Step 3{% else %}Download{% endif %}: Shift Import</div>
             <div style="font-size: 13px; color: var(--text-muted); margin-bottom: 12px;">

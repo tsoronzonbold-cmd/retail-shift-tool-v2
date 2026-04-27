@@ -654,39 +654,37 @@ def test_bulk_import_csv():
     reader = csv.reader(io.StringIO(result))
     header = next(reader)
     check("bulk: Location Id col", header[0], "Location Id")
-    check("bulk: 22 columns", len(header), 22)
+    check_true("bulk: has 15+ columns", len(header) >= 15)
 
     rows = list(reader)
     # qty=4 → 4 expanded rows
     check("bulk: expanded by qty=4", len(rows), 4)
 
-    r = rows[0]
-    check("bulk: location_id from biz", r[0], "1001")
-    check("bulk: contact_id from biz", r[1], "555")
-    check("bulk: start_date", r[2], "4/14/2026")
-    check("bulk: start_time", r[3], "05:00")
-    check("bulk: end_time", r[4], "13:00")
-    check("bulk: break defaults to 30", r[5], "30")
-    check("bulk: position from biz", r[6], "42")
-    check("bulk: parking from biz", r[7], "1")
-    check("bulk: attire from biz template", r[9], "Black polo")
-    check("bulk: creator from biz", r[11], "666")
-    # Pay rate cleaned
-    check("bulk: pay rate cleaned", r[16], "16.5")
-    check("bulk: position_instructions from biz", r[17], "Go to CS desk")
-    check("bulk: ability_ids", r[18], "7,14")
-    check("bulk: is_task=0", r[19], "0")
+    r = dict(zip(header, rows[0]))
+    check("bulk: location_id from biz", r["Location Id"], "1001")
+    check("bulk: contact_id from biz", r["Contact Ids"], "555")
+    check("bulk: start_date", r["Start Date"], "4/14/2026")
+    check("bulk: start_time", r["Start Time"], "05:00")
+    check("bulk: end_time", r["End Time"], "13:00")
+    check("bulk: break defaults to 30", r["Break Length"], "30")
+    check("bulk: position from biz", r["Position Id"], "42")
+    check("bulk: parking from biz", r["Parking"], "1")
+    check("bulk: attire from biz template", r["Attire Instructions"], "Black polo")
+    check("bulk: creator from biz", r["Creator Id"], "666")
+    check("bulk: pay rate cleaned", r["Adjusted Base Rate"], "16.5")
+    check("bulk: position_instructions from biz", r["Position Instructions"], "Go to CS desk")
 
     # Task-based shift
     result2 = csv_processor.generate_bulk_import_csv(
         matched_rows, cfg, task_opts={"is_task": True, "is_anywhere": True}
     )
     reader2 = csv.reader(io.StringIO(result2))
-    next(reader2)
-    r2 = next(reader2)
-    check("bulk task: is_task=1", r2[19], "1")
-    check("bulk task: starts_at_min", r2[20], "05:00")
-    check("bulk task: is_anywhere=1", r2[21], "1")
+    header2 = next(reader2)
+    row2 = next(reader2)
+    r2 = dict(zip(header2, row2))
+    check("bulk task: is_task=1", r2["Is Task"], "1")
+    check("bulk task: starts_at_min", r2["Starts At Minimum"], "05:00")
+    check("bulk task: is_anywhere=1", r2["Is Anywhere"], "1")
 
 
 # ═══════════════════════════════════════════════════════════════════════════

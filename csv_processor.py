@@ -94,18 +94,59 @@ def parse_date(value):
     return str(value).strip()
 
 
+def _find_header_row(text):
+    """Find the real header row in a messy CSV.
+
+    Skips title rows, blank rows, and date-only rows. Looks for the row
+    with the most non-empty cells that contains recognizable column names.
+    Handles Chobani-style CSVs: "Week 2 Reset Plan" on row 1, blank row 2,
+    actual headers on row 3.
+    """
+    lines = text.strip().split("\n")
+    known_headers = {
+        "store", "retailer", "banner", "address", "city", "state", "zip",
+        "date", "start", "end", "time", "break", "quantity", "contact",
+        "phone", "email", "worker", "position", "request",
+    }
+    best_row = 0
+    best_score = 0
+
+    for i, line in enumerate(lines[:10]):  # only check first 10 lines
+        cells = line.split(",")
+        non_empty = sum(1 for c in cells if c.strip())
+        if non_empty < 3:
+            continue
+        # Score by how many cells match known header keywords
+        score = 0
+        for cell in cells:
+            cell_lower = cell.strip().strip('"').lower()
+            for kw in known_headers:
+                if kw in cell_lower:
+                    score += 1
+                    break
+        if score > best_score:
+            best_score = score
+            best_row = i
+
+    return best_row
+
+
 def parse_upload(file_content, filename, column_mapping):
     """Parse an uploaded CSV/Excel file using the partner's column mapping.
 
     Returns a list of dicts with normalized keys. Special handling for
     common real-world messy fields (break time ranges, phone formats,
-    Excel datetime/time objects).
+    Excel datetime/time objects). Auto-detects header row in messy CSVs.
     """
     if filename.endswith((".xlsx", ".xls")):
         df = pd.read_excel(io.BytesIO(file_content))
     else:
         text = file_content.decode("utf-8-sig")
-        df = pd.read_csv(io.StringIO(text))
+        header_row = _find_header_row(text)
+        df = pd.read_csv(io.StringIO(text), header=header_row)
+
+    # Drop completely empty rows
+    df = df.dropna(how="all")
 
     rows = []
     for _, row in df.iterrows():
@@ -121,6 +162,12 @@ def parse_upload(file_content, filename, column_mapping):
                     parsed[norm_key] = parse_time(val)
                 elif norm_key == "start_date":
                     parsed[norm_key] = parse_date(val)
+                elif norm_key == "store_number":
+                    # Strip .0 from pandas float parsing (3058.0 → 3058)
+                    s = str(val).strip()
+                    if s.endswith(".0"):
+                        s = s[:-2]
+                    parsed[norm_key] = s
                 else:
                     parsed[norm_key] = str(val).strip()
             else:
@@ -160,7 +207,7 @@ def auto_detect_columns(df_columns):
         "end_time": [r"end\s*time"],
         "break_length": [r"^break$", r"^break\s*length", r"lunch"],
         "quantity": [r"^quantity", r"#\s*of\s*worker", r"\bqty\b", r"headcount", r"workers?\s*needed", r"^request$"],
-        "requested_workers": [r"requested\s*workers", r"workers?\s*requested", r"any\s*requested"],
+        "requested_workers": [r"requested\s*workers", r"workers?\s*requested", r"any\s*requested", r"name\s*of\s*pros"],
         "position": [r"^position$", r"^role$", r"^job\s*title$"],
         "schedule_name": [r"schedule\s*name", r"^schedule$", r"shift\s*name"],
         "team_lead": [r"on.?site\s*contact$", r"team\s*lead(?!\s*phone|\s*email)", r"^contact$", r"supervisor"],
@@ -431,58 +478,44 @@ def generate_bulk_import_csv(all_rows, partner_config, task_opts=None):
     """Generate the final bulk import CSV for Django BulkGigRequest.
 
     Column spec from ai-playbook/refs/backend-gig.md.
-    Rows are expanded by quantity.
+    Rows are expanded by quantity. Optional columns only included if they
+    have data (matches Christian's tool behavior).
 
-    task_opts: optional dict with {'is_task': bool, 'is_anywhere': bool} for
-    flexible/anytime shifts. When is_task=True, sets Is Task=1 and
-    Starts At Minimum to the row's Start Time.
+    Features ported from Christian's tool:
+      - Requested Worker IDs via roster fuzzy matching
+      - Booking Group auto-numbering from Region/Team column
+      - Booking Group rate equalization (all rows in group get highest rate)
+      - Schedule Name pass-through
+      - Only output columns that have at least one value
     """
+    import roster_db
+
     task_opts = task_opts or {}
     is_task = task_opts.get("is_task", False)
     is_anywhere = task_opts.get("is_anywhere", False)
+    company_id = partner_config.get("_company_id", "")
 
-    output = io.StringIO()
-    writer = csv.writer(output)
+    # Build booking group map from region/team column
+    region_map = {}
+    region_counter = 0
+    for row in all_rows:
+        region = (row.get("booking_group") or "").strip()
+        if region and region not in region_map:
+            region_counter += 1
+            region_map[region] = region_counter
 
-    # Column spec from ai-playbook/refs/backend-gig.md (BulkGigRequest section).
-    # Goes to /backend/bulkgigrequest/add/ — uses human-readable column names.
-    # Note: business-level certifications (BusinessMandatoryCertificate) and
-    # trainings do not have admin CSV imports per the playbook — they have to
-    # be added manually in Django admin. Special requirements are shift-level,
-    # attached via the Ability Ids column below.
-    writer.writerow([
-        "Location Id",
-        "Contact Ids",
-        "Start Date",
-        "Start Time",
-        "End Time",
-        "Break Length",
-        "Position Id",
-        "Parking",
-        "Position Duties",
-        "Attire Instructions",
-        "Location Instructions",
-        "Creator Id",
-        "Fill or Kill",
-        "Requested Worker Ids",
-        "External Id",
-        "Position Tiering Id",
-        "Adjusted Base Rate",
-        "Position Instructions",
-        "Ability Ids",
-        "Is Task",
-        "Starts At Minimum",
-        "Is Anywhere",
-    ])
+    # Build all result rows first (so we can filter empty columns after)
+    result_rows = []
 
     for row in all_rows:
         biz = row.get("_business", {})
-        
-        # Quantity: prefer "quantity", fallback to "requested_workers"
-        qty = row.get("quantity") or row.get("requested_workers") or 1
-        qty = int(qty) if str(qty).strip() else 1
 
-        # Determine values from business template or partner config defaults
+        qty = row.get("quantity") or row.get("requested_workers") or 1
+        try:
+            qty = int(qty) if str(qty).strip() else 1
+        except (ValueError, TypeError):
+            qty = 1
+
         location_id = biz.get("business_id", "")
         contact_id = row.get("_contact_id") or biz.get("contact_id") or partner_config.get("default_contact_id", "")
         creator_id = biz.get("created_by_id") or partner_config.get("default_creator_id", "")
@@ -490,16 +523,13 @@ def generate_bulk_import_csv(all_rows, partner_config, task_opts=None):
         position_tiering = biz.get("position_tiering_id") or partner_config.get("default_position_tiering_id") or ""
         parking = biz.get("has_parking") if biz.get("has_parking") is not None else partner_config.get("default_parking", 2)
         position_instructions = biz.get("instructions") or partner_config.get("default_position_instructions", "")
-        # Attire: prefer CSV value, then business template, then partner config
         attire = row.get("attire_instructions") or biz.get("custom_attire_requirements") or partner_config.get("default_attire", "")
-        # Location instructions: prefer CSV value, then partner config
         location_instructions = row.get("location_instructions") or partner_config.get("default_location_instructions", "")
-        
-        # Pay rate: use from CSV if provided, otherwise use partner config
+
+        # Pay rate
         pay_rate = row.get("worker_pay_rate", "")
         if pay_rate:
-            # Clean up pay rate (remove $, whitespace)
-            pay_rate = str(pay_rate).replace("$", "").replace(",", "").strip()
+            pay_rate = str(pay_rate).replace("$", "").replace(",", "").replace("/hr", "").strip()
             try:
                 adjusted_base_rate = float(pay_rate) if pay_rate else ""
             except ValueError:
@@ -507,52 +537,110 @@ def generate_bulk_import_csv(all_rows, partner_config, task_opts=None):
         else:
             adjusted_base_rate = partner_config.get("adjusted_base_rate") or ""
 
-        # Break length: from row, or default
         break_len = row.get("break_length", "")
         if not break_len:
             break_len = partner_config.get("default_break_length", 30)
 
-        # Position Duties is required and cannot be blank (per Django spec).
         position_duties = (
-            position_instructions
-            or partner_config.get("default_position_duties", "")
+            partner_config.get("default_position_duties", "")
+            or position_instructions
             or "See position instructions"
         )
 
-        # Ability Ids (special requirements) — comma-separated GigRequirement IDs
-        ability_ids = ",".join(
-            str(x) for x in partner_config.get("special_requirement_ids", [])
-        )
+        ability_ids = ",".join(str(x) for x in partner_config.get("special_requirement_ids", []))
 
-        # Task shift fields — Starts At Minimum must be HH:MM local time.
-        # We reuse the row's Start Time as the earliest allowed start.
         starts_at_min = row.get("start_time", "") if is_task else ""
 
-        # Expand by quantity
+        # Requested Worker IDs — fuzzy match against roster
+        requested_worker_ids = roster_db.resolve_requested_workers(
+            row.get("requested_workers", ""), company_id
+        )
+
+        # Booking group
+        region = (row.get("booking_group") or "").strip()
+        booking_group = region_map.get(region, "") if region else ""
+        multi_day_same_worker = 2 if booking_group else ""
+
+        # Schedule name
+        schedule_name = row.get("schedule_name", "")
+
         for _ in range(qty):
-            writer.writerow([
-                location_id,
-                contact_id,
-                row.get("start_date", ""),
-                row.get("start_time", ""),
-                row.get("end_time", ""),
-                break_len,
-                position_id,
-                parking,
-                position_duties,
-                attire or "See attire instructions in template",
-                location_instructions or "See on-site contact for directions",
-                creator_id,
-                "",  # Fill or Kill
-                "",  # Requested Worker Ids
-                "",  # External Id
-                position_tiering,
-                adjusted_base_rate,
-                position_instructions,
-                ability_ids,
-                1 if is_task else 0,
-                starts_at_min,
-                1 if (is_task and is_anywhere) else 0,
-            ])
+            result_rows.append({
+                "Location Id": location_id,
+                "Contact Ids": contact_id,
+                "Creator Id": creator_id,
+                "Start Date": row.get("start_date", ""),
+                "Start Time": row.get("start_time", ""),
+                "End Time": row.get("end_time", ""),
+                "Break Length": break_len,
+                "Position Id": position_id,
+                "Position Tiering Id": position_tiering,
+                "Parking": parking,
+                "Adjusted Base Rate": adjusted_base_rate,
+                "Position Instructions": position_instructions,
+                "Position Duties": position_duties,
+                "Location Instructions": location_instructions or "See on-site contact for directions",
+                "Attire Instructions": attire or "See attire instructions in template",
+                "Requested Worker Ids": requested_worker_ids,
+                "Ability Ids": ability_ids,
+                "Booking Group": booking_group,
+                "Multi Day Same Worker": multi_day_same_worker,
+                "Schedule Name": schedule_name,
+                "Is Task": 1 if is_task else 0,
+                "Starts At Minimum": starts_at_min,
+                "Is Anywhere": 1 if (is_task and is_anywhere) else 0,
+            })
+
+    # Booking group rate equalization — all rows in same group get highest rate
+    if region_map:
+        bg_max_rate = {}
+        for r in result_rows:
+            bg = r["Booking Group"]
+            if not bg:
+                continue
+            try:
+                rate = float(r["Adjusted Base Rate"]) if r["Adjusted Base Rate"] else 0
+            except (ValueError, TypeError):
+                rate = 0
+            if bg not in bg_max_rate or rate > bg_max_rate[bg]:
+                bg_max_rate[bg] = rate
+        for r in result_rows:
+            bg = r["Booking Group"]
+            if bg in bg_max_rate:
+                r["Adjusted Base Rate"] = bg_max_rate[bg]
+
+    # Base columns (always included)
+    base_cols = [
+        "Location Id", "Contact Ids", "Creator Id", "Start Date", "Start Time",
+        "End Time", "Break Length", "Position Id", "Position Tiering Id",
+        "Parking", "Adjusted Base Rate", "Position Instructions",
+        "Position Duties", "Location Instructions", "Attire Instructions",
+    ]
+
+    # Optional columns — only include if at least one row has a value
+    optional_cols = [
+        "Requested Worker Ids", "Ability Ids", "Booking Group",
+        "Multi Day Same Worker", "Schedule Name", "Is Task",
+        "Starts At Minimum", "Is Anywhere",
+    ]
+
+    def has_any_value(col):
+        for r in result_rows:
+            v = r.get(col)
+            if v is not None and str(v).strip() not in ("", "0"):
+                return True
+        return False
+
+    final_cols = base_cols[:]
+    for col in optional_cols:
+        if has_any_value(col):
+            final_cols.append(col)
+
+    # Write CSV
+    output = io.StringIO()
+    writer = csv.writer(output)
+    writer.writerow(final_cols)
+    for r in result_rows:
+        writer.writerow([r.get(col, "") for col in final_cols])
 
     return output.getvalue()

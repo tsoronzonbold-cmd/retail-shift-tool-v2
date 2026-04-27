@@ -29,6 +29,7 @@ import partner_config as pc
 import csv_processor
 import contacts_db
 import google_places
+import roster_db
 
 app = Flask(__name__)
 app.secret_key = config.SECRET_KEY
@@ -241,6 +242,44 @@ def upload():
         except Exception:
             pass
 
+    # Generate missing contacts upload CSV
+    missing_contacts_csv = None
+    unmatched_contact_names = [m for m in contact_matches if m["match_type"] == "unmatched" and m["query_name"]]
+    if unmatched_contact_names:
+        mc_rows = []
+        seen_contacts = set()
+        for m in unmatched_contact_names:
+            name = m["query_name"].strip()
+            if not name or name.lower() in seen_contacts:
+                continue
+            seen_contacts.add(name.lower())
+            # Find phone/email from rows
+            phone = ""
+            email = ""
+            for row in matched + unmatched:
+                if (row.get("team_lead") or "").strip().lower() == name.lower():
+                    phone = row.get("team_lead_phone", "")
+                    email = row.get("team_lead_email", "")
+                    break
+            parts = name.split(None, 1)
+            first = parts[0] if parts else ""
+            last = parts[1] if len(parts) > 1 else "A"
+            # Format phone as (xxx) xxx-xxxx
+            digits = contacts_db._normalize_phone(phone)
+            if len(digits) >= 10:
+                d = digits[-10:]
+                phone_fmt = f"({d[:3]}) {d[3:6]}-{d[6:]}"
+            else:
+                phone_fmt = phone
+            mc_rows.append([company_id, "BOOKING_SHIFT_COORDINATOR", first, last, email, phone_fmt])
+        if mc_rows:
+            mc_output = io.StringIO()
+            mc_writer = csv.writer(mc_output)
+            mc_writer.writerow(["company", "role", "given_name", "family_name", "email", "phonenum"])
+            for r in mc_rows:
+                mc_writer.writerow(r)
+            missing_contacts_csv = mc_output.getvalue()
+
     # Pre-generate business import CSV if there are new businesses
     cfg["_company_id"] = company_id
     biz_csv = None
@@ -264,6 +303,7 @@ def upload():
     session["business_import_csv"] = biz_csv
     session["shift_import_csv"] = shift_csv
     session["config"] = cfg
+    session["missing_contacts_csv"] = missing_contacts_csv
     session["redshift_error"] = redshift_error
     session["address_validation"] = address_validation
     session["column_mapping"] = final_mapping
@@ -314,6 +354,7 @@ def results():
 
     has_biz_csv = bool(session.get("business_import_csv"))
     has_shift_csv = bool(session.get("shift_import_csv"))
+    has_missing_contacts = bool(session.get("missing_contacts_csv"))
 
     # Address validation lookup
     address_validation = session.get("address_validation", [])
@@ -338,6 +379,7 @@ def results():
         unmatched_contacts=unmatched_contacts,
         has_biz_csv=has_biz_csv,
         has_shift_csv=has_shift_csv,
+        has_missing_contacts=has_missing_contacts,
         redshift_error=redshift_error,
         django_links=DJANGO_LINKS,
         addr_validation=addr_by_store,
@@ -370,6 +412,17 @@ def download_shifts():
     company_name = session.get("company_name", "partner").replace(" ", "_")
     return send_file(buf, mimetype="text/csv", as_attachment=True,
                      download_name=f"shifts_{company_name}.csv")
+
+
+@app.route("/download/missing-contacts")
+def download_missing_contacts():
+    csv_data = session.get("missing_contacts_csv", "")
+    if not csv_data:
+        flash("No missing contacts CSV available.", "error")
+        return redirect(url_for("results"))
+    buf = io.BytesIO(csv_data.encode("utf-8"))
+    return send_file(buf, mimetype="text/csv", as_attachment=True,
+                     download_name="new_company_users.csv")
 
 
 @app.route("/download/tasks")
