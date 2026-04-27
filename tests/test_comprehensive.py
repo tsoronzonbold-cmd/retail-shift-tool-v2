@@ -142,7 +142,7 @@ def test_column_detection():
     check("real_request: store_number", m5.get("store_number"), "Store #")
     check("real_request: quantity", m5.get("quantity"), "Quantity")
     check("real_request: worker_pay_rate", m5.get("worker_pay_rate"), "Worker Pay Rate")
-    check("real_request: booking_group", m5.get("booking_group"), "Team # (Optional)")
+    check("real_request: booking_group", m5.get("booking_group"), "Region")
 
 
 # ═══════════════════════════════════════════════════════════════════════════

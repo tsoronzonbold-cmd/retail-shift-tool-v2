@@ -13,8 +13,10 @@ import anthropic
 
 ANTHROPIC_API_KEY = os.environ.get("ANTHROPIC_API_KEY", "")
 
-# Minimum columns auto-detect must match before we skip AI
-MIN_AUTO_DETECT = 5
+# Minimum columns auto-detect must match before we skip AI.
+# Set to 8 so Claude kicks in for partial matches (e.g. Chobani: 7 matched
+# but missing quantity). Standard CSVs match 12+ and skip AI entirely.
+MIN_AUTO_DETECT = 8
 
 # Our standard column names that Claude should map to
 STANDARD_COLUMNS = [
