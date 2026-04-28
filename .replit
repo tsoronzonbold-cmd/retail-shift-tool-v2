@@ -13,11 +13,11 @@ REDSHIFT_DB_USER = "cursor_analytics"
 PYTHONUNBUFFERED = "1"
 
 [[ports]]
-localPort = 8080
+localPort = 5000
 externalPort = 80
 
 [[ports]]
-localPort = 5000
+localPort = 8080
 externalPort = 80
 
 [deployment]
