@@ -49,10 +49,10 @@
         </div>
 
         <div style="flex: 1; min-width: 200px; background: white; border: 1px solid #fde68a; border-radius: 8px; padding: 16px;">
-            <div style="font-weight: 600; margin-bottom: 4px;">Step 2: Re-check</div>
-            <div style="font-size: 13px; color: var(--text-muted); margin-bottom: 12px;">After Django import, re-check to get Location IDs</div>
-            <form method="POST" action="{{ url_for('recheck') }}">
-                <button type="submit" class="btn btn-primary" style="width: 100%;">Re-check Businesses</button>
+            <div style="font-weight: 600; margin-bottom: 4px;">Step 2: Resync</div>
+            <div style="font-size: 13px; color: var(--text-muted); margin-bottom: 12px;">After uploading to Django, wait ~1–2 min for Mode to sync, then click to pull the new Location IDs.</div>
+            <form method="POST" action="{{ url_for('recheck') }}" onsubmit="this.querySelector('button').disabled = true; this.querySelector('button').textContent = 'Syncing…';">
+                <button type="submit" class="btn btn-primary" style="width: 100%;">Resync from Mode</button>
             </form>
         </div>
         {% endif %}
@@ -70,7 +70,7 @@
             <div style="font-weight: 600; margin-bottom: 4px;">{% if has_biz_csv %}Step 3{% else %}Download{% endif %}: Shift Import</div>
             <div style="font-size: 13px; color: var(--text-muted); margin-bottom: 12px;">
                 {% if num_new > 0 and total_shifts == 0 %}
-                    Waiting — upload new businesses first, then re-check
+                    Waiting — upload new businesses to Django first, then resync
                 {% elif num_new > 0 %}
                     {{ total_shifts }} shifts ready ({{ num_new }} stores still pending)
                 {% else %}
