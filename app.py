@@ -692,7 +692,7 @@ def override_business_ids():
 
 @app.route("/recheck", methods=["POST"])
 def recheck():
-    """Re-query Redshift for new businesses after Django import.
+    """Re-query Mode for new businesses after Django import.
     Regenerates shift CSV with newly available Location IDs."""
     company_id = session.get("company_id")
     parsed_rows = session.get("parsed_rows", [])
@@ -760,7 +760,7 @@ def recheck():
     if newly_found > 0:
         flash(f"{newly_found} new businesses verified! Shift CSV updated with their Location IDs.", "success")
     elif now_new > 0:
-        flash(f"Still {now_new} businesses pending — not in Redshift yet. Upload to Django and wait for sync.", "info")
+        flash(f"Still {now_new} businesses pending — not in Mode yet. Upload to Django and wait ~1–2 min before resyncing.", "info")
     else:
         flash("All businesses found! Shift CSV is complete.", "success")
 
