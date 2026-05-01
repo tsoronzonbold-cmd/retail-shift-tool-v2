@@ -9,6 +9,7 @@ Streamlined 3-step flow:
 
 import os
 import io
+import csv
 import json
 import time
 
@@ -176,11 +177,12 @@ def upload():
     final_mapping = {**detected_mapping, **{k: v for k, v in col_mapping.items() if v in df.columns}}
     rows, raw_columns = csv_processor.parse_upload(file_content, filename, final_mapping)
 
-    # Detect businesses — 3-tier lookup:
+    # Detect businesses — Mode is the authoritative live source.
     #   1. Local DB (Christian's 127K locations, instant, by companyId-storeNumber)
     #   2. Mode API (live Redshift query, handles name variations)
-    #   3. Direct Redshift (fallback, queries gigtemplate)
+    #   3. Direct Redshift only when Mode is NOT configured (legacy fallback)
     redshift_error = None
+    mode_ran = False
     matched, unmatched = locations_db.match_businesses(company_id, rows)
 
     # If local DB left unmatched rows, try Mode for those
@@ -189,11 +191,12 @@ def upload():
             mode_matched, still_unmatched = mode_client.get_businesses_for_company(company_id, unmatched)
             matched = matched + mode_matched
             unmatched = still_unmatched
+            mode_ran = True
         except Exception as me:
             redshift_error = f"Mode error: {str(me)}"
 
-    # Last resort: direct Redshift
-    if unmatched and not redshift_error:
+    # Legacy Redshift fallback — only when Mode never ran successfully
+    if unmatched and not mode_ran and not mode_client.is_available():
         try:
             existing = redshift_client.get_businesses_for_company(company_id)
             rs_matched, still_unmatched = csv_processor.match_businesses(unmatched, existing)
@@ -699,16 +702,19 @@ def recheck():
         flash("No data. Please upload a file first.", "error")
         return redirect(url_for("index"))
 
-    # Re-query — same 3-tier lookup as upload
+    # Re-query — same Mode-authoritative lookup as upload
     matched, unmatched = locations_db.match_businesses(company_id, parsed_rows)
+    mode_ran = False
     if unmatched and mode_client.is_available():
         try:
             mode_matched, still_unmatched = mode_client.get_businesses_for_company(company_id, unmatched)
             matched = matched + mode_matched
             unmatched = still_unmatched
+            mode_ran = True
         except Exception as me:
             flash(f"Mode error: {str(me)}", "error")
-    if unmatched:
+    # Legacy Redshift fallback — only when Mode never ran successfully
+    if unmatched and not mode_ran and not mode_client.is_available():
         try:
             existing = redshift_client.get_businesses_for_company(company_id)
             rs_matched, still_unmatched = csv_processor.match_businesses(unmatched, existing)
