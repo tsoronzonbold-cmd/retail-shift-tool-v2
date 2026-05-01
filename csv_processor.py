@@ -206,10 +206,10 @@ def auto_detect_columns(df_columns):
         "city": [r"^city", r"^metro$"],
         "state": [r"^state"],
         "zip": [r"^zip", r"postal", r"^zip\s*code$"],
-        "start_date": [r"start\s*date", r"^date$", r"visit.?date", r"^visitdt$",
-                       r"^start$", r"^startdate$", r"^svc.?dt$"],
-        "start_time": [r"start\s*time", r"^starttime$", r"^strt$", r"^start.?tm$"],
-        "end_time": [r"end\s*time", r"^endtime$", r"^end$"],
+        "start_date": [r"start[\s_]*date", r"visit[\s_]*date", r"^visitdt$",
+                       r"^startdate$", r"^svc[\s_]*dt$", r"^date$", r"^start$"],
+        "start_time": [r"start[\s_]*time", r"^starttime$", r"^strt$", r"^start[\s_]*tm$"],
+        "end_time": [r"end[\s_]*time", r"^endtime$", r"^end$"],
         "break_length": [r"^break$", r"^break\s*length", r"lunch", r"unpaid\s*break"],
         "quantity": [r"^quantity", r"#\s*of\s*worker", r"\bqty\b", r"headcount",
                      r"workers?\s*needed", r"^request$", r"^req$", r"^needs$",
@@ -225,30 +225,39 @@ def auto_detect_columns(df_columns):
                       r"^supervisor$", r"^supervisors$",
                       r"team\s*lead\s*name", r"contact\s*name", r"^contacct$"],
         "team_lead_phone": [r"on.?site\s*contact\s*phone", r"team\s*lead\s*phone",
-                            r"lead\s*contact\s*num", r"contact\s*phone", r"^phone$",
-                            r"lead\s*phone", r"supervisor\s*phone",
-                            r"contact\s*number", r"phone\s*number"],
+                            r"lead\s*phone", r"lead\s*contact\s*num",
+                            r"supervisor\s*phone", r"contact\s*phone",
+                            r"contact\s*number", r"phone\s*number", r"^phone$"],
         "team_lead_email": [r"on.?site\s*contact\s*email", r"team\s*lead\s*email",
-                            r"contact\s*email", r"^email$", r"lead\s*email",
-                            r"supervisor\s*email"],
-        "worker_pay_rate": [r"worker\s*pay\s*rate", r"pay\s*rate", r"hourly\s*rate",
-                            r"^rate$", r"worker\s*pay$", r"worker\s*rate$",
-                            r"pro\s*rate", r"requested\s*rate", r"hourly\s*wage"],
+                            r"lead\s*email", r"supervisor\s*email",
+                            r"contact\s*email", r"^email$"],
+        "worker_pay_rate": [r"worker\s*pay\s*rate", r"worker\s*pay$",
+                            r"worker\s*rate$", r"pro\s*rate", r"requested\s*rate",
+                            r"hourly\s*rate", r"hourly\s*wage", r"pay\s*rate",
+                            r"^rate$"],
         "location_instructions": [r"location\s*instructions", r"^instructions$",
                                   r"check.?in\s*instructions",
                                   r"arrival.*instructions", r"where\s*to\s*enter"],
         "attire_instructions": [r"attire\s*instructions", r"^attire$",
                                 r"dress\s*code", r"uniform"],
-        "booking_group": [r"^team\s*#", r"booking\s*group", r"^region$", r"^group$",
-                          r"^territory$", r"^team\s*name$", r"^team$", r"^div$",
-                          r"^district$", r"^area$"],
+        "booking_group": [r"booking\s*group", r"^region$", r"^district$",
+                          r"^territory$", r"^area$", r"^div$",
+                          r"^team\s*#", r"^team\s*name$", r"^team$", r"^group$"],
     }
 
+    # Iterate pattern-first so pattern priority order matters: the most
+    # specific pattern wins across the whole column list before we fall back
+    # to broader patterns. (Previously column-first iteration meant whichever
+    # column happened to be earlier won, e.g. "Supervisor" beat "SLead".)
+    used_cols = set()
     for norm_key, pats in patterns.items():
-        for col in df_columns:
-            for pat in pats:
+        for pat in pats:
+            for col in df_columns:
+                if col in used_cols:
+                    continue
                 if re.search(pat, col, re.IGNORECASE):
                     mapping[norm_key] = col
+                    used_cols.add(col)
                     break
             if norm_key in mapping:
                 break
