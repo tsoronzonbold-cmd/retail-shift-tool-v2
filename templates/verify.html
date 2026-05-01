@@ -26,7 +26,10 @@
     </div>
 
     <!-- Auto-polling status (always visible while polling) -->
-    <div id="poll-state" style="text-align: center; padding: 30px;">
+    <div id="poll-state"
+         data-total="{{ num_new }}"
+         data-verify-url="{{ url_for('api_verify_businesses') }}"
+         style="text-align: center; padding: 30px;">
         <div style="font-size: 18px; font-weight: 600; margin-bottom: 6px;" id="poll-title">Waiting for sync...</div>
         <p style="color: var(--text-muted); margin-bottom: 14px; font-size: 13px;" id="poll-subtitle">
             Auto-checking Redshift every 15s. Upload your CSV to Django and we'll detect when the new businesses appear.
@@ -71,7 +74,9 @@
 {% block scripts %}
 <script>
 const POLL_INTERVAL_MS = 15000;
-const TOTAL = {{ num_new }};
+const POLL_STATE_EL = document.getElementById('poll-state');
+const TOTAL = parseInt(POLL_STATE_EL.dataset.total, 10) || 0;
+const VERIFY_URL = POLL_STATE_EL.dataset.verifyUrl;
 let pollTimer = null;
 let pollPaused = false;
 let checkCount = 0;
@@ -86,7 +91,7 @@ async function doCheck() {
     inFlight = true;
     setPollTitle('Checking Redshift...');
     try {
-        const r = await fetch('{{ url_for("api_verify_businesses") }}', { method: 'POST' });
+        const r = await fetch(VERIFY_URL, { method: 'POST' });
         const data = await r.json();
         checkCount++;
         document.getElementById('check-count').textContent = checkCount;

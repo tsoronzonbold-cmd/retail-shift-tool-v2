@@ -8,14 +8,66 @@
 </head>
 <body>
     <header>
-        <div class="container">
-            <h1>Retail Shift Tool</h1>
-            <nav>
+        <div class="container" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+            <h1 style="margin: 0;">Retail Shift Tool</h1>
+            <nav style="display: flex; align-items: center; gap: 16px;">
                 <a href="{{ url_for('index') }}">Upload</a>
                 <a href="{{ url_for('results') }}">Results</a>
+                <span id="claude-status-pill"
+                      title="Click to re-check"
+                      style="display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 999px; font-size: 12px; font-weight: 600; background: #e5e7eb; color: #374151; cursor: pointer; user-select: none;">
+                    <span id="claude-status-dot" style="display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #9ca3af;"></span>
+                    <span id="claude-status-text">Claude: checking…</span>
+                </span>
             </nav>
         </div>
     </header>
+
+    <script>
+    (function () {
+        const STATUS_URL = "{{ url_for('api_claude_status') }}";
+        const POLL_MS = 60000;
+        const pill = document.getElementById('claude-status-pill');
+        const dot = document.getElementById('claude-status-dot');
+        const text = document.getElementById('claude-status-text');
+
+        function render(state, label, tooltip) {
+            const palette = {
+                ok:      { bg: '#dcfce7', fg: '#166534', dot: '#16a34a' },
+                down:    { bg: '#fee2e2', fg: '#991b1b', dot: '#dc2626' },
+                missing: { bg: '#fef3c7', fg: '#92400e', dot: '#d97706' },
+                pending: { bg: '#e5e7eb', fg: '#374151', dot: '#9ca3af' },
+            }[state] || { bg: '#e5e7eb', fg: '#374151', dot: '#9ca3af' };
+            pill.style.background = palette.bg;
+            pill.style.color = palette.fg;
+            dot.style.background = palette.dot;
+            text.textContent = label;
+            pill.title = tooltip || 'Click to re-check';
+        }
+
+        async function check(force) {
+            render('pending', 'Claude: checking…', 'Pinging Claude API…');
+            try {
+                const url = force ? STATUS_URL + '?force=1' : STATUS_URL;
+                const r = await fetch(url);
+                const data = await r.json();
+                if (data.ok) {
+                    render('ok', 'Claude: live', 'Claude API is reachable. Click to re-check.');
+                } else if (!data.key_present) {
+                    render('missing', 'Claude: no key', 'ANTHROPIC_API_KEY is not set. Click to re-check.');
+                } else {
+                    render('down', 'Claude: down', (data.error || 'API check failed') + '\nClick to re-check.');
+                }
+            } catch (e) {
+                render('down', 'Claude: down', 'Status endpoint unreachable. Click to re-check.');
+            }
+        }
+
+        pill.addEventListener('click', () => check(true));
+        check(false);
+        setInterval(() => check(false), POLL_MS);
+    })();
+    </script>
 
     <div class="container">
         {% with messages = get_flashed_messages(with_categories=true) %}

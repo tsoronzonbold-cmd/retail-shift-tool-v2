@@ -10,6 +10,7 @@ Streamlined 3-step flow:
 import os
 import io
 import json
+import time
 
 # Load .env file for Mode API credentials
 from dotenv import load_dotenv
@@ -460,6 +461,46 @@ def api_companies():
         return jsonify(companies)
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
+
+_claude_status_cache = {"ok": None, "checked_at": 0.0, "error": None, "key_present": False}
+CLAUDE_STATUS_TTL = 60  # seconds
+
+
+@app.route("/api/claude-status")
+def api_claude_status():
+    """Live health check for the Claude API. Cached for CLAUDE_STATUS_TTL."""
+    now = time.time()
+    force = request.args.get("force") == "1"
+    if not force and _claude_status_cache["ok"] is not None and \
+            now - _claude_status_cache["checked_at"] < CLAUDE_STATUS_TTL:
+        return jsonify({
+            "ok": _claude_status_cache["ok"],
+            "key_present": _claude_status_cache["key_present"],
+            "error": _claude_status_cache["error"],
+            "cached": True,
+            "checked_at": _claude_status_cache["checked_at"],
+        })
+
+    api_key = os.environ.get("ANTHROPIC_API_KEY", "")
+    if not api_key:
+        _claude_status_cache.update(ok=False, checked_at=now, error="ANTHROPIC_API_KEY not set", key_present=False)
+        return jsonify({"ok": False, "key_present": False, "error": "ANTHROPIC_API_KEY not set", "cached": False, "checked_at": now})
+
+    try:
+        import anthropic
+        client = anthropic.Anthropic(api_key=api_key)
+        client.messages.create(
+            model="claude-haiku-4-5-20251001",
+            max_tokens=1,
+            messages=[{"role": "user", "content": "ping"}],
+        )
+        _claude_status_cache.update(ok=True, checked_at=now, error=None, key_present=True)
+        return jsonify({"ok": True, "key_present": True, "error": None, "cached": False, "checked_at": now})
+    except Exception as e:
+        msg = str(e)[:200]
+        _claude_status_cache.update(ok=False, checked_at=now, error=msg, key_present=True)
+        return jsonify({"ok": False, "key_present": True, "error": msg, "cached": False, "checked_at": now})
 
 
 @app.route("/api/search-business")
