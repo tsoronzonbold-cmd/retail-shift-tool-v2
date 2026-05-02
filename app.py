@@ -39,7 +39,6 @@ from flask import (
 import pandas as pd
 
 import config
-import redshift_client
 import mode_client
 import locations_db
 import partner_config as pc
@@ -105,19 +104,12 @@ def index():
     configured.sort(key=lambda c: c["name"])
     configured_ids = [int(cid) for cid in configs.keys()]
 
-    # Mode is the authoritative source. Fall back to Redshift only while
-    # the COMPANIES_QUERY_TOKEN isn't wired up yet.
+    # Mode is the authoritative source.
     all_companies = []
-    if mode_client.companies_query_available():
-        try:
-            all_companies = mode_client.get_companies(configured_ids=configured_ids)
-        except Exception:
-            pass
-    if not all_companies:
-        try:
-            all_companies = redshift_client.get_companies(configured_ids=configured_ids)
-        except Exception:
-            pass
+    try:
+        all_companies = mode_client.get_companies(configured_ids=configured_ids)
+    except Exception:
+        pass
 
     return render_template(
         "upload.html",
@@ -145,15 +137,10 @@ def upload():
     filename = file.filename
     cfg = pc.get_config(company_id)
 
-    # Auto-bootstrap unconfigured partners. Prefer Mode (works on Replit),
-    # fall back to direct Redshift only while BOOTSTRAP_QUERY_TOKEN isn't
-    # set yet.
+    # Auto-bootstrap unconfigured partners via Mode.
     if not cfg.get("name"):
         try:
-            bootstrap = {}
-            if mode_client.bootstrap_query_available():
-                bootstrap = mode_client.bootstrap_partner(company_id)
-
+            bootstrap = mode_client.bootstrap_partner(company_id)
             if bootstrap:
                 cfg["name"] = bootstrap.get("company_name") or cfg.get("name", "")
                 for key in (
@@ -163,32 +150,8 @@ def upload():
                 ):
                     if bootstrap.get(key) not in (None, ""):
                         cfg[key] = bootstrap[key]
-            else:
-                # Redshift fallback (legacy — remove once Mode bootstrap query is live)
-                rows_q = redshift_client.execute_query(
-                    f"SELECT name FROM iw_backend_db.backend_company WHERE id = {int(company_id)}"
-                )
-                if rows_q:
-                    cfg["name"] = rows_q[0]["name"]
-                tmpls = redshift_client.execute_query(f"""
-                    SELECT contact_id, created_by_id, position_fk_id, position_tiering_id,
-                           has_parking, instructions, custom_attire_requirements
-                    FROM iw_backend_db.backend_gigtemplate
-                    WHERE company_id = {int(company_id)}
-                      AND (contact_id IS NOT NULL OR instructions IS NOT NULL)
-                    ORDER BY created_at DESC LIMIT 1
-                """)
-                if tmpls:
-                    t = tmpls[0]
-                    cfg["default_contact_id"] = t.get("contact_id") or cfg.get("default_contact_id")
-                    cfg["default_creator_id"] = t.get("created_by_id") or cfg.get("default_creator_id")
-                    cfg["default_position_id"] = t.get("position_fk_id") or 29
-                    cfg["default_position_tiering_id"] = t.get("position_tiering_id")
-                    cfg["default_parking"] = t.get("has_parking") if t.get("has_parking") is not None else 2
-                    cfg["default_position_instructions"] = t.get("instructions") or ""
-                    cfg["default_attire"] = t.get("custom_attire_requirements") or ""
-            pc.save_config(company_id, cfg)
-            flash(f"Auto-configured new partner: {cfg['name']}", "success")
+                pc.save_config(company_id, cfg)
+                flash(f"Auto-configured new partner: {cfg['name']}", "success")
         except Exception:
             pass
 
@@ -235,7 +198,7 @@ def upload():
     mode_ran = False
     matched, unmatched = locations_db.match_businesses(company_id, rows)
 
-    # If local DB left unmatched rows, try Mode for those
+    # If local DB left unmatched rows, ask Mode (the authoritative source)
     if unmatched and mode_client.is_available():
         try:
             mode_matched, still_unmatched = mode_client.get_businesses_for_company(company_id, unmatched)
@@ -244,16 +207,6 @@ def upload():
             mode_ran = True
         except Exception as me:
             redshift_error = f"Mode error: {str(me)}"
-
-    # Legacy Redshift fallback — only when Mode never ran successfully
-    if unmatched and not mode_ran and not mode_client.is_available():
-        try:
-            existing = redshift_client.get_businesses_for_company(company_id)
-            rs_matched, still_unmatched = csv_processor.match_businesses(unmatched, existing)
-            matched = matched + rs_matched
-            unmatched = still_unmatched
-        except Exception:
-            pass  # Redshift unavailable is fine if we already got some matches
 
     # Match contacts
     seen = set()
@@ -631,11 +584,7 @@ def configure_new_businesses():
 @app.route("/api/companies")
 def api_companies():
     try:
-        if mode_client.companies_query_available():
-            companies = mode_client.get_companies()
-        else:
-            companies = redshift_client.get_companies()
-        return jsonify(companies)
+        return jsonify(mode_client.get_companies())
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
@@ -682,15 +631,9 @@ def api_claude_status():
 
 @app.route("/api/search-business")
 def api_search_business():
-    company_id = request.args.get("company_id")
-    query = request.args.get("q", "")
-    if not company_id or not query:
-        return jsonify([])
-    try:
-        results = redshift_client.search_business_by_address(company_id, query)
-        return jsonify(results)
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
+    # Manual address-based business override — not currently wired to any
+    # UI. If we resurrect it, port to a Mode query (no Redshift access).
+    return jsonify([])
 
 
 # ══════════════════════════════════════════════════════════════════════
@@ -705,44 +648,12 @@ def bootstrap_partner():
         return redirect(url_for("index"))
 
     try:
-        # Mode-first: pull company name + most-recent gigtemplate defaults in one query.
-        # Fall back to direct Redshift only while the BOOTSTRAP_QUERY_TOKEN
-        # isn't wired up.
-        bootstrap = {}
-        if mode_client.bootstrap_query_available():
-            bootstrap = mode_client.bootstrap_partner(company_id)
-
-        if bootstrap:
-            company_name = bootstrap.get("company_name") or ""
-        else:
-            rows = redshift_client.execute_query(
-                f"SELECT id, name FROM iw_backend_db.backend_company WHERE id = {int(company_id)}"
-            )
-            if not rows:
-                flash(f"Company {company_id} not found.", "error")
-                return redirect(url_for("index"))
-            company_name = rows[0]["name"]
-
-            tmpls = redshift_client.execute_query(f"""
-                SELECT contact_id, created_by_id, position_fk_id, position_tiering_id,
-                       has_parking, instructions, custom_attire_requirements
-                FROM iw_backend_db.backend_gigtemplate
-                WHERE company_id = {int(company_id)}
-                  AND (contact_id IS NOT NULL OR instructions IS NOT NULL OR custom_attire_requirements IS NOT NULL)
-                ORDER BY created_at DESC
-                LIMIT 1
-            """)
-            if tmpls:
-                t = tmpls[0]
-                bootstrap = {
-                    "default_contact_id": t.get("contact_id"),
-                    "default_creator_id": t.get("created_by_id"),
-                    "default_position_id": t.get("position_fk_id") or 29,
-                    "default_position_tiering_id": t.get("position_tiering_id"),
-                    "default_parking": t.get("has_parking") if t.get("has_parking") is not None else 2,
-                    "default_position_instructions": t.get("instructions") or "",
-                    "default_attire": t.get("custom_attire_requirements") or "",
-                }
+        # Pull company name + most-recent gigtemplate defaults from Mode.
+        bootstrap = mode_client.bootstrap_partner(company_id)
+        if not bootstrap:
+            flash(f"Company {company_id} not found in Mode.", "error")
+            return redirect(url_for("index"))
+        company_name = bootstrap.get("company_name") or ""
 
         cfg = pc.get_config(company_id)
         cfg["name"] = company_name
@@ -754,16 +665,12 @@ def bootstrap_partner():
             if bootstrap.get(key) not in (None, ""):
                 cfg[key] = bootstrap[key]
 
+        # Local contacts DB is the authoritative source for default contact.
         local_default = contacts_db.get_default_contact(company_id)
         if local_default:
             cfg["default_contact_id"] = local_default["cuser_id"]
             cfg["default_contact_name"] = local_default.get("name", "")
             cfg["default_contact_role"] = local_default.get("role", "")
-        elif not cfg.get("default_contact_id"):
-            contact = redshift_client.get_default_contact(company_id)
-            if contact:
-                cfg["default_contact_id"] = contact["cuser_id"]
-                cfg["default_contact_role"] = contact.get("role", "")
 
         try:
             with open("partner_configs/registry.json") as f:
@@ -900,24 +807,13 @@ def recheck():
 
     # Re-query — same Mode-authoritative lookup as upload
     matched, unmatched = locations_db.match_businesses(company_id, parsed_rows)
-    mode_ran = False
     if unmatched and mode_client.is_available():
         try:
             mode_matched, still_unmatched = mode_client.get_businesses_for_company(company_id, unmatched)
             matched = matched + mode_matched
             unmatched = still_unmatched
-            mode_ran = True
         except Exception as me:
             flash(f"Mode error: {str(me)}", "error")
-    # Legacy Redshift fallback — only when Mode never ran successfully
-    if unmatched and not mode_ran and not mode_client.is_available():
-        try:
-            existing = redshift_client.get_businesses_for_company(company_id)
-            rs_matched, still_unmatched = csv_processor.match_businesses(unmatched, existing)
-            matched = matched + rs_matched
-            unmatched = still_unmatched
-        except Exception:
-            pass
 
     # Re-match contacts
     contact_lookup = {}

@@ -25,7 +25,7 @@ REPORT_ID = "ac9b652e687f"  # Single report with all queries
 BUSINESS_QUERY_TOKEN = "6ec26c5336ee"   # Query 1: business check
 CONTACTS_QUERY_TOKEN = "e62e61be97f5"   # Query 2: contact lookup
 COMPANIES_QUERY_TOKEN = "eca03db2f4ec"  # Query 3: companies list
-BOOTSTRAP_QUERY_TOKEN = ""              # Query 4: bootstrap partner — fill once added in Mode
+BOOTSTRAP_QUERY_TOKEN = "d2b95ef75b11"  # Query 4: bootstrap partner
 
 # How long to poll Mode for results
 MAX_POLL_ATTEMPTS = 12
