@@ -607,16 +607,17 @@ def test_tasks_csv():
     check_true("tasks: result not None", result2 is not None)
     reader = csv.reader(io.StringIO(result2))
     header = next(reader)
-    check("tasks: header", header, ["business", "position", "items", "type", "is_remove"])
+    # Enkhjin format: items, is_remove, position, business, type
+    check("tasks: header", header, ["items", "is_remove", "position", "business", "type"])
     rows = list(reader)
     # 2 businesses × 2 task types (clockin + clockout, no during) = 4 rows
     check("tasks: row count", len(rows), 4)
-    check("tasks: row0 biz", rows[0][0], "5001")
-    check("tasks: row0 position", rows[0][1], "42")
-    check("tasks: row0 items pipe-sep", rows[0][2], "10|11")
-    check("tasks: row0 type", rows[0][3], "clockin")
-    check("tasks: row1 clockout items", rows[1][2], "20|21|22")
-    check("tasks: row1 type", rows[1][3], "clockout")
+    check("tasks: row0 items comma-sep", rows[0][0], "10,11")
+    check("tasks: row0 position", rows[0][2], "42")
+    check("tasks: row0 biz", rows[0][3], "5001")
+    check("tasks: row0 type", rows[0][4], "Clockin")
+    check("tasks: row1 clockout items", rows[1][0], "20,21,22")
+    check("tasks: row1 type", rows[1][4], "Clockout")
 
 
 # ═══════════════════════════════════════════════════════════════════════════

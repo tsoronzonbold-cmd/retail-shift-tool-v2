@@ -307,27 +307,25 @@ def upload():
                 mc_writer.writerow(r)
             missing_contacts_csv = mc_output.getvalue()
 
-    # Pre-generate business import CSV if there are new businesses
+    # Pre-generate shift import CSV (matched rows only — never blocked on
+    # the new-business flow)
     cfg["_company_id"] = company_id
-    biz_csv = None
-    if unmatched:
-        biz_csv = csv_processor.generate_business_import_csv(unmatched, cfg)
-
-    # Pre-generate shift import CSV
     task_opts = {
         "is_task": request.form.get("is_task_request") == "1",
         "is_anywhere": request.form.get("is_anywhere") == "1",
     }
     shift_csv = csv_processor.generate_bulk_import_csv(matched, cfg, task_opts=task_opts)
 
-    # Store everything in session
+    # Store everything in session — business CSV is generated AFTER the
+    # configure step (or immediately on results if there are no new
+    # businesses to configure)
     session["company_id"] = company_id
     session["company_name"] = cfg.get("name", f"Company {company_id}")
     session["parsed_rows"] = rows
     session["matched_rows"] = matched
     session["unmatched_rows"] = unmatched
     session["contact_matches"] = contact_matches
-    session["business_import_csv"] = biz_csv
+    session["business_import_csv"] = None
     session["shift_import_csv"] = shift_csv
     session["config"] = cfg
     session["missing_contacts_csv"] = missing_contacts_csv
@@ -335,7 +333,18 @@ def upload():
     session["address_validation"] = address_validation
     session["column_mapping"] = final_mapping
     session["raw_columns"] = raw_columns
+    session["new_business_config"] = None
+    session["sr_csv"] = None
+    session["cert_csv"] = None
+    session["training_csv"] = None
+    session["tasks_csv"] = None
+    session["is_task_request"] = task_opts["is_task"]
+    session["is_anywhere"] = task_opts["is_anywhere"]
 
+    # Fork: if there are new businesses, route through the configuration
+    # step before downloads. Otherwise straight to results.
+    if unmatched:
+        return redirect(url_for("configure_new_businesses"))
     return redirect(url_for("results"))
 
 
@@ -382,6 +391,10 @@ def results():
     has_biz_csv = bool(session.get("business_import_csv"))
     has_shift_csv = bool(session.get("shift_import_csv"))
     has_missing_contacts = bool(session.get("missing_contacts_csv"))
+    has_sr_csv = bool(session.get("sr_csv"))
+    has_cert_csv = bool(session.get("cert_csv"))
+    has_training_csv = bool(session.get("training_csv"))
+    has_tasks_csv = bool(session.get("tasks_csv"))
 
     # Address validation lookup
     address_validation = session.get("address_validation", [])
@@ -407,6 +420,10 @@ def results():
         has_biz_csv=has_biz_csv,
         has_shift_csv=has_shift_csv,
         has_missing_contacts=has_missing_contacts,
+        has_sr_csv=has_sr_csv,
+        has_cert_csv=has_cert_csv,
+        has_training_csv=has_training_csv,
+        has_tasks_csv=has_tasks_csv,
         redshift_error=redshift_error,
         django_links=DJANGO_LINKS,
         addr_validation=addr_by_store,
@@ -454,13 +471,117 @@ def download_missing_contacts():
 
 @app.route("/download/tasks")
 def download_tasks():
-    csv_data = session.get("tasks_import_csv", "")
+    csv_data = session.get("tasks_csv") or session.get("tasks_import_csv", "")
     if not csv_data:
         flash("No tasks CSV available.", "error")
         return redirect(url_for("results"))
     buf = io.BytesIO(csv_data.encode("utf-8"))
     return send_file(buf, mimetype="text/csv", as_attachment=True,
                      download_name="tasks_import.csv")
+
+
+@app.route("/download/special-requirements")
+def download_special_requirements():
+    csv_data = session.get("sr_csv", "")
+    if not csv_data:
+        flash("No Special Requirements CSV available — set IDs in the configuration step and resync.", "error")
+        return redirect(url_for("results"))
+    buf = io.BytesIO(csv_data.encode("utf-8"))
+    return send_file(buf, mimetype="text/csv", as_attachment=True,
+                     download_name="special_requirements.csv")
+
+
+@app.route("/download/certifications")
+def download_certifications():
+    csv_data = session.get("cert_csv", "")
+    if not csv_data:
+        flash("No Certifications CSV available — set IDs in the configuration step and resync.", "error")
+        return redirect(url_for("results"))
+    buf = io.BytesIO(csv_data.encode("utf-8"))
+    return send_file(buf, mimetype="text/csv", as_attachment=True,
+                     download_name="certifications.csv")
+
+
+@app.route("/download/trainings")
+def download_trainings():
+    csv_data = session.get("training_csv", "")
+    if not csv_data:
+        flash("No Trainings CSV available — set IDs in the configuration step and resync.", "error")
+        return redirect(url_for("results"))
+    buf = io.BytesIO(csv_data.encode("utf-8"))
+    return send_file(buf, mimetype="text/csv", as_attachment=True,
+                     download_name="trainings.csv")
+
+
+@app.route("/configure-new-businesses", methods=["GET", "POST"])
+def configure_new_businesses():
+    company_id = session.get("company_id")
+    unmatched = session.get("unmatched_rows", [])
+    cfg = session.get("config", {})
+
+    if not company_id or not unmatched:
+        flash("No new businesses to configure. Upload a file first.", "error")
+        return redirect(url_for("index"))
+
+    # Build deduped display list of businesses to create
+    seen = set()
+    new_businesses = []
+    for row in unmatched:
+        sn = row.get("store_number", "")
+        if sn in seen:
+            continue
+        seen.add(sn)
+        retailer = (row.get("retailer", "") or "").strip()
+        expected = row.get("_expected_name", "")
+        if expected:
+            name = expected
+        elif retailer and sn:
+            name = csv_processor.format_business_name(retailer, sn)
+        else:
+            name = sn or row.get("address", "")
+        addr_parts = [row.get(k, "") for k in ("address", "city", "state", "zip")]
+        full_addr = ", ".join(p for p in addr_parts if p)
+        new_businesses.append({"name": name, "address": full_addr, "store_number": sn})
+
+    if request.method == "POST":
+        def parse_id_list(s):
+            return [x.strip() for x in (s or "").split(",") if x.strip()]
+
+        nb_config = {
+            "automated_overbooking": request.form.get("automated_overbooking") == "1",
+            "worker_instructions": request.form.get("worker_instructions", "").strip(),
+            "special_requirement_ids": parse_id_list(request.form.get("special_requirement_ids", "")),
+            "sr_position_ids": parse_id_list(request.form.get("sr_position_ids", "")),
+            "cert_gig_position_ids": parse_id_list(request.form.get("cert_gig_position_ids", "")),
+            "cert_mandatory": request.form.get("cert_mandatory") == "1",
+            "training_ids": parse_id_list(request.form.get("training_ids", "")),
+            "training_mandatory": request.form.get("training_mandatory") == "1",
+            "clock_in_task_ids": parse_id_list(request.form.get("clock_in_task_ids", "")),
+            "during_task_ids": parse_id_list(request.form.get("during_task_ids", "")),
+            "clock_out_task_ids": parse_id_list(request.form.get("clock_out_task_ids", "")),
+            "task_position_ids": parse_id_list(request.form.get("task_position_ids", "")),
+        }
+        session["new_business_config"] = nb_config
+
+        # Merge into the live config used by CSV generators
+        cfg.update(nb_config)
+        cfg["_company_id"] = company_id
+        session["config"] = cfg
+
+        # Generate the new businesses CSV with the worker instructions and
+        # overbooking flag baked in.
+        biz_csv = csv_processor.generate_business_import_csv(unmatched, cfg)
+        session["business_import_csv"] = biz_csv
+
+        flash("New business CSV generated. Download it, upload to Django, then resync to get the attribute templates.", "success")
+        return redirect(url_for("results"))
+
+    return render_template(
+        "configure_new_businesses.html",
+        new_businesses=new_businesses,
+        num_new=len(new_businesses),
+        defaults=cfg,
+    )
 
 
 # ══════════════════════════════════════════════════════════════════════
@@ -743,8 +864,11 @@ def recheck():
         if tl in contact_lookup:
             row["_contact_id"] = contact_lookup[tl]
 
-    # Regenerate CSVs
+    # Regenerate CSVs — make sure new-business config (instructions, IDs)
+    # is merged so attribute templates get the right values
     cfg["_company_id"] = company_id
+    nb_config = session.get("new_business_config") or {}
+    cfg.update(nb_config)
     biz_csv = csv_processor.generate_business_import_csv(unmatched, cfg) if unmatched else None
 
     task_opts = {
@@ -752,6 +876,24 @@ def recheck():
         "is_anywhere": session.get("is_anywhere", False),
     }
     shift_csv = csv_processor.generate_bulk_import_csv(matched, cfg, task_opts=task_opts)
+
+    # Build attribute templates for newly-verified businesses (those that
+    # got a business_id assigned via Mode this round). We pull them out of
+    # `matched` since unmatched ones don't have IDs yet.
+    if nb_config:
+        new_match_ids = []
+        new_store_set = {row.get("store_number", "") for row in session.get("unmatched_rows", [])}
+        seen_bid = set()
+        for r in matched:
+            biz = r.get("_business", {})
+            bid = biz.get("business_id")
+            if bid and bid not in seen_bid and r.get("store_number", "") in new_store_set:
+                seen_bid.add(bid)
+                new_match_ids.append({"business_id": bid})
+        session["sr_csv"] = csv_processor.generate_special_requirements_csv(new_match_ids, cfg)
+        session["cert_csv"] = csv_processor.generate_certifications_csv(new_match_ids, cfg)
+        session["training_csv"] = csv_processor.generate_trainings_csv(new_match_ids, cfg)
+        session["tasks_csv"] = csv_processor.generate_tasks_csv(new_match_ids, cfg)
 
     # Update session
     session["matched_rows"] = matched

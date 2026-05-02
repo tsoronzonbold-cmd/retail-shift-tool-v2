@@ -419,7 +419,9 @@ def generate_business_import_csv(new_businesses, partner_config):
     ])
 
     company_id = partner_config.get("_company_id", "")
-    venue_type = partner_config.get("default_venue_type", 1)  # 1 = generic
+    # Retail defaults: venue_type 7, parking 2 (matches Enkhjin's production tool).
+    # Per-partner overrides still allowed via default_venue_type / default_parking.
+    venue_type = partner_config.get("default_venue_type", 7)
     parking = partner_config.get("default_parking", 2)
     instructions = partner_config.get("worker_instructions", "")
     overbooking = 1 if partner_config.get("automated_overbooking") else 0
@@ -465,15 +467,15 @@ def generate_business_import_csv(new_businesses, partner_config):
 
 
 def generate_tasks_csv(new_business_ids, partner_config):
-    """Generate a CSV for the Django ClockoutTask import at /backend/clockouttask/import/.
+    """Generate a CSV for the Django ClockoutTask import.
 
-    Column spec from ai-playbook/refs/backend-shift.md (ClockoutTask section):
-        business, position, items, type, is_remove
+    Column order matches Enkhjin's tool (known-working in production):
+        items, is_remove, position, business, type
 
-    - One row per (business, position, type) combination
-    - items is a pipe-separated string like "1|2|3" of ClockoutItem IDs
-    - type is one of "clockin", "during", "clockout"
-    - is_remove: 0 = add items, 1 = remove items
+    - items is comma-separated ClockoutItem IDs
+    - type is "Clockin", "During", or "Clockout" (capitalized)
+    - One row per (business x task_type x position); position blank applies to all
+    - is_remove always 0 (we're adding tasks, not removing)
     """
     clock_in_ids = partner_config.get("clock_in_task_ids", [])
     during_ids = partner_config.get("during_task_ids", [])
@@ -485,27 +487,112 @@ def generate_tasks_csv(new_business_ids, partner_config):
 
     output = io.StringIO()
     writer = csv.writer(output)
-
-    writer.writerow(["business", "position", "items", "type", "is_remove"])
+    writer.writerow(["items", "is_remove", "position", "business", "type"])
 
     for biz in new_business_ids:
         bid = biz.get("business_id", "")
-        pos_id = position_ids[0] if position_ids else partner_config.get("default_position_id", 29)
+        if not bid:
+            continue
 
-        # One row per task type, items pipe-separated
         for task_type, ids in [
-            ("clockin", clock_in_ids),
-            ("during", during_ids),
-            ("clockout", clock_out_ids),
+            ("Clockin", clock_in_ids),
+            ("During", during_ids),
+            ("Clockout", clock_out_ids),
         ]:
-            if ids:
-                writer.writerow([
-                    bid,
-                    pos_id,
-                    "|".join(str(x) for x in ids),
-                    task_type,
-                    0,  # 0 = add (not remove)
-                ])
+            if not ids:
+                continue
+            items_str = ",".join(str(x) for x in ids)
+            if position_ids:
+                for pos_id in position_ids:
+                    writer.writerow([items_str, 0, pos_id, bid, task_type])
+            else:
+                writer.writerow([items_str, 0, "", bid, task_type])
+
+    return output.getvalue()
+
+
+def generate_special_requirements_csv(new_business_ids, partner_config):
+    """Generate Special Requirements CSV for new businesses.
+
+    Columns (Enkhjin format):
+        id, special_requirement, business, position
+    One row per (business x special_requirement_id x position_id). Position
+    blank applies to all positions.
+    """
+    sr_ids = partner_config.get("special_requirement_ids", [])
+    position_ids = partner_config.get("sr_position_ids", [])
+
+    if not sr_ids:
+        return None
+
+    output = io.StringIO()
+    writer = csv.writer(output)
+    writer.writerow(["id", "special_requirement", "business", "position"])
+
+    for biz in new_business_ids:
+        bid = biz.get("business_id", "")
+        if not bid:
+            continue
+        for sr_id in sr_ids:
+            if position_ids:
+                for pos_id in position_ids:
+                    writer.writerow(["", sr_id, bid, pos_id])
+            else:
+                writer.writerow(["", sr_id, bid, ""])
+
+    return output.getvalue()
+
+
+def generate_certifications_csv(new_business_ids, partner_config):
+    """Generate Certifications CSV for new businesses.
+
+    Columns (Enkhjin format):
+        id, certificatetypegigposition, business, is_mandatory
+    One row per (business x cert_id). is_mandatory is 'true'/'false'.
+    """
+    cert_ids = partner_config.get("cert_gig_position_ids", [])
+    is_mandatory = "true" if partner_config.get("cert_mandatory", True) else "false"
+
+    if not cert_ids:
+        return None
+
+    output = io.StringIO()
+    writer = csv.writer(output)
+    writer.writerow(["id", "certificatetypegigposition", "business", "is_mandatory"])
+
+    for biz in new_business_ids:
+        bid = biz.get("business_id", "")
+        if not bid:
+            continue
+        for cert_id in cert_ids:
+            writer.writerow(["", cert_id, bid, is_mandatory])
+
+    return output.getvalue()
+
+
+def generate_trainings_csv(new_business_ids, partner_config):
+    """Generate Trainings CSV for new businesses.
+
+    Columns (Enkhjin format):
+        id, training, business, status
+    One row per (business x training_id). status is '1' if mandatory, else ''.
+    """
+    training_ids = partner_config.get("training_ids", [])
+    status = "1" if partner_config.get("training_mandatory", True) else ""
+
+    if not training_ids:
+        return None
+
+    output = io.StringIO()
+    writer = csv.writer(output)
+    writer.writerow(["id", "training", "business", "status"])
+
+    for biz in new_business_ids:
+        bid = biz.get("business_id", "")
+        if not bid:
+            continue
+        for tid in training_ids:
+            writer.writerow(["", tid, bid, status])
 
     return output.getvalue()
 

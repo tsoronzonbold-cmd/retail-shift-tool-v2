@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+{% block title_suffix %} - Configure New Businesses{% endblock %}
+{% block step1_class %}done{% endblock %}
+{% block step2_class %}active{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h2>Configure {{ num_new }} New Business{{ '' if num_new == 1 else 'es' }}</h2>
+    <p style="color: var(--text-muted); margin-bottom: 16px;">
+        These settings apply to all {{ num_new }} new locations. Once submitted, we'll generate the new businesses CSV — and after you upload it to Django and resync, we'll generate any attribute templates (Special Requirements, Certifications, Trainings, Tasks) you set up below.
+    </p>
+
+    <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 24px;">
+        <!-- Left: list of new businesses -->
+        <div style="background: #f8fafc; border: 1px solid var(--border); border-radius: 8px; padding: 14px; max-height: 600px; overflow-y: auto;">
+            <div style="font-weight: 600; font-size: 13px; margin-bottom: 10px; text-transform: uppercase; color: var(--text-muted);">Businesses to Create</div>
+            {% for b in new_businesses %}
+            <div style="background: white; border: 1px solid var(--border); border-radius: 6px; padding: 8px 10px; margin-bottom: 6px; font-size: 12px;">
+                <div style="font-weight: 600;">{{ b.name }}</div>
+                <div style="color: var(--text-muted); font-size: 11px;">{{ b.address }}</div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Right: form -->
+        <form method="POST" action="{{ url_for('configure_new_businesses') }}" style="display: flex; flex-direction: column; gap: 16px;">
+
+            <!-- New Businesses CSV section -->
+            <fieldset style="border: 1px solid var(--border); border-radius: 8px; padding: 14px; margin: 0;">
+                <legend style="font-weight: 600; font-size: 13px; padding: 0 6px;">New Businesses CSV</legend>
+
+                <label style="display: flex; align-items: center; gap: 10px; margin-bottom: 12px; cursor: pointer;">
+                    <input type="checkbox" name="automated_overbooking" value="1" style="width: auto; margin: 0;">
+                    <span>Automated Overbooking Enabled</span>
+                </label>
+
+                <label style="display: block; font-size: 13px; margin-bottom: 4px;">Worker Instructions</label>
+                <textarea name="worker_instructions" rows="3" placeholder='e.g. "Meet the SAS team lead at the front check stands"' style="width: 100%; padding: 8px; border: 1px solid var(--border); border-radius: 6px; font-family: inherit; font-size: 13px;">{{ defaults.worker_instructions or '' }}</textarea>
+            </fieldset>
+
+            <div style="display: flex; align-items: center; gap: 8px; margin: 4px 0;">
+                <hr style="flex: 1; border: none; border-top: 1px solid var(--border);">
+                <span style="font-size: 11px; text-transform: uppercase; color: var(--text-muted);">New Business Attributes (skip any you don't need)</span>
+                <hr style="flex: 1; border: none; border-top: 1px solid var(--border);">
+            </div>
+
+            <!-- Special Requirements -->
+            <fieldset style="border: 1px solid var(--border); border-radius: 8px; padding: 14px; margin: 0;">
+                <legend style="font-weight: 600; font-size: 13px; padding: 0 6px;">Special Requirements</legend>
+                <label style="display: block; font-size: 13px; margin-bottom: 4px;">Special Requirement IDs</label>
+                <input type="text" name="special_requirement_ids" placeholder="e.g. 1, 2, 3" style="width: 100%; padding: 8px; border: 1px solid var(--border); border-radius: 6px;">
+                <label style="display: block; font-size: 13px; margin-top: 10px; margin-bottom: 4px;">Position IDs <span style="color: var(--text-muted); font-weight: normal; font-size: 11px;">(blank = applies to all positions)</span></label>
+                <input type="text" name="sr_position_ids" placeholder="e.g. 10, 20" style="width: 100%; padding: 8px; border: 1px solid var(--border); border-radius: 6px;">
+            </fieldset>
+
+            <!-- Certifications -->
+            <fieldset style="border: 1px solid var(--border); border-radius: 8px; padding: 14px; margin: 0;">
+                <legend style="font-weight: 600; font-size: 13px; padding: 0 6px;">Certifications</legend>
+                <label style="display: block; font-size: 13px; margin-bottom: 4px;">Gig Position IDs</label>
+                <input type="text" name="cert_gig_position_ids" placeholder="e.g. 123, 456" style="width: 100%; padding: 8px; border: 1px solid var(--border); border-radius: 6px;">
+                <label style="display: flex; align-items: center; gap: 10px; margin-top: 10px; cursor: pointer;">
+                    <input type="checkbox" name="cert_mandatory" value="1" checked style="width: auto; margin: 0;">
+                    <span>Is Mandatory</span>
+                </label>
+            </fieldset>
+
+            <!-- Trainings -->
+            <fieldset style="border: 1px solid var(--border); border-radius: 8px; padding: 14px; margin: 0;">
+                <legend style="font-weight: 600; font-size: 13px; padding: 0 6px;">Trainings</legend>
+                <label style="display: block; font-size: 13px; margin-bottom: 4px;">Training IDs</label>
+                <input type="text" name="training_ids" placeholder="e.g. 456, 789" style="width: 100%; padding: 8px; border: 1px solid var(--border); border-radius: 6px;">
+                <label style="display: flex; align-items: center; gap: 10px; margin-top: 10px; cursor: pointer;">
+                    <input type="checkbox" name="training_mandatory" value="1" checked style="width: auto; margin: 0;">
+                    <span>Is Mandatory</span>
+                </label>
+            </fieldset>
+
+            <!-- Tasks -->
+            <fieldset style="border: 1px solid var(--border); border-radius: 8px; padding: 14px; margin: 0;">
+                <legend style="font-weight: 600; font-size: 13px; padding: 0 6px;">Tasks</legend>
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px;">
+                    <div>
+                        <label style="display: block; font-size: 13px; margin-bottom: 4px;">Clock-In IDs</label>
+                        <input type="text" name="clock_in_task_ids" placeholder="e.g. 789" style="width: 100%; padding: 8px; border: 1px solid var(--border); border-radius: 6px;">
+                    </div>
+                    <div>
+                        <label style="display: block; font-size: 13px; margin-bottom: 4px;">During IDs</label>
+                        <input type="text" name="during_task_ids" placeholder="e.g. 101" style="width: 100%; padding: 8px; border: 1px solid var(--border); border-radius: 6px;">
+                    </div>
+                    <div>
+                        <label style="display: block; font-size: 13px; margin-bottom: 4px;">Clock-Out IDs</label>
+                        <input type="text" name="clock_out_task_ids" placeholder="e.g. 102" style="width: 100%; padding: 8px; border: 1px solid var(--border); border-radius: 6px;">
+                    </div>
+                </div>
+                <label style="display: block; font-size: 13px; margin-top: 10px; margin-bottom: 4px;">Position IDs <span style="color: var(--text-muted); font-weight: normal; font-size: 11px;">(blank = applies to all positions)</span></label>
+                <input type="text" name="task_position_ids" placeholder="e.g. 10, 20" style="width: 100%; padding: 8px; border: 1px solid var(--border); border-radius: 6px;">
+            </fieldset>
+
+            <div style="display: flex; gap: 8px; justify-content: flex-end; margin-top: 8px;">
+                <a href="{{ url_for('index') }}" class="btn btn-outline">Back</a>
+                <button type="submit" class="btn btn-primary btn-lg">Generate Business CSVs →</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

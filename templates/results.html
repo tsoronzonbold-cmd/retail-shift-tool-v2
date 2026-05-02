@@ -66,6 +66,27 @@
         </div>
         {% endif %}
 
+        {% if has_sr_csv or has_cert_csv or has_training_csv or has_tasks_csv %}
+        <div style="flex-basis: 100%; background: #ecfdf5; border: 1px solid #6ee7b7; border-radius: 8px; padding: 14px;">
+            <div style="font-weight: 600; margin-bottom: 4px;">New Business Attribute Templates</div>
+            <div style="font-size: 13px; color: var(--text-muted); margin-bottom: 12px;">Generated from your configuration once Mode returned the new business IDs. Upload each to its Django importer.</div>
+            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                {% if has_sr_csv %}
+                <a href="{{ url_for('download_special_requirements') }}" class="btn btn-outline" style="flex: 1; min-width: 160px;">Download Special Requirements</a>
+                {% endif %}
+                {% if has_cert_csv %}
+                <a href="{{ url_for('download_certifications') }}" class="btn btn-outline" style="flex: 1; min-width: 160px;">Download Certifications</a>
+                {% endif %}
+                {% if has_training_csv %}
+                <a href="{{ url_for('download_trainings') }}" class="btn btn-outline" style="flex: 1; min-width: 160px;">Download Trainings</a>
+                {% endif %}
+                {% if has_tasks_csv %}
+                <a href="{{ url_for('download_tasks') }}" class="btn btn-outline" style="flex: 1; min-width: 160px;">Download Tasks</a>
+                {% endif %}
+            </div>
+        </div>
+        {% endif %}
+
         <div style="flex: 1; min-width: 200px; background: white; border: 1px solid #d1d5db; border-radius: 8px; padding: 16px;">
             <div style="font-weight: 600; margin-bottom: 4px;">{% if has_biz_csv %}Step 3{% else %}Download{% endif %}: Shift Import</div>
             <div style="font-size: 13px; color: var(--text-muted); margin-bottom: 12px;">
