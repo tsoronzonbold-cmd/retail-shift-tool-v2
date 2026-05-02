@@ -1,7 +1,11 @@
 -- Mode Report Query 3: Companies List
 -- Powers the partner search dropdown on the upload page.
--- Replaces redshift_client.get_companies().
 -- Lives inside the existing report (ac9b652e687f).
+-- Query token: eca03db2f4ec
+--
+-- Uses the same syntax pattern as business_check.sql / contact_lookup.sql:
+-- bare {{ name }} (no parameters. prefix), single-quoted, with a plain SQL
+-- OR-clause to handle empty input instead of a Liquid {% if %} block.
 
 {% form %}
 search:
@@ -9,14 +13,13 @@ search:
   default: ''
 {% endform %}
 
-SELECT
-    id,
-    name
+SELECT id, name
 FROM iw_backend_db.backend_company
 WHERE name IS NOT NULL
   AND name <> ''
-  {% if parameters.search %}
-  AND LOWER(name) LIKE '%' || LOWER({{ parameters.search }}) || '%'
-  {% endif %}
+  AND (
+    '{{ search }}' = ''
+    OR LOWER(name) LIKE '%' || LOWER('{{ search }}') || '%'
+  )
 ORDER BY name ASC
 LIMIT 1000

@@ -28,8 +28,8 @@ COMPANIES_QUERY_TOKEN = "eca03db2f4ec"  # Query 3: companies list
 BOOTSTRAP_QUERY_TOKEN = "d2b95ef75b11"  # Query 4: bootstrap partner
 
 # How long to poll Mode for results
-MAX_POLL_ATTEMPTS = 12
-POLL_INTERVAL = 5  # seconds
+MAX_POLL_ATTEMPTS = 30
+POLL_INTERVAL = 4  # seconds — total ceiling 2 min
 
 
 def is_available():
@@ -45,8 +45,13 @@ def _auth_header():
 def _run_report(parameters, query_token=None):
     """Run the Mode report and poll until results are ready.
 
-    Both queries (business check + contact lookup) live in one report.
-    Use query_token to select which query's CSV to return from the ZIP.
+    All four queries live inside one report. We fetch results via the
+    per-query endpoint (.../runs/{run}/query_runs/{qr}/results/content.csv)
+    rather than the report-level content.csv, because the report ZIP
+    occasionally omits queries (Mode's behavior — even successful runs
+    aren't guaranteed to land in the bundle).
+
+    Use query_token to select which query's results to return.
     Returns parsed CSV rows as list of dicts.
     """
     url = f"https://app.mode.com/api/{MODE_ORG}/reports/{REPORT_ID}/runs"
@@ -59,52 +64,48 @@ def _run_report(parameters, query_token=None):
     if not resp.ok:
         raise Exception(f"Mode API error {resp.status_code}: {resp.text[:200]}")
 
-    run_data = resp.json()
-    content_path = run_data.get("_links", {}).get("content", {}).get("href")
-    if not content_path:
-        raise Exception("Mode did not return a content URL")
+    run_token = resp.json().get("token")
+    if not run_token:
+        raise Exception("Mode did not return a run token")
 
-    content_url = content_path if content_path.startswith("http") else f"https://app.mode.com{content_path}"
-
-    for attempt in range(MAX_POLL_ATTEMPTS):
+    # Poll the run itself until it succeeds
+    run_url = f"{url}/{run_token}"
+    auth = {"Authorization": _auth_header()}
+    state = None
+    for _ in range(MAX_POLL_ATTEMPTS):
         time.sleep(POLL_INTERVAL)
-        content_resp = requests.get(content_url, headers={"Authorization": _auth_header()})
+        run_resp = requests.get(run_url, headers=auth)
+        run_data = run_resp.json()
+        state = run_data.get("state")
+        if state in ("succeeded", "failed", "cancelled"):
+            break
 
-        if content_resp.status_code == 200:
-            raw = content_resp.content
+    if state != "succeeded":
+        raise Exception(f"Mode run did not succeed (state={state})")
 
-            # Mode returns a ZIP with one CSV per query
-            if raw[:2] == b"PK":
-                zf = zipfile.ZipFile(io.BytesIO(raw))
-                csv_names = [n for n in zf.namelist() if n.endswith(".csv")]
+    # Find the query_run that matches our query_token, then fetch its CSV
+    qr_path = run_data["_links"]["query_runs"]["href"]
+    qr_url = qr_path if qr_path.startswith("http") else f"https://app.mode.com{qr_path}"
+    qr_data = requests.get(qr_url, headers=auth).json()
 
-                # Pick the right CSV by query token
-                target = None
-                if query_token:
-                    target = next((n for n in csv_names if query_token in n), None)
-                if not target and csv_names:
-                    target = csv_names[0]
+    query_runs = qr_data.get("_embedded", {}).get("query_runs", [])
+    target = None
+    if query_token:
+        target = next((q for q in query_runs if q.get("query_token") == query_token), None)
+    if not target and query_runs:
+        target = query_runs[0]
+    if not target:
+        raise Exception("Mode returned no query_runs for this report")
 
-                if target:
-                    csv_text = zf.read(target).decode("utf-8-sig")
-                    clean = csv_text.replace("\r\n", "\n").replace("\r", "\n")
-                    return list(csv.DictReader(io.StringIO(clean)))
+    result_path = target["_links"]["result"]["href"]
+    csv_url = f"https://app.mode.com{result_path}/content.csv"
+    csv_resp = requests.get(csv_url, headers=auth)
+    if not csv_resp.ok:
+        raise Exception(f"Mode CSV fetch failed: {csv_resp.status_code} {csv_resp.text[:200]}")
 
-            # Raw CSV fallback
-            text = content_resp.text
-            if "," in text and "\n" in text and text[:2] != "PK":
-                clean = text.replace("\r\n", "\n").replace("\r", "\n")
-                return list(csv.DictReader(io.StringIO(clean)))
-
-            # JSON status — keep polling
-            try:
-                data = content_resp.json()
-                if data.get("state") == "succeeded" or data.get("completed_at"):
-                    continue
-            except Exception:
-                pass
-
-    raise Exception(f"Mode report timed out after {MAX_POLL_ATTEMPTS * POLL_INTERVAL}s")
+    csv_text = csv_resp.content.decode("utf-8-sig")
+    clean = csv_text.replace("\r\n", "\n").replace("\r", "\n")
+    return list(csv.DictReader(io.StringIO(clean)))
 
 
 def _escape_sql(value):
