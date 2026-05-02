@@ -166,9 +166,9 @@ def upload():
 
     detected_mapping = csv_processor.auto_detect_columns(list(df.columns))
 
-    # Let Claude fill gaps when auto-detect misses critical columns (e.g.
-    # "Club#" instead of "Store#") or when overall detection is weak.
-    # maybe_ai_map decides internally whether to call Claude.
+    # Let the AI fill gaps when auto-detect misses critical columns
+    # (e.g. "Club#" instead of "Store#") or when overall detection is weak.
+    # maybe_ai_map decides internally whether to call the AI.
     missing_critical = [c for c in ai_mapper.CRITICAL_COLUMNS if c not in detected_mapping]
     needs_ai = bool(missing_critical) or len(detected_mapping) < ai_mapper.MIN_AUTO_DETECT
     if needs_ai:
@@ -194,11 +194,11 @@ def upload():
                 parts.append(f"~{k}: {old!r}→{new!r}{why}")
             category = "success" if confidence == "high" else "warning"
             conf_str = f" (confidence: {confidence})" if confidence else ""
-            flash(f"Claude AI fixed {len(ai_added) + len(ai_changed)} column(s){conf_str}: {'; '.join(parts)}", category)
+            flash(f"AI fixed {len(ai_added) + len(ai_changed)} column(s){conf_str}: {'; '.join(parts)}", category)
         elif status == "no_key":
-            flash(f"⚠ Claude AI is offline — ANTHROPIC_API_KEY not set. Auto-detect missed: {', '.join(missing_critical) or f'only {len(detected_mapping)} cols'}. Check the Claude pill in the header.", "error")
+            flash(f"⚠ AI is offline — OPENAI_API_KEY not set. Auto-detect missed: {', '.join(missing_critical) or f'only {len(detected_mapping)} cols'}. Check the AI pill in the header.", "error")
         elif status == "error":
-            flash(f"⚠ Claude AI call failed — {ai_result.get('error', 'unknown error')}. Falling back to regex (some columns may be wrong). Hover the Claude pill for details.", "error")
+            flash(f"⚠ AI call failed — {ai_result.get('error', 'unknown error')}. Falling back to regex (some columns may be wrong). Hover the AI pill for details.", "error")
 
     final_mapping = {**detected_mapping, **{k: v for k, v in col_mapping.items() if v in df.columns}}
     rows, raw_columns = csv_processor.parse_upload(file_content, filename, final_mapping)
@@ -602,44 +602,50 @@ def api_companies():
         return jsonify({"error": str(e)}), 500
 
 
-_claude_status_cache = {"ok": None, "checked_at": 0.0, "error": None, "key_present": False}
-CLAUDE_STATUS_TTL = 60  # seconds
+_ai_status_cache = {"ok": None, "checked_at": 0.0, "error": None, "key_present": False}
+AI_STATUS_TTL = 60  # seconds
 
 
-@app.route("/api/claude-status")
-def api_claude_status():
-    """Live health check for the Claude API. Cached for CLAUDE_STATUS_TTL."""
+@app.route("/api/ai-status")
+def api_ai_status():
+    """Live health check for the AI provider (OpenAI). Cached for AI_STATUS_TTL."""
     now = time.time()
     force = request.args.get("force") == "1"
-    if not force and _claude_status_cache["ok"] is not None and \
-            now - _claude_status_cache["checked_at"] < CLAUDE_STATUS_TTL:
+    if not force and _ai_status_cache["ok"] is not None and \
+            now - _ai_status_cache["checked_at"] < AI_STATUS_TTL:
         return jsonify({
-            "ok": _claude_status_cache["ok"],
-            "key_present": _claude_status_cache["key_present"],
-            "error": _claude_status_cache["error"],
+            "ok": _ai_status_cache["ok"],
+            "key_present": _ai_status_cache["key_present"],
+            "error": _ai_status_cache["error"],
             "cached": True,
-            "checked_at": _claude_status_cache["checked_at"],
+            "checked_at": _ai_status_cache["checked_at"],
         })
 
-    api_key = os.environ.get("ANTHROPIC_API_KEY", "")
+    api_key = os.environ.get("OPENAI_API_KEY") or os.environ.get("GPT_KEY", "")
     if not api_key:
-        _claude_status_cache.update(ok=False, checked_at=now, error="ANTHROPIC_API_KEY not set", key_present=False)
-        return jsonify({"ok": False, "key_present": False, "error": "ANTHROPIC_API_KEY not set", "cached": False, "checked_at": now})
+        _ai_status_cache.update(ok=False, checked_at=now, error="OPENAI_API_KEY (or GPT_KEY) not set", key_present=False)
+        return jsonify({"ok": False, "key_present": False, "error": "OPENAI_API_KEY (or GPT_KEY) not set", "cached": False, "checked_at": now})
 
     try:
-        import anthropic
-        client = anthropic.Anthropic(api_key=api_key)
-        client.messages.create(
-            model="claude-haiku-4-5-20251001",
+        from openai import OpenAI
+        client = OpenAI(api_key=api_key)
+        client.chat.completions.create(
+            model="gpt-4o-mini",
             max_tokens=1,
             messages=[{"role": "user", "content": "ping"}],
         )
-        _claude_status_cache.update(ok=True, checked_at=now, error=None, key_present=True)
+        _ai_status_cache.update(ok=True, checked_at=now, error=None, key_present=True)
         return jsonify({"ok": True, "key_present": True, "error": None, "cached": False, "checked_at": now})
     except Exception as e:
         msg = str(e)[:200]
-        _claude_status_cache.update(ok=False, checked_at=now, error=msg, key_present=True)
+        _ai_status_cache.update(ok=False, checked_at=now, error=msg, key_present=True)
         return jsonify({"ok": False, "key_present": True, "error": msg, "cached": False, "checked_at": now})
+
+
+# Keep the old route name as an alias for backwards compat (header pill JS may still call it)
+@app.route("/api/claude-status")
+def api_claude_status_alias():
+    return api_ai_status()
 
 
 @app.route("/api/search-business")

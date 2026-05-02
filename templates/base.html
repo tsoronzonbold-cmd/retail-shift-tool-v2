@@ -13,11 +13,11 @@
             <nav style="display: flex; align-items: center; gap: 16px;">
                 <a href="{{ url_for('index') }}">Upload</a>
                 <a href="{{ url_for('results') }}">Results</a>
-                <span id="claude-status-pill"
+                <span id="ai-status-pill"
                       title="Click to re-check"
                       style="display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 999px; font-size: 12px; font-weight: 600; background: #e5e7eb; color: #374151; cursor: pointer; user-select: none;">
-                    <span id="claude-status-dot" style="display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #9ca3af;"></span>
-                    <span id="claude-status-text">Claude: checking…</span>
+                    <span id="ai-status-dot" style="display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #9ca3af;"></span>
+                    <span id="ai-status-text">AI: checking…</span>
                 </span>
             </nav>
         </div>
@@ -25,11 +25,11 @@
 
     <script>
     (function () {
-        const STATUS_URL = "{{ url_for('api_claude_status') }}";
+        const STATUS_URL = "{{ url_for('api_ai_status') }}";
         const POLL_MS = 60000;
-        const pill = document.getElementById('claude-status-pill');
-        const dot = document.getElementById('claude-status-dot');
-        const text = document.getElementById('claude-status-text');
+        const pill = document.getElementById('ai-status-pill');
+        const dot = document.getElementById('ai-status-dot');
+        const text = document.getElementById('ai-status-text');
 
         function render(state, label, tooltip) {
             const palette = {
@@ -46,20 +46,20 @@
         }
 
         async function check(force) {
-            render('pending', 'Claude: checking…', 'Pinging Claude API…');
+            render('pending', 'AI: checking…', 'Pinging OpenAI…');
             try {
                 const url = force ? STATUS_URL + '?force=1' : STATUS_URL;
                 const r = await fetch(url);
                 const data = await r.json();
                 if (data.ok) {
-                    render('ok', 'Claude: live', 'Claude API is reachable. Click to re-check.');
+                    render('ok', 'AI: live', 'OpenAI is reachable. Click to re-check.');
                 } else if (!data.key_present) {
-                    render('missing', 'Claude: no key', 'ANTHROPIC_API_KEY is not set. Click to re-check.');
+                    render('missing', 'AI: no key', 'OPENAI_API_KEY is not set. Click to re-check.');
                 } else {
-                    render('down', 'Claude: down', (data.error || 'API check failed') + '\nClick to re-check.');
+                    render('down', 'AI: down', (data.error || 'API check failed') + '\nClick to re-check.');
                 }
             } catch (e) {
-                render('down', 'Claude: down', 'Status endpoint unreachable. Click to re-check.');
+                render('down', 'AI: down', 'Status endpoint unreachable. Click to re-check.');
             }
         }
 
