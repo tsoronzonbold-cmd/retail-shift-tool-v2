@@ -21,9 +21,11 @@ MODE_API_KEY = os.environ.get("MODE_API_KEY", "")
 MODE_API_SECRET = os.environ.get("MODE_API_SECRET", "")
 MODE_ORG = "instawork"
 
-REPORT_ID = "ac9b652e687f"  # Single report with both queries
-BUSINESS_QUERY_TOKEN = "6ec26c5336ee"  # Query 1: business check
-CONTACTS_QUERY_TOKEN = "e62e61be97f5"  # Query 2: contact lookup
+REPORT_ID = "ac9b652e687f"  # Single report with all queries
+BUSINESS_QUERY_TOKEN = "6ec26c5336ee"   # Query 1: business check
+CONTACTS_QUERY_TOKEN = "e62e61be97f5"   # Query 2: contact lookup
+COMPANIES_QUERY_TOKEN = ""              # Query 3: companies list — fill once added in Mode
+BOOTSTRAP_QUERY_TOKEN = ""              # Query 4: bootstrap partner — fill once added in Mode
 
 # How long to poll Mode for results
 MAX_POLL_ATTEMPTS = 12
@@ -179,6 +181,99 @@ def match_contacts(company_id, business_ids=None, phone_numbers=None, emails=Non
     }
 
     return _run_report(params, query_token=CONTACTS_QUERY_TOKEN)
+
+
+def companies_query_available():
+    """True iff the COMPANIES query token has been wired up in Mode."""
+    return is_available() and bool(COMPANIES_QUERY_TOKEN)
+
+
+def bootstrap_query_available():
+    """True iff the BOOTSTRAP query token has been wired up in Mode."""
+    return is_available() and bool(BOOTSTRAP_QUERY_TOKEN)
+
+
+def get_companies(search=None, configured_ids=None):
+    """List Instawork companies via Mode (replaces redshift_client.get_companies).
+
+    Returns list of dicts: {id, name, configured (bool)}.
+    Filters out empty names. Sorted by name.
+    """
+    if not companies_query_available():
+        return []
+
+    params = {
+        "company_id": "",
+        "business_names": "",
+        "addresses": "",
+        "store_ids": "",
+        "business_ids": "",
+        "names": "",
+        "emails": "",
+        "phone_numbers": "",
+        "search": search or "",
+    }
+    rows = _run_report(params, query_token=COMPANIES_QUERY_TOKEN)
+
+    configured_set = set(str(c) for c in (configured_ids or []))
+    out = []
+    for r in rows:
+        cid = str(r.get("id") or r.get("company_id") or "").strip()
+        name = (r.get("name") or r.get("company_name") or "").strip()
+        if not cid or not name:
+            continue
+        out.append({
+            "id": int(cid) if cid.isdigit() else cid,
+            "name": name,
+            "configured": cid in configured_set,
+        })
+    return out
+
+
+def bootstrap_partner(company_id):
+    """Pull company name + most-recent gigtemplate defaults from Mode.
+
+    Replaces the two redshift_client.execute_query() calls used during
+    auto-bootstrap and the /bootstrap-partner route. Returns a dict with
+    every field the partner_config setup needs, or {} if not found / not
+    available.
+    """
+    if not bootstrap_query_available() or not company_id:
+        return {}
+
+    params = {
+        "company_id": str(company_id),
+        "business_names": "",
+        "addresses": "",
+        "store_ids": "",
+        "business_ids": "",
+        "names": "",
+        "emails": "",
+        "phone_numbers": "",
+        "search": "",
+    }
+    rows = _run_report(params, query_token=BOOTSTRAP_QUERY_TOKEN)
+    if not rows:
+        return {}
+
+    r = rows[0]
+
+    def _int_or_none(v):
+        try:
+            return int(v) if v not in (None, "") else None
+        except (ValueError, TypeError):
+            return None
+
+    return {
+        "company_name": (r.get("company_name") or "").strip(),
+        "default_contact_id": _int_or_none(r.get("contact_id")),
+        "default_creator_id": _int_or_none(r.get("created_by_id")),
+        "default_position_id": _int_or_none(r.get("position_fk_id")) or 29,
+        "default_position_tiering_id": _int_or_none(r.get("position_tiering_id")),
+        "default_parking": _int_or_none(r.get("has_parking")) if r.get("has_parking") not in (None, "") else 2,
+        "default_position_instructions": (r.get("instructions") or "").strip(),
+        "default_attire": (r.get("custom_attire_requirements") or "").strip(),
+    }
 
 
 def get_businesses_for_company(company_id, parsed_rows):

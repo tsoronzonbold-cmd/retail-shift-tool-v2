@@ -105,11 +105,19 @@ def index():
     configured.sort(key=lambda c: c["name"])
     configured_ids = [int(cid) for cid in configs.keys()]
 
+    # Mode is the authoritative source. Fall back to Redshift only while
+    # the COMPANIES_QUERY_TOKEN isn't wired up yet.
     all_companies = []
-    try:
-        all_companies = redshift_client.get_companies(configured_ids=configured_ids)
-    except Exception:
-        pass
+    if mode_client.companies_query_available():
+        try:
+            all_companies = mode_client.get_companies(configured_ids=configured_ids)
+        except Exception:
+            pass
+    if not all_companies:
+        try:
+            all_companies = redshift_client.get_companies(configured_ids=configured_ids)
+        except Exception:
+            pass
 
     return render_template(
         "upload.html",
@@ -137,31 +145,48 @@ def upload():
     filename = file.filename
     cfg = pc.get_config(company_id)
 
-    # Auto-bootstrap unconfigured partners from Redshift on first use (skip on Replit)
+    # Auto-bootstrap unconfigured partners. Prefer Mode (works on Replit),
+    # fall back to direct Redshift only while BOOTSTRAP_QUERY_TOKEN isn't
+    # set yet.
     if not cfg.get("name"):
-        try:  # noqa: this block is optional — if Redshift is unavailable, we just skip
-            rows_q = redshift_client.execute_query(
-                f"SELECT name FROM iw_backend_db.backend_company WHERE id = {int(company_id)}"
-            )
-            if rows_q:
-                cfg["name"] = rows_q[0]["name"]
-            tmpls = redshift_client.execute_query(f"""
-                SELECT contact_id, created_by_id, position_fk_id, position_tiering_id,
-                       has_parking, instructions, custom_attire_requirements
-                FROM iw_backend_db.backend_gigtemplate
-                WHERE company_id = {int(company_id)}
-                  AND (contact_id IS NOT NULL OR instructions IS NOT NULL)
-                ORDER BY created_at DESC LIMIT 1
-            """)
-            if tmpls:
-                t = tmpls[0]
-                cfg["default_contact_id"] = t.get("contact_id") or cfg.get("default_contact_id")
-                cfg["default_creator_id"] = t.get("created_by_id") or cfg.get("default_creator_id")
-                cfg["default_position_id"] = t.get("position_fk_id") or 29
-                cfg["default_position_tiering_id"] = t.get("position_tiering_id")
-                cfg["default_parking"] = t.get("has_parking") if t.get("has_parking") is not None else 2
-                cfg["default_position_instructions"] = t.get("instructions") or ""
-                cfg["default_attire"] = t.get("custom_attire_requirements") or ""
+        try:
+            bootstrap = {}
+            if mode_client.bootstrap_query_available():
+                bootstrap = mode_client.bootstrap_partner(company_id)
+
+            if bootstrap:
+                cfg["name"] = bootstrap.get("company_name") or cfg.get("name", "")
+                for key in (
+                    "default_contact_id", "default_creator_id", "default_position_id",
+                    "default_position_tiering_id", "default_parking",
+                    "default_position_instructions", "default_attire",
+                ):
+                    if bootstrap.get(key) not in (None, ""):
+                        cfg[key] = bootstrap[key]
+            else:
+                # Redshift fallback (legacy — remove once Mode bootstrap query is live)
+                rows_q = redshift_client.execute_query(
+                    f"SELECT name FROM iw_backend_db.backend_company WHERE id = {int(company_id)}"
+                )
+                if rows_q:
+                    cfg["name"] = rows_q[0]["name"]
+                tmpls = redshift_client.execute_query(f"""
+                    SELECT contact_id, created_by_id, position_fk_id, position_tiering_id,
+                           has_parking, instructions, custom_attire_requirements
+                    FROM iw_backend_db.backend_gigtemplate
+                    WHERE company_id = {int(company_id)}
+                      AND (contact_id IS NOT NULL OR instructions IS NOT NULL)
+                    ORDER BY created_at DESC LIMIT 1
+                """)
+                if tmpls:
+                    t = tmpls[0]
+                    cfg["default_contact_id"] = t.get("contact_id") or cfg.get("default_contact_id")
+                    cfg["default_creator_id"] = t.get("created_by_id") or cfg.get("default_creator_id")
+                    cfg["default_position_id"] = t.get("position_fk_id") or 29
+                    cfg["default_position_tiering_id"] = t.get("position_tiering_id")
+                    cfg["default_parking"] = t.get("has_parking") if t.get("has_parking") is not None else 2
+                    cfg["default_position_instructions"] = t.get("instructions") or ""
+                    cfg["default_attire"] = t.get("custom_attire_requirements") or ""
             pc.save_config(company_id, cfg)
             flash(f"Auto-configured new partner: {cfg['name']}", "success")
         except Exception:
@@ -606,7 +631,10 @@ def configure_new_businesses():
 @app.route("/api/companies")
 def api_companies():
     try:
-        companies = redshift_client.get_companies()
+        if mode_client.companies_query_available():
+            companies = mode_client.get_companies()
+        else:
+            companies = redshift_client.get_companies()
         return jsonify(companies)
     except Exception as e:
         return jsonify({"error": str(e)}), 500
@@ -677,35 +705,54 @@ def bootstrap_partner():
         return redirect(url_for("index"))
 
     try:
-        rows = redshift_client.execute_query(
-            f"SELECT id, name FROM iw_backend_db.backend_company WHERE id = {int(company_id)}"
-        )
-        if not rows:
-            flash(f"Company {company_id} not found in Redshift.", "error")
-            return redirect(url_for("index"))
-        company_name = rows[0]["name"]
+        # Mode-first: pull company name + most-recent gigtemplate defaults in one query.
+        # Fall back to direct Redshift only while the BOOTSTRAP_QUERY_TOKEN
+        # isn't wired up.
+        bootstrap = {}
+        if mode_client.bootstrap_query_available():
+            bootstrap = mode_client.bootstrap_partner(company_id)
 
-        tmpls = redshift_client.execute_query(f"""
-            SELECT contact_id, created_by_id, position_fk_id, position_tiering_id,
-                   has_parking, instructions, custom_attire_requirements
-            FROM iw_backend_db.backend_gigtemplate
-            WHERE company_id = {int(company_id)}
-              AND (contact_id IS NOT NULL OR instructions IS NOT NULL OR custom_attire_requirements IS NOT NULL)
-            ORDER BY created_at DESC
-            LIMIT 1
-        """)
+        if bootstrap:
+            company_name = bootstrap.get("company_name") or ""
+        else:
+            rows = redshift_client.execute_query(
+                f"SELECT id, name FROM iw_backend_db.backend_company WHERE id = {int(company_id)}"
+            )
+            if not rows:
+                flash(f"Company {company_id} not found.", "error")
+                return redirect(url_for("index"))
+            company_name = rows[0]["name"]
+
+            tmpls = redshift_client.execute_query(f"""
+                SELECT contact_id, created_by_id, position_fk_id, position_tiering_id,
+                       has_parking, instructions, custom_attire_requirements
+                FROM iw_backend_db.backend_gigtemplate
+                WHERE company_id = {int(company_id)}
+                  AND (contact_id IS NOT NULL OR instructions IS NOT NULL OR custom_attire_requirements IS NOT NULL)
+                ORDER BY created_at DESC
+                LIMIT 1
+            """)
+            if tmpls:
+                t = tmpls[0]
+                bootstrap = {
+                    "default_contact_id": t.get("contact_id"),
+                    "default_creator_id": t.get("created_by_id"),
+                    "default_position_id": t.get("position_fk_id") or 29,
+                    "default_position_tiering_id": t.get("position_tiering_id"),
+                    "default_parking": t.get("has_parking") if t.get("has_parking") is not None else 2,
+                    "default_position_instructions": t.get("instructions") or "",
+                    "default_attire": t.get("custom_attire_requirements") or "",
+                }
 
         cfg = pc.get_config(company_id)
         cfg["name"] = company_name
-        if tmpls:
-            t = tmpls[0]
-            cfg["default_contact_id"] = t.get("contact_id") or cfg.get("default_contact_id")
-            cfg["default_creator_id"] = t.get("created_by_id") or cfg.get("default_creator_id")
-            cfg["default_position_id"] = t.get("position_fk_id") or cfg.get("default_position_id", 29)
-            cfg["default_position_tiering_id"] = t.get("position_tiering_id")
-            cfg["default_parking"] = t.get("has_parking") if t.get("has_parking") is not None else cfg.get("default_parking", 2)
-            cfg["default_position_instructions"] = t.get("instructions") or cfg.get("default_position_instructions", "")
-            cfg["default_attire"] = t.get("custom_attire_requirements") or cfg.get("default_attire", "")
+        for key in (
+            "default_contact_id", "default_creator_id", "default_position_id",
+            "default_position_tiering_id", "default_parking",
+            "default_position_instructions", "default_attire",
+        ):
+            if bootstrap.get(key) not in (None, ""):
+                cfg[key] = bootstrap[key]
 
         local_default = contacts_db.get_default_contact(company_id)
         if local_default:
