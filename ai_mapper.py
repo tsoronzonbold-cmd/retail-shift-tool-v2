@@ -159,21 +159,26 @@ Only return valid JSON. No prose, no markdown fences."""
 
 
 def maybe_ai_map(df_columns, sample_rows, auto_detected, partner_name=""):
-    """Call AI when auto-detect missed something important.
+    """Call AI when auto-detect missed something important, then prefer
+    Claude's mappings over the regex output on any overlap.
 
     Triggers on either:
       - Total auto-detected count < MIN_AUTO_DETECT, or
-      - Any critical column (store_number, retailer, start_date, start_time)
-        wasn't detected — these break the pipeline regardless of total count.
-        Catches cases like 'Club#' that regex doesn't recognize.
+      - Any critical column (store_number, retailer, start_date,
+        start_time) wasn't detected — these break the pipeline.
 
     Returns a dict:
       {
-        "mapping": final merged mapping (auto-detected fills win over AI),
-        "ai_keys": list of keys that AI added (i.e. regex missed them),
-        "confidence": Claude's confidence, or None if AI didn't run,
-        "reasoning": Claude's per-field reasoning for keys it filled,
-        "notes": Claude's optional notes,
+        "mapping":     final merged mapping (AI wins over regex on overlap),
+        "ai_keys":     keys AI returned (whether new or overriding),
+        "ai_added":    keys AI returned that regex missed,
+        "ai_changed":  list of (key, old_csv_col, new_csv_col) where AI
+                       disagreed with regex,
+        "confidence":  Claude's overall confidence, or None,
+        "reasoning":   Claude's per-field reasoning,
+        "notes":       Claude's free-form observations,
+        "status":      "ok" | "skipped" | "no_key" | "error"
+        "error":       short error message if status == "error" / "no_key"
       }
     """
     missing_critical = [c for c in CRITICAL_COLUMNS if c not in auto_detected]
@@ -181,20 +186,17 @@ def maybe_ai_map(df_columns, sample_rows, auto_detected, partner_name=""):
 
     if not missing_critical and not low_count:
         return {
-            "mapping": auto_detected,
-            "ai_keys": [],
-            "confidence": None,
-            "reasoning": {},
-            "notes": "",
+            "mapping": auto_detected, "ai_keys": [], "ai_added": [],
+            "ai_changed": [], "confidence": None, "reasoning": {},
+            "notes": "", "status": "skipped", "error": "",
         }
 
     if not is_available():
         return {
-            "mapping": auto_detected,
-            "ai_keys": [],
-            "confidence": None,
-            "reasoning": {},
-            "notes": "",
+            "mapping": auto_detected, "ai_keys": [], "ai_added": [],
+            "ai_changed": [], "confidence": None, "reasoning": {},
+            "notes": "", "status": "no_key",
+            "error": "ANTHROPIC_API_KEY not set on the server",
         }
 
     reason_log = []
@@ -208,17 +210,37 @@ def maybe_ai_map(df_columns, sample_rows, auto_detected, partner_name=""):
     ai_mapping = ai_result["mapping"]
     print(f"[AI Mapper] confidence={ai_result['confidence']} mapped={list(ai_mapping.keys())}")
 
-    # Regex (auto_detected) wins over AI on overlap. AI only fills GAPS.
-    # If user trusts AI more on a particular key, the reasoning surfaced
-    # to the UI lets them spot mismatches.
-    merged = {**ai_mapping, **auto_detected}
-    ai_keys = [k for k in ai_mapping if k not in auto_detected]
-    relevant_reasoning = {k: ai_result["reasoning"].get(k, "") for k in ai_keys}
+    # If Claude returned nothing AND we triggered AI for a real reason,
+    # something went wrong (low credit, network, parse failure). Surface
+    # it so Ramses doesn't silently get the regex result.
+    if not ai_mapping:
+        return {
+            "mapping": auto_detected, "ai_keys": [], "ai_added": [],
+            "ai_changed": [], "confidence": None, "reasoning": {},
+            "notes": ai_result.get("notes", ""), "status": "error",
+            "error": "Claude returned no mapping — likely API error "
+                     "(check the Claude status pill in the header).",
+        }
+
+    # AI wins over regex on overlap. Ramses asked for this — regex makes
+    # mistakes, Claude's reasoning + confidence give us a paper trail.
+    merged = {**auto_detected, **ai_mapping}
+    ai_keys = list(ai_mapping.keys())
+    ai_added = [k for k in ai_keys if k not in auto_detected]
+    ai_changed = [
+        (k, auto_detected[k], ai_mapping[k])
+        for k in ai_keys
+        if k in auto_detected and auto_detected[k] != ai_mapping[k]
+    ]
 
     return {
         "mapping": merged,
         "ai_keys": ai_keys,
+        "ai_added": ai_added,
+        "ai_changed": ai_changed,
         "confidence": ai_result["confidence"],
-        "reasoning": relevant_reasoning,
+        "reasoning": ai_result["reasoning"],
         "notes": ai_result["notes"],
+        "status": "ok",
+        "error": "",
     }

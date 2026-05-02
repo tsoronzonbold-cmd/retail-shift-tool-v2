@@ -172,29 +172,33 @@ def upload():
     missing_critical = [c for c in ai_mapper.CRITICAL_COLUMNS if c not in detected_mapping]
     needs_ai = bool(missing_critical) or len(detected_mapping) < ai_mapper.MIN_AUTO_DETECT
     if needs_ai:
-        if ai_mapper.is_available():
-            sample = df.head(10).to_dict("records")
-            ai_result = ai_mapper.maybe_ai_map(
-                list(df.columns), sample, detected_mapping,
-                partner_name=cfg.get("name", "")
-            )
-            detected_mapping = ai_result["mapping"]
-            ai_keys = ai_result["ai_keys"]
-            confidence = ai_result.get("confidence")
-            reasoning = ai_result.get("reasoning") or {}
-            if ai_keys:
-                # Per-key reasoning (e.g. "store_number ← Club# (BJ's calls them clubs)")
-                pretty = ", ".join(
-                    f"{k}={detected_mapping[k]!r}" + (f" ({reasoning[k]})" if reasoning.get(k) else "")
-                    for k in sorted(ai_keys)
-                )
-                category = "info" if confidence in (None, "high") else "warning"
-                conf_str = f" — confidence: {confidence}" if confidence else ""
-                flash(f"Claude filled {len(ai_keys)} column(s){conf_str}: {pretty}", category)
-        elif missing_critical:
-            flash(f"Auto-detect missed critical columns ({', '.join(missing_critical)}). Add ANTHROPIC_API_KEY to enable AI column mapping.", "info")
-        else:
-            flash(f"Auto-detect only matched {len(detected_mapping)} columns. Add ANTHROPIC_API_KEY secret to enable AI column mapping.", "info")
+        sample = df.head(10).to_dict("records")
+        ai_result = ai_mapper.maybe_ai_map(
+            list(df.columns), sample, detected_mapping,
+            partner_name=cfg.get("name", "")
+        )
+        detected_mapping = ai_result["mapping"]
+        status = ai_result.get("status")
+        confidence = ai_result.get("confidence")
+        reasoning = ai_result.get("reasoning") or {}
+        ai_added = ai_result.get("ai_added", [])
+        ai_changed = ai_result.get("ai_changed", [])
+
+        if status == "ok" and (ai_added or ai_changed):
+            parts = []
+            for k in sorted(ai_added):
+                why = f" ({reasoning[k]})" if reasoning.get(k) else ""
+                parts.append(f"+{k}={detected_mapping[k]!r}{why}")
+            for k, old, new in ai_changed:
+                why = f" ({reasoning[k]})" if reasoning.get(k) else ""
+                parts.append(f"~{k}: {old!r}→{new!r}{why}")
+            category = "success" if confidence == "high" else "warning"
+            conf_str = f" (confidence: {confidence})" if confidence else ""
+            flash(f"Claude AI fixed {len(ai_added) + len(ai_changed)} column(s){conf_str}: {'; '.join(parts)}", category)
+        elif status == "no_key":
+            flash(f"⚠ Claude AI is offline — ANTHROPIC_API_KEY not set. Auto-detect missed: {', '.join(missing_critical) or f'only {len(detected_mapping)} cols'}. Check the Claude pill in the header.", "error")
+        elif status == "error":
+            flash(f"⚠ Claude AI call failed — {ai_result.get('error', 'unknown error')}. Falling back to regex (some columns may be wrong). Hover the Claude pill for details.", "error")
 
     final_mapping = {**detected_mapping, **{k: v for k, v in col_mapping.items() if v in df.columns}}
     rows, raw_columns = csv_processor.parse_upload(file_content, filename, final_mapping)
