@@ -8,6 +8,10 @@ REDSHIFT_REGION = "us-west-2"
 # specific dbuser (same one the awslabs MCP server uses).
 REDSHIFT_DB_USER = os.environ.get("REDSHIFT_DB_USER", "cursor_analytics")
 
-# Flask
-SECRET_KEY = os.environ.get("SECRET_KEY", "dev-secret-key-change-in-prod")
+# Flask — accept either SECRET_KEY or SESSION_SECRET (Replit's default name)
+SECRET_KEY = (
+    os.environ.get("SECRET_KEY")
+    or os.environ.get("SESSION_SECRET")
+    or "dev-secret-key-change-in-prod"
+)
 UPLOAD_FOLDER = "/tmp/retail-shift-uploads"
