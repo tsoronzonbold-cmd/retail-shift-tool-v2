@@ -149,8 +149,8 @@ def parse_upload(file_content, filename, column_mapping):
     df = df.dropna(how="all")
 
     rows = []
-    for _, row in df.iterrows():
-        parsed = {}
+    for input_idx, (_, row) in enumerate(df.iterrows()):
+        parsed = {"_input_order": input_idx}
         for norm_key, csv_col in column_mapping.items():
             if csv_col in df.columns:
                 val = row[csv_col]
@@ -530,6 +530,13 @@ def generate_bulk_import_csv(all_rows, partner_config, task_opts=None):
     is_task = task_opts.get("is_task", False)
     is_anywhere = task_opts.get("is_anywhere", False)
     company_id = partner_config.get("_company_id", "")
+
+    # Preserve original CSV row order — Mode-matched rows can come back
+    # appended to the end of the matched list, but Ramses wants the output
+    # in whatever order the partner sent. Falls back to current order when
+    # _input_order isn't set (recheck path, tests).
+    if all_rows and "_input_order" in all_rows[0]:
+        all_rows = sorted(all_rows, key=lambda r: r.get("_input_order", 0))
 
     # Build booking group map from region/team column
     region_map = {}

@@ -163,14 +163,24 @@ def upload():
 
     detected_mapping = csv_processor.auto_detect_columns(list(df.columns))
 
-    # If auto-detect matched < MIN_AUTO_DETECT columns, use Claude to fill gaps
-    if len(detected_mapping) < ai_mapper.MIN_AUTO_DETECT:
+    # Let Claude fill gaps when auto-detect misses critical columns (e.g.
+    # "Club#" instead of "Store#") or when overall detection is weak.
+    # maybe_ai_map decides internally whether to call Claude.
+    missing_critical = [c for c in ai_mapper.CRITICAL_COLUMNS if c not in detected_mapping]
+    needs_ai = bool(missing_critical) or len(detected_mapping) < ai_mapper.MIN_AUTO_DETECT
+    if needs_ai:
         if ai_mapper.is_available():
             sample = df.head(5).to_dict("records")
+            before = set(detected_mapping)
             detected_mapping = ai_mapper.maybe_ai_map(
                 list(df.columns), sample, detected_mapping,
                 partner_name=cfg.get("name", "")
             )
+            new_keys = set(detected_mapping) - before
+            if new_keys:
+                flash(f"Claude AI mapped {len(new_keys)} additional column(s): {', '.join(sorted(new_keys))}", "info")
+        elif missing_critical:
+            flash(f"Auto-detect missed critical columns ({', '.join(missing_critical)}). Add ANTHROPIC_API_KEY to enable AI column mapping.", "info")
         else:
             flash(f"Auto-detect only matched {len(detected_mapping)} columns. Add ANTHROPIC_API_KEY secret to enable AI column mapping.", "info")
 

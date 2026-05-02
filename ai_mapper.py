@@ -18,6 +18,11 @@ ANTHROPIC_API_KEY = os.environ.get("ANTHROPIC_API_KEY", "")
 # but missing quantity). Standard CSVs match 12+ and skip AI entirely.
 MIN_AUTO_DETECT = 8
 
+# Columns the pipeline cannot run without. If any of these are missing
+# from auto-detect, call Claude even if total column count is high —
+# regex won't catch every variant (e.g. "Club#" vs "Store#").
+CRITICAL_COLUMNS = ["store_number", "retailer", "start_date", "start_time"]
+
 # Our standard column names that Claude should map to
 STANDARD_COLUMNS = [
     "retailer",
@@ -134,7 +139,14 @@ Return valid JSON only, no explanation."""
 
 
 def maybe_ai_map(df_columns, sample_rows, auto_detected, partner_name=""):
-    """Only call AI if auto-detection matched fewer than MIN_AUTO_DETECT columns.
+    """Call AI when auto-detect missed something important.
+
+    Triggers on either:
+      - Total auto-detected column count is below MIN_AUTO_DETECT, or
+      - Any critical column (store_number, retailer, start_date, start_time)
+        wasn't detected — these break the pipeline if missing, regardless of
+        how many other columns matched. Catches cases like 'Club#' that the
+        regex doesn't recognize even when most other columns auto-detect.
 
     Args:
         df_columns: list of column header strings
@@ -145,13 +157,21 @@ def maybe_ai_map(df_columns, sample_rows, auto_detected, partner_name=""):
     Returns:
         Final merged mapping (auto-detected + AI fills)
     """
-    if len(auto_detected) >= MIN_AUTO_DETECT:
+    missing_critical = [c for c in CRITICAL_COLUMNS if c not in auto_detected]
+    low_count = len(auto_detected) < MIN_AUTO_DETECT
+
+    if not missing_critical and not low_count:
         return auto_detected
 
     if not is_available():
         return auto_detected
 
-    print(f"[AI Mapper] Auto-detect only found {len(auto_detected)} columns, calling Claude...")
+    reason = []
+    if missing_critical:
+        reason.append(f"missing critical: {missing_critical}")
+    if low_count:
+        reason.append(f"only {len(auto_detected)} columns matched")
+    print(f"[AI Mapper] Calling Claude — {'; '.join(reason)}")
     ai_mapping = ai_map_columns(df_columns, sample_rows, partner_name)
     print(f"[AI Mapper] Claude mapped {len(ai_mapping)} columns: {list(ai_mapping.keys())}")
 
