@@ -173,15 +173,24 @@ def upload():
     needs_ai = bool(missing_critical) or len(detected_mapping) < ai_mapper.MIN_AUTO_DETECT
     if needs_ai:
         if ai_mapper.is_available():
-            sample = df.head(5).to_dict("records")
-            before = set(detected_mapping)
-            detected_mapping = ai_mapper.maybe_ai_map(
+            sample = df.head(10).to_dict("records")
+            ai_result = ai_mapper.maybe_ai_map(
                 list(df.columns), sample, detected_mapping,
                 partner_name=cfg.get("name", "")
             )
-            new_keys = set(detected_mapping) - before
-            if new_keys:
-                flash(f"Claude AI mapped {len(new_keys)} additional column(s): {', '.join(sorted(new_keys))}", "info")
+            detected_mapping = ai_result["mapping"]
+            ai_keys = ai_result["ai_keys"]
+            confidence = ai_result.get("confidence")
+            reasoning = ai_result.get("reasoning") or {}
+            if ai_keys:
+                # Per-key reasoning (e.g. "store_number ← Club# (BJ's calls them clubs)")
+                pretty = ", ".join(
+                    f"{k}={detected_mapping[k]!r}" + (f" ({reasoning[k]})" if reasoning.get(k) else "")
+                    for k in sorted(ai_keys)
+                )
+                category = "info" if confidence in (None, "high") else "warning"
+                conf_str = f" — confidence: {confidence}" if confidence else ""
+                flash(f"Claude filled {len(ai_keys)} column(s){conf_str}: {pretty}", category)
         elif missing_critical:
             flash(f"Auto-detect missed critical columns ({', '.join(missing_critical)}). Add ANTHROPIC_API_KEY to enable AI column mapping.", "info")
         else:
