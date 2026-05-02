@@ -51,6 +51,7 @@ def match_businesses(company_id, parsed_rows):
                 "business_id": loc["business_id"],
                 "business_name": loc.get("business_name", ""),
                 "address": loc.get("address", ""),
+                "regionmapping_id": loc.get("regionmapping_id", ""),
             }
             matched.append({
                 **row,

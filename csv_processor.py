@@ -656,16 +656,24 @@ def generate_bulk_import_csv(all_rows, partner_config, task_opts=None):
         attire = row.get("attire_instructions") or biz.get("custom_attire_requirements") or partner_config.get("default_attire", "")
         location_instructions = row.get("location_instructions") or partner_config.get("default_location_instructions", "")
 
-        # Pay rate
-        pay_rate = row.get("worker_pay_rate", "")
-        if pay_rate:
-            pay_rate = str(pay_rate).replace("$", "").replace(",", "").replace("/hr", "").strip()
-            try:
-                adjusted_base_rate = float(pay_rate) if pay_rate else ""
-            except ValueError:
-                adjusted_base_rate = partner_config.get("adjusted_base_rate") or ""
-        else:
-            adjusted_base_rate = partner_config.get("adjusted_base_rate") or ""
+        # Adjusted base rate — Christian's 3-tier priority via rates_db:
+        #   1. CSV worker_pay_rate × markup (markup from rate table or partner config)
+        #   2. Fixed rate match by company × regionmapping × position (already w/ markup)
+        #   3. partner_config.adjusted_base_rate (company default business rate)
+        import rates_db
+        rate_company_id = partner_config.get("_company_id", "")
+        rate_region_id = biz.get("regionmapping_id", "")
+        rate_pos_id = str(position_id) if position_id else str(partner_config.get("default_position_id", 29))
+        adjusted_base_rate = rates_db.calculate_adjusted_rate(
+            csv_rate=row.get("worker_pay_rate", ""),
+            company_id=rate_company_id,
+            region_id=rate_region_id,
+            position_id=rate_pos_id,
+            config_rate=partner_config.get("adjusted_base_rate"),
+            config_markup=partner_config.get("markup_percentage", 0),
+        )
+        if isinstance(adjusted_base_rate, (int, float)) and adjusted_base_rate:
+            adjusted_base_rate = round(float(adjusted_base_rate), 2)
 
         break_len = row.get("break_length", "")
         if not break_len:
