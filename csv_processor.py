@@ -131,6 +131,69 @@ def _find_header_row(text):
     return best_row
 
 
+def _resolve_default_end_time(start_time, partner_config):
+    """Fill a missing end_time from the partner config.
+
+    Partners differ — handle the common shapes:
+      1. partner has a fixed end time (e.g. "18:00") → use it as-is
+      2. partner has a default shift length in hours → start_time + hours
+      3. partner has both default_start_time and default_end_time
+         (Christian style) → compute the duration between them and apply
+         that duration to the row's actual start_time
+      4. nothing configured → blank, downstream stays empty
+    """
+    fixed = (partner_config.get("default_end_time") or "").strip()
+    if fixed:
+        normalized = parse_time(fixed)
+        return normalized or fixed
+
+    shift_hours = partner_config.get("default_shift_hours")
+    if shift_hours and start_time:
+        try:
+            return _add_hours_to_time(start_time, float(shift_hours))
+        except (ValueError, TypeError):
+            pass
+
+    cfg_start = (partner_config.get("default_start_time") or "").strip()
+    cfg_end = (partner_config.get("default_end_time") or "").strip()
+    if cfg_start and cfg_end and start_time:
+        duration = _shift_duration_hours(cfg_start, cfg_end)
+        if duration is not None:
+            return _add_hours_to_time(start_time, duration)
+
+    return ""
+
+
+def _add_hours_to_time(time_str, hours):
+    """Add fractional hours to an HH:MM time string, return HH:MM (24h).
+    Returns "" if time_str is unparseable."""
+    parsed = parse_time(time_str)
+    if not parsed or ":" not in parsed:
+        return ""
+    try:
+        h, m = parsed.split(":")
+        total = (int(h) * 60 + int(m) + int(round(hours * 60))) % (24 * 60)
+        return f"{total // 60:02d}:{total % 60:02d}"
+    except (ValueError, TypeError):
+        return ""
+
+
+def _shift_duration_hours(start_str, end_str):
+    """Compute fractional hours between two time strings. Wraps midnight."""
+    s, e = parse_time(start_str), parse_time(end_str)
+    if not s or not e or ":" not in s or ":" not in e:
+        return None
+    try:
+        sh, sm = s.split(":")
+        eh, em = e.split(":")
+        diff = (int(eh) * 60 + int(em)) - (int(sh) * 60 + int(sm))
+        if diff <= 0:
+            diff += 24 * 60
+        return diff / 60.0
+    except (ValueError, TypeError):
+        return None
+
+
 def parse_upload(file_content, filename, column_mapping):
     """Parse an uploaded CSV/Excel file using the partner's column mapping.
 
@@ -702,6 +765,15 @@ def generate_bulk_import_csv(all_rows, partner_config, task_opts=None):
         # Schedule name
         schedule_name = row.get("schedule_name", "")
 
+        # End-time fallback — partners like SAS Portland ship CSVs with only
+        # a start time. Ramses: "they only put the start time... ends at six
+        # because all their shift ends up at the same time". Per-partner
+        # default is either a fixed time (default_end_time) or a shift length
+        # (default_shift_hours added to the row's actual start_time).
+        end_time = row.get("end_time", "")
+        if not end_time:
+            end_time = _resolve_default_end_time(row.get("start_time", ""), partner_config)
+
         for _ in range(qty):
             result_rows.append({
                 "Location Id": location_id,
@@ -709,7 +781,7 @@ def generate_bulk_import_csv(all_rows, partner_config, task_opts=None):
                 "Creator Id": creator_id,
                 "Start Date": row.get("start_date", ""),
                 "Start Time": row.get("start_time", ""),
-                "End Time": row.get("end_time", ""),
+                "End Time": end_time,
                 "Break Length": break_len,
                 "Position Id": position_id,
                 "Position Tiering Id": position_tiering,

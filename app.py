@@ -11,7 +11,22 @@ import os
 import io
 import csv
 import json
+import re
 import time
+
+
+def _safe_filename_part(name, fallback="partner"):
+    """Sanitize a partner/company name for use in a download filename.
+
+    Django's bulk gig request importer chokes on spaces; some other
+    importers also balk at apostrophes / parens / ampersands (e.g.
+    "Smith's", "Acosta - Publix (S Florida)"). Allow only alphanumerics,
+    collapse runs of separators, and strip leading/trailing underscores.
+    """
+    if not name:
+        return fallback
+    cleaned = re.sub(r"[^A-Za-z0-9]+", "_", str(name)).strip("_")
+    return cleaned or fallback
 
 # Load .env file for Mode API credentials
 from dotenv import load_dotenv
@@ -441,7 +456,7 @@ def download_businesses():
         flash("No business CSV available.", "error")
         return redirect(url_for("results"))
     buf = io.BytesIO(csv_data.encode("utf-8"))
-    company_name = session.get("company_name", "partner").replace(" ", "_")
+    company_name = _safe_filename_part(session.get("company_name"))
     return send_file(buf, mimetype="text/csv", as_attachment=True,
                      download_name=f"new_businesses_{company_name}.csv")
 
@@ -453,7 +468,7 @@ def download_shifts():
         flash("No shift CSV available.", "error")
         return redirect(url_for("results"))
     buf = io.BytesIO(csv_data.encode("utf-8"))
-    company_name = session.get("company_name", "partner").replace(" ", "_")
+    company_name = _safe_filename_part(session.get("company_name"))
     return send_file(buf, mimetype="text/csv", as_attachment=True,
                      download_name=f"shifts_{company_name}.csv")
 
@@ -754,6 +769,9 @@ def save_config(company_id):
     cfg["adjusted_base_rate"] = float(rate) if rate else None
     tiering = request.form.get("default_position_tiering_id", "")
     cfg["default_position_tiering_id"] = int(tiering) if tiering else None
+    cfg["default_end_time"] = request.form.get("default_end_time", "").strip() or None
+    shift_hours = request.form.get("default_shift_hours", "").strip()
+    cfg["default_shift_hours"] = float(shift_hours) if shift_hours else None
     pc.save_config(company_id, cfg)
     flash("Partner config saved.", "success")
     return redirect(url_for("view_config", company_id=company_id))

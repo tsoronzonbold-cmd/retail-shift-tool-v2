@@ -48,6 +48,19 @@
 
         <div class="form-row">
             <div>
+                <label>Default End Time</label>
+                <input type="text" name="default_end_time" value="{{ config.default_end_time or '' }}" placeholder="e.g. 18:00 or 6:00 PM">
+                <small style="color: var(--text-muted);">Used when partner CSV omits end time</small>
+            </div>
+            <div>
+                <label>Default Shift Hours</label>
+                <input type="number" step="0.25" name="default_shift_hours" value="{{ config.default_shift_hours or '' }}" placeholder="e.g. 8">
+                <small style="color: var(--text-muted);">Alternative: end time = start + this many hours</small>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div>
                 <label>Default Creator ID</label>
                 <input type="text" name="default_creator_id" value="{{ config.default_creator_id or '' }}">
             </div>
