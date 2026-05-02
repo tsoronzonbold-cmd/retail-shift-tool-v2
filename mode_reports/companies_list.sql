@@ -13,8 +13,7 @@ SELECT
     id,
     name
 FROM iw_backend_db.backend_company
-WHERE deleted_at IS NULL
-  AND name IS NOT NULL
+WHERE name IS NOT NULL
   AND name <> ''
   {% if parameters.search %}
   AND LOWER(name) LIKE '%' || LOWER({{ parameters.search }}) || '%'

@@ -7,7 +7,7 @@
 {% form %}
 company_id:
   type: text
-  default: ''
+  default: '0'
 {% endform %}
 
 SELECT
