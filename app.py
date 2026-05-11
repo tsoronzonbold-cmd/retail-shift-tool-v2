@@ -167,43 +167,39 @@ def upload():
 
     detected_mapping = csv_processor.auto_detect_columns(list(df.columns))
 
-    # Let the AI fill gaps when auto-detect misses critical columns
-    # (e.g. "Club#" instead of "Store#") or when overall detection is weak.
-    # maybe_ai_map decides internally whether to call the AI.
-    missing_critical = [c for c in ai_mapper.CRITICAL_COLUMNS if c not in detected_mapping]
-    needs_ai = bool(missing_critical) or len(detected_mapping) < ai_mapper.MIN_AUTO_DETECT
-    ai_status_recorded = "skipped"
-    ai_filled_keys = []
-    if needs_ai:
-        sample = df.head(10).to_dict("records")
-        ai_result = ai_mapper.maybe_ai_map(
-            list(df.columns), sample, detected_mapping,
-            partner_name=cfg.get("name", "")
-        )
-        detected_mapping = ai_result["mapping"]
-        status = ai_result.get("status")
-        confidence = ai_result.get("confidence")
-        reasoning = ai_result.get("reasoning") or {}
-        ai_added = ai_result.get("ai_added", [])
-        ai_changed = ai_result.get("ai_changed", [])
-        ai_status_recorded = status or ""
-        ai_filled_keys = list(ai_added) + [c[0] for c in ai_changed]
+    # AI mapper runs on every upload — partner CSVs are too varied for
+    # regex to keep up, and gpt-4o-mini is cheap enough that the cost
+    # doesn't matter. The model sees regex's guess and overrides on
+    # overlap when its mapping is better.
+    sample = df.head(10).to_dict("records")
+    ai_result = ai_mapper.maybe_ai_map(
+        list(df.columns), sample, detected_mapping,
+        partner_name=cfg.get("name", "")
+    )
+    detected_mapping = ai_result["mapping"]
+    status = ai_result.get("status", "")
+    confidence = ai_result.get("confidence")
+    reasoning = ai_result.get("reasoning") or {}
+    ai_added = ai_result.get("ai_added", [])
+    ai_changed = ai_result.get("ai_changed", [])
+    ai_status_recorded = status
+    ai_filled_keys = list(ai_added) + [c[0] for c in ai_changed]
 
-        if status == "ok" and (ai_added or ai_changed):
-            parts = []
-            for k in sorted(ai_added):
-                why = f" ({reasoning[k]})" if reasoning.get(k) else ""
-                parts.append(f"+{k}={detected_mapping[k]!r}{why}")
-            for k, old, new in ai_changed:
-                why = f" ({reasoning[k]})" if reasoning.get(k) else ""
-                parts.append(f"~{k}: {old!r}→{new!r}{why}")
-            category = "success" if confidence == "high" else "warning"
-            conf_str = f" (confidence: {confidence})" if confidence else ""
-            flash(f"AI fixed {len(ai_added) + len(ai_changed)} column(s){conf_str}: {'; '.join(parts)}", category)
-        elif status == "no_key":
-            flash(f"⚠ AI is offline — OPENAI_API_KEY not set. Auto-detect missed: {', '.join(missing_critical) or f'only {len(detected_mapping)} cols'}. Check the AI pill in the header.", "error")
-        elif status == "error":
-            flash(f"⚠ AI call failed — {ai_result.get('error', 'unknown error')}. Falling back to regex (some columns may be wrong). Hover the AI pill for details.", "error")
+    if status == "ok" and (ai_added or ai_changed):
+        parts = []
+        for k in sorted(ai_added):
+            why = f" ({reasoning[k]})" if reasoning.get(k) else ""
+            parts.append(f"+{k}={detected_mapping[k]!r}{why}")
+        for k, old, new in ai_changed:
+            why = f" ({reasoning[k]})" if reasoning.get(k) else ""
+            parts.append(f"~{k}: {old!r}→{new!r}{why}")
+        category = "success" if confidence == "high" else "warning"
+        conf_str = f" (confidence: {confidence})" if confidence else ""
+        flash(f"AI fixed {len(ai_added) + len(ai_changed)} column(s){conf_str}: {'; '.join(parts)}", category)
+    elif status == "no_key":
+        flash(f"⚠ AI is offline — OPENAI_API_KEY not set. Regex matched {len(detected_mapping)} column(s); some may be missing. Check the AI pill in the header.", "error")
+    elif status == "error":
+        flash(f"⚠ AI call failed — {ai_result.get('error', 'unknown error')}. Falling back to regex (some columns may be wrong). Hover the AI pill for details.", "error")
 
     final_mapping = {**detected_mapping, **{k: v for k, v in col_mapping.items() if v in df.columns}}
     rows, raw_columns = csv_processor.parse_upload(file_content, filename, final_mapping)

@@ -1,9 +1,10 @@
 """AI-powered column mapper for messy CSVs.
 
 Uses OpenAI gpt-4o-mini for column detection (cheap, fast, structured
-JSON output). Triggers when auto_detect_columns is missing critical
-columns OR matches fewer than MIN_AUTO_DETECT total. Standard CSVs skip
-this entirely — no AI cost or latency.
+JSON output). Fires on every upload — partner CSVs vary too much for
+regex to keep up, and the model is cheap enough that the cost doesn't
+matter. Regex still runs first as a fast prior; the model overrides
+on overlap when its mapping is better.
 
 API key is read from OPENAI_API_KEY (or GPT_KEY as a fallback name,
 since Replit's default secret editor sometimes uses that).
@@ -18,12 +19,8 @@ OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY") or os.environ.get("GPT_KEY", "
 # gpt-4o-mini is ~5× cheaper than Claude Haiku and what Enkhjin's tool uses.
 MODEL = "gpt-4o-mini"
 
-# Minimum columns auto-detect must match before we skip AI.
-MIN_AUTO_DETECT = 8
-
-# Columns the pipeline cannot run without. If any of these are missing
-# from auto-detect, call the AI even if total column count is high —
-# regex won't catch every variant (e.g. "Club#" vs "Store#").
+# Columns the pipeline cannot run without. Surfaced in log + flash text
+# so we can see what's still missing after AI runs.
 CRITICAL_COLUMNS = ["store_number", "retailer", "start_date", "start_time"]
 
 # Our standard column names that the AI should map to
@@ -88,18 +85,43 @@ Standard fields:
 Rules:
 - Each CSV column maps to AT MOST ONE standard field.
 - Only map columns you are confident about. Skip ambiguous ones.
-- Common synonyms:
-    Store / Store # / Store Number / Club / Club# → store_number
-    Banner / Retailer / Chain → retailer
-    Visit Date / Date / Start Date → start_date
-    StartTime / Start Time → start_time
-    Request / Quantity / # of Workers / Needs / HC Needed → quantity
-    Team Lead / SLead / Onsite Contact / Lead / Supervisor → team_lead
-      (prefer SLead / Lead / Team Lead over Supervisor when both exist)
-    Lead Phone / Contact Phone / Phone Number → team_lead_phone
-    Name of Pros / Requested Workers → requested_workers
-    District / Region / Team / Team # / Area → booking_group
-- Skip columns that don't match any standard field (Day, WeekDay, Daily Slot, Set Size, etc).
+- Headers may have trailing/leading whitespace, mixed case, underscore
+  separators ("Start_Time"), or trailing suffixes like "(CS)". Treat
+  these as the same column type.
+
+Past partner variants we've seen — use these as guidance, not a closed
+list. New partners always invent new column names:
+
+  retailer:        "Banner", "Chain", "store name " (trailing space ok),
+                   "Store Name", "Brand". When only "Division" is given
+                   as a parent banner (e.g. "Frys"), treat it as retailer.
+  store_number:    "Store", "Store#", "Store No", "Store_No", "Club#"
+                   (BJ's calls them clubs), "Loc#", "#", "Location ID"
+  start_date:      "Date", "Visit Date", "Start Date", "Visit_Date",
+                   "Svc Dt", "Training Date"
+  start_time:      "Start Time", "Start_Time", "StartTime", "Training Time"
+                   (Retail Odyssey uses Training Time for the start),
+                   "Strt", "Visit Time"
+  end_time:        "End Time", "End_Time", "End"
+  quantity:        "Request", "# of Workers", "Needs", "Qty", "HC Needed",
+                   "Pros Needed", "Headcount"
+  team_lead:       "Team Lead", "SLead", "Lead", "Onsite Contact",
+                   "Onsite Contact (CS)", "Supervisor", "Trainer",
+                   "Contact". PREFER SLead / Lead / Team Lead over
+                   Supervisor when both exist.
+  team_lead_phone: "Phone Number", "Contact Phone", "Lead Phone",
+                   "Phone " (trailing space ok)
+  team_lead_email: "Email", "Contact Email", "Lead Email"
+  worker_pay_rate: "Rate", "Pay Rate", "Pro Rate", "Worker Rate",
+                   "Hourly Rate"
+  booking_group:   "District", "Region", "Team", "Team #", "Area", "Div"
+  schedule_name:   "Schedule Name", "Schedule", "Team Name", "Shift Name"
+  location_instructions: "Location Instructions", "Notes", "Instructions",
+                   "Check-in Instructions"
+
+- Skip columns that don't match any standard field (Day, WeekDay,
+  Daily Slot, Set Size, Address columns when address/city/state/zip
+  are already split, ID columns from upstream systems, etc.).
 
 Return JSON with this exact shape:
 {{
@@ -151,13 +173,13 @@ Return JSON with this exact shape:
 
 
 def maybe_ai_map(df_columns, sample_rows, auto_detected, partner_name=""):
-    """Call AI when auto-detect missed something important, then prefer
-    the AI's mappings over the regex output on any overlap.
+    """Run AI on every upload and prefer its mappings over regex on overlap.
 
-    Triggers on either:
-      - Total auto-detected count < MIN_AUTO_DETECT, or
-      - Any critical column (store_number, retailer, start_date,
-        start_time) wasn't detected — these break the pipeline.
+    We used to only fire when regex left something critical missing, but
+    the last two weeks have been a steady stream of one-off regex misses
+    (Club#, SLead, Onsite Contact (CS), Training Time, trailing-whitespace
+    headers). gpt-4o-mini is cheap; it's better to let the model see every
+    upload and trust its mappings than to keep growing the regex.
 
     Returns a dict:
       mapping     — final merged mapping (AI wins over regex on overlap)
@@ -167,19 +189,9 @@ def maybe_ai_map(df_columns, sample_rows, auto_detected, partner_name=""):
       confidence  — AI's overall confidence, or None
       reasoning   — AI's per-field reasoning
       notes       — AI's free-form observations
-      status      — "ok" | "skipped" | "no_key" | "error"
+      status      — "ok" | "no_key" | "error"
       error       — short error message if status == "error" / "no_key"
     """
-    missing_critical = [c for c in CRITICAL_COLUMNS if c not in auto_detected]
-    low_count = len(auto_detected) < MIN_AUTO_DETECT
-
-    if not missing_critical and not low_count:
-        return {
-            "mapping": auto_detected, "ai_keys": [], "ai_added": [],
-            "ai_changed": [], "confidence": None, "reasoning": {},
-            "notes": "", "status": "skipped", "error": "",
-        }
-
     if not is_available():
         return {
             "mapping": auto_detected, "ai_keys": [], "ai_added": [],
@@ -188,12 +200,11 @@ def maybe_ai_map(df_columns, sample_rows, auto_detected, partner_name=""):
             "error": "OPENAI_API_KEY (or GPT_KEY) not set on the server",
         }
 
-    reason_log = []
+    missing_critical = [c for c in CRITICAL_COLUMNS if c not in auto_detected]
+    log_bits = [f"regex matched {len(auto_detected)} cols"]
     if missing_critical:
-        reason_log.append(f"missing critical: {missing_critical}")
-    if low_count:
-        reason_log.append(f"only {len(auto_detected)} columns matched")
-    print(f"[AI Mapper] Calling OpenAI ({MODEL}) — {'; '.join(reason_log)}")
+        log_bits.append(f"missing critical: {missing_critical}")
+    print(f"[AI Mapper] Calling OpenAI ({MODEL}) — {'; '.join(log_bits)}")
 
     ai_result = ai_map_columns(df_columns, sample_rows, partner_name)
     ai_mapping = ai_result["mapping"]
