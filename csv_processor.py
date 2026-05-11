@@ -320,7 +320,7 @@ def auto_detect_columns(df_columns):
             for col in df_columns:
                 if col in used_cols:
                     continue
-                if re.search(pat, str(col), re.IGNORECASE):
+                if re.search(pat, str(col).strip(), re.IGNORECASE):
                     mapping[norm_key] = col
                     used_cols.add(col)
                     break
