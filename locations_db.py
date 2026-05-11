@@ -33,6 +33,18 @@ def lookup(company_id, store_number):
     return data.get(key)
 
 
+def known_business_count(company_id):
+    """Return how many businesses we know about for this company.
+
+    Used by the upload sanity check — if a partner has many known
+    businesses but zero matched in the upload, the user probably picked
+    the wrong partner from the dropdown.
+    """
+    cid = str(company_id)
+    data = _load()
+    return sum(1 for v in data.values() if str(v.get("company_id", "")) == cid)
+
+
 def match_businesses(company_id, parsed_rows):
     """Match parsed rows against local locations database.
 

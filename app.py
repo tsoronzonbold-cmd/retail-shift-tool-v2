@@ -222,6 +222,22 @@ def upload():
         except Exception as me:
             redshift_error = f"Mode error: {str(me)}"
 
+    # Sanity check: zero matches but the partner has many known businesses
+    # almost always means the wrong partner was picked from the dropdown
+    # (this is how Zoe ended up creating 38 "new" DSD-Central stores under
+    # the CO-Remodels partner). Warn loudly before they walk through the
+    # new-business flow.
+    if matched == [] and len(unmatched) >= 3:
+        known = locations_db.known_business_count(company_id)
+        if known >= 20:
+            flash(
+                f"⚠ None of your {len(unmatched)} stores matched — but "
+                f"this partner has {known} known businesses. Did you pick "
+                f"the right partner from the dropdown? Filename or banner "
+                f"often hints at the actual partner.",
+                "error",
+            )
+
     # Match contacts
     seen = set()
     contact_names, contact_phones = [], []
