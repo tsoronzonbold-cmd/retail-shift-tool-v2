@@ -372,7 +372,7 @@ def upload():
         rows_total=len(rows),
         rows_matched=len(matched),
         rows_unmatched=len(unmatched),
-        ai_fired=needs_ai,
+        ai_fired=(ai_status_recorded in ("ok", "error")),
         ai_status=ai_status_recorded,
         ai_filled_keys=ai_filled_keys,
         mode_used=mode_ran,
