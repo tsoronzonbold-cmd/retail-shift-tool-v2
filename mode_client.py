@@ -59,18 +59,26 @@ def _run_report(parameters, query_token=None):
     occasionally omits queries (Mode's behavior — even successful runs
     aren't guaranteed to land in the bundle).
 
-    Use query_token to select which query's results to return.
-    Returns parsed CSV rows as list of dicts.
+    Retries once on failure to absorb transient Mode flakes — production
+    dashboard shows ~19% of business_check calls failing with
+    state=failed, often clearing on retry.
     """
-    t0 = time.time()
     qname = _QUERY_NAMES.get(query_token, query_token or "unknown")
-    try:
-        result = _run_report_inner(parameters, query_token)
-        _log_mode(qname, t0, True, "", len(result))
-        return result
-    except Exception as e:
-        _log_mode(qname, t0, False, str(e)[:200], 0)
-        raise
+    last_err = None
+    for attempt in (1, 2):
+        t0 = time.time()
+        try:
+            result = _run_report_inner(parameters, query_token)
+            _log_mode(qname, t0, True, "", len(result))
+            return result
+        except Exception as e:
+            last_err = str(e)[:200]
+            _log_mode(qname, t0, False, f"attempt {attempt}: {last_err}", 0)
+            if attempt == 2:
+                break
+            # Short backoff before retry — most transient flakes clear in seconds
+            time.sleep(2)
+    raise Exception(last_err or "Mode run failed")
 
 
 def _log_mode(name, t0, success, err, rows):
@@ -109,7 +117,26 @@ def _run_report_inner(parameters, query_token=None):
             break
 
     if state != "succeeded":
-        raise Exception(f"Mode run did not succeed (state={state})")
+        # Pull per-query diagnostic info so the dashboard tells us WHY,
+        # not just "state=failed". Mode embeds error/state fields in
+        # each query_run; surfaces query timeouts, syntax errors,
+        # Redshift connection drops, etc.
+        detail = ""
+        try:
+            qr_path = run_data["_links"]["query_runs"]["href"]
+            qr_url = qr_path if qr_path.startswith("http") else f"https://app.mode.com{qr_path}"
+            qr_data = requests.get(qr_url, headers=auth).json()
+            for q in qr_data.get("_embedded", {}).get("query_runs", []) or []:
+                if q.get("state") != "succeeded":
+                    name = _QUERY_NAMES.get(q.get("query_token"), q.get("query_token", "?"))
+                    err = (q.get("error_message") or q.get("failure_reason")
+                           or q.get("last_error_message") or "").strip()
+                    if err:
+                        detail = f" [{name}: {err[:160]}]"
+                        break
+        except Exception:
+            pass
+        raise Exception(f"Mode run did not succeed (state={state}){detail}")
 
     # Find the query_run that matches our query_token, then fetch its CSV
     qr_path = run_data["_links"]["query_runs"]["href"]
