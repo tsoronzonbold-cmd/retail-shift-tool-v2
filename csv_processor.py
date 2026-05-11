@@ -697,6 +697,15 @@ def generate_bulk_import_csv(all_rows, partner_config, task_opts=None):
             region_counter += 1
             region_map[region] = region_counter
 
+    # Tuvana's rule (May 7): when the input CSV has no pay rate column at
+    # all, omit the Adjusted Base Rate column entirely so Django falls back
+    # to the fixed pricing already configured per (region, position) by
+    # sales. Detect by scanning the input — if any row has a non-empty
+    # worker_pay_rate, we keep the rate logic.
+    input_has_rate = any(
+        str(r.get("worker_pay_rate", "")).strip() for r in all_rows
+    )
+
     # Build all result rows first (so we can filter empty columns after)
     result_rows = []
 
@@ -723,20 +732,24 @@ def generate_bulk_import_csv(all_rows, partner_config, task_opts=None):
         #   1. CSV worker_pay_rate × markup (markup from rate table or partner config)
         #   2. Fixed rate match by company × regionmapping × position (already w/ markup)
         #   3. partner_config.adjusted_base_rate (company default business rate)
-        import rates_db
-        rate_company_id = partner_config.get("_company_id", "")
-        rate_region_id = biz.get("regionmapping_id", "")
-        rate_pos_id = str(position_id) if position_id else str(partner_config.get("default_position_id", 29))
-        adjusted_base_rate = rates_db.calculate_adjusted_rate(
-            csv_rate=row.get("worker_pay_rate", ""),
-            company_id=rate_company_id,
-            region_id=rate_region_id,
-            position_id=rate_pos_id,
-            config_rate=partner_config.get("adjusted_base_rate"),
-            config_markup=partner_config.get("markup_percentage", 0),
-        )
-        if isinstance(adjusted_base_rate, (int, float)) and adjusted_base_rate:
-            adjusted_base_rate = round(float(adjusted_base_rate), 2)
+        # Skipped entirely when the input CSV had no pay rate column —
+        # Django then uses the fixed pricing in its own system (Tuvana's rule).
+        adjusted_base_rate = ""
+        if input_has_rate:
+            import rates_db
+            rate_company_id = partner_config.get("_company_id", "")
+            rate_region_id = biz.get("regionmapping_id", "")
+            rate_pos_id = str(position_id) if position_id else str(partner_config.get("default_position_id", 29))
+            adjusted_base_rate = rates_db.calculate_adjusted_rate(
+                csv_rate=row.get("worker_pay_rate", ""),
+                company_id=rate_company_id,
+                region_id=rate_region_id,
+                position_id=rate_pos_id,
+                config_rate=partner_config.get("adjusted_base_rate"),
+                config_markup=partner_config.get("markup_percentage", 0),
+            )
+            if isinstance(adjusted_base_rate, (int, float)) and adjusted_base_rate:
+                adjusted_base_rate = round(float(adjusted_base_rate), 2)
 
         break_len = row.get("break_length", "")
         if not break_len:
@@ -823,12 +836,15 @@ def generate_bulk_import_csv(all_rows, partner_config, task_opts=None):
     base_cols = [
         "Location Id", "Contact Ids", "Creator Id", "Start Date", "Start Time",
         "End Time", "Break Length", "Position Id", "Position Tiering Id",
-        "Parking", "Adjusted Base Rate", "Position Instructions",
+        "Parking", "Position Instructions",
         "Position Duties", "Location Instructions", "Attire Instructions",
     ]
 
-    # Optional columns — only include if at least one row has a value
+    # Optional columns — only include if at least one row has a value.
+    # Adjusted Base Rate is here so it disappears when the input had no
+    # pay rate; Django then uses its configured fixed pricing.
     optional_cols = [
+        "Adjusted Base Rate",
         "Requested Worker Ids", "Ability Ids", "Booking Group",
         "Multi Day Same Worker", "Schedule Name", "Is Task",
         "Starts At Minimum", "Is Anywhere",

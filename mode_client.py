@@ -357,6 +357,11 @@ def get_businesses_for_company(company_id, parsed_rows):
                 "business_id": int(mode_row["business_id"]),
                 "business_name": mode_row.get("existing_business_name") or name,
                 "address": mode_row.get("existing_address") or "",
+                # Carry regionmapping_id through so the downstream rate
+                # lookup can find the (company, region, position) markup
+                # row. Without this, Mode-matched new businesses fall to
+                # Priority 3 and emit the raw CSV rate without markup.
+                "regionmapping_id": mode_row.get("regionmapping_id") or "",
             }
             matched.append({
                 **row,
