@@ -81,7 +81,10 @@
                 <a href="{{ url_for('download_trainings') }}" class="btn btn-outline" style="flex: 1; min-width: 160px;">Download Trainings</a>
                 {% endif %}
                 {% if has_tasks_csv %}
-                <a href="{{ url_for('download_tasks') }}" class="btn btn-outline" style="flex: 1; min-width: 160px;">Download Tasks</a>
+                <div style="flex: 1; min-width: 160px; display: flex; flex-direction: column;">
+                    <a href="{{ url_for('download_tasks') }}" class="btn btn-outline">Download Tasks</a>
+                    <a href="{{ django_links.clockout_task }}" target="_blank" style="text-align: center; font-size: 12px; margin-top: 6px; color: var(--primary);">Open Django Clock-Out Task Import</a>
+                </div>
                 {% endif %}
             </div>
         </div>
