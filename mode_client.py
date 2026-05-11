@@ -42,6 +42,14 @@ def _auth_header():
     return f"Basic {creds}"
 
 
+_QUERY_NAMES = {
+    BUSINESS_QUERY_TOKEN: "business_check",
+    CONTACTS_QUERY_TOKEN: "contact_lookup",
+    COMPANIES_QUERY_TOKEN: "companies_list",
+    BOOTSTRAP_QUERY_TOKEN: "bootstrap_partner",
+}
+
+
 def _run_report(parameters, query_token=None):
     """Run the Mode report and poll until results are ready.
 
@@ -54,6 +62,26 @@ def _run_report(parameters, query_token=None):
     Use query_token to select which query's results to return.
     Returns parsed CSV rows as list of dicts.
     """
+    t0 = time.time()
+    qname = _QUERY_NAMES.get(query_token, query_token or "unknown")
+    try:
+        result = _run_report_inner(parameters, query_token)
+        _log_mode(qname, t0, True, "", len(result))
+        return result
+    except Exception as e:
+        _log_mode(qname, t0, False, str(e)[:200], 0)
+        raise
+
+
+def _log_mode(name, t0, success, err, rows):
+    try:
+        import usage_db
+        usage_db.log_mode_call(name, int((time.time() - t0) * 1000), success, err, rows)
+    except Exception:
+        pass
+
+
+def _run_report_inner(parameters, query_token=None):
     url = f"https://app.mode.com/api/{MODE_ORG}/reports/{REPORT_ID}/runs"
     headers = {
         "Content-Type": "application/json",

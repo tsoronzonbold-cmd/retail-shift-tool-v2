@@ -8,3 +8,4 @@ dist/
 build/
 /tmp/
 .DS_Store
+usage.db

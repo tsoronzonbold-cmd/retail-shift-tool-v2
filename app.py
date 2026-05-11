@@ -34,7 +34,7 @@ load_dotenv()
 
 from flask import (
     Flask, render_template, request, redirect, url_for,
-    session, send_file, flash, jsonify,
+    session, send_file, flash, jsonify, abort,
 )
 import pandas as pd
 
@@ -43,6 +43,7 @@ import mode_client
 import locations_db
 import partner_config as pc
 import csv_processor
+import usage_db
 import contacts_db
 import google_places
 import roster_db
@@ -171,6 +172,8 @@ def upload():
     # maybe_ai_map decides internally whether to call the AI.
     missing_critical = [c for c in ai_mapper.CRITICAL_COLUMNS if c not in detected_mapping]
     needs_ai = bool(missing_critical) or len(detected_mapping) < ai_mapper.MIN_AUTO_DETECT
+    ai_status_recorded = "skipped"
+    ai_filled_keys = []
     if needs_ai:
         sample = df.head(10).to_dict("records")
         ai_result = ai_mapper.maybe_ai_map(
@@ -183,6 +186,8 @@ def upload():
         reasoning = ai_result.get("reasoning") or {}
         ai_added = ai_result.get("ai_added", [])
         ai_changed = ai_result.get("ai_changed", [])
+        ai_status_recorded = status or ""
+        ai_filled_keys = list(ai_added) + [c[0] for c in ai_changed]
 
         if status == "ok" and (ai_added or ai_changed):
             parts = []
@@ -346,6 +351,22 @@ def upload():
     session["tasks_csv"] = None
     session["is_task_request"] = task_opts["is_task"]
     session["is_anywhere"] = task_opts["is_anywhere"]
+
+    usage_db.log_event(
+        "upload",
+        company_id=company_id,
+        company_name=cfg.get("name", ""),
+        filename=filename,
+        rows_total=len(rows),
+        rows_matched=len(matched),
+        rows_unmatched=len(unmatched),
+        ai_fired=needs_ai,
+        ai_status=ai_status_recorded,
+        ai_filled_keys=ai_filled_keys,
+        mode_used=mode_ran,
+        success=(redshift_error is None),
+        error_msg=redshift_error or "",
+    )
 
     # Fork: if there are new businesses, route through the configuration
     # step before downloads. Otherwise straight to results.
@@ -579,6 +600,13 @@ def configure_new_businesses():
         biz_csv = csv_processor.generate_business_import_csv(unmatched, cfg)
         session["business_import_csv"] = biz_csv
 
+        usage_db.log_event(
+            "configure_new",
+            company_id=company_id,
+            company_name=cfg.get("name", ""),
+            rows_unmatched=len(unmatched),
+        )
+
         flash("New business CSV generated. Download it, upload to Django, then resync to get the attribute templates.", "success")
         return redirect(url_for("results"))
 
@@ -646,6 +674,23 @@ def api_ai_status():
 @app.route("/api/claude-status")
 def api_claude_status_alias():
     return api_ai_status()
+
+
+@app.template_filter("datetimeformat")
+def _datetimeformat(ts):
+    if not ts:
+        return ""
+    from datetime import datetime
+    return datetime.fromtimestamp(int(ts)).strftime("%Y-%m-%d %H:%M")
+
+
+@app.route("/admin/usage")
+def admin_usage():
+    token = os.environ.get("ADMIN_TOKEN", "")
+    if not token or request.args.get("token") != token:
+        abort(404)
+    days = int(request.args.get("days", 30))
+    return render_template("admin_usage.html", **usage_db.summary(days=days))
 
 
 @app.route("/api/search-business")
@@ -826,13 +871,17 @@ def recheck():
 
     # Re-query — same Mode-authoritative lookup as upload
     matched, unmatched = locations_db.match_businesses(company_id, parsed_rows)
+    recheck_error = ""
+    mode_ran = False
     if unmatched and mode_client.is_available():
         try:
             mode_matched, still_unmatched = mode_client.get_businesses_for_company(company_id, unmatched)
             matched = matched + mode_matched
             unmatched = still_unmatched
+            mode_ran = True
         except Exception as me:
-            flash(f"Mode error: {str(me)}", "error")
+            recheck_error = f"Mode error: {str(me)}"
+            flash(recheck_error, "error")
 
     # Re-match contacts
     contact_lookup = {}
@@ -895,6 +944,18 @@ def recheck():
         flash(f"Still {now_new} businesses pending — not in Mode yet. Upload to Django and wait ~1–2 min before resyncing.", "info")
     else:
         flash("All businesses found! Shift CSV is complete.", "success")
+
+    usage_db.log_event(
+        "recheck",
+        company_id=company_id,
+        company_name=cfg.get("name", ""),
+        rows_total=len(parsed_rows),
+        rows_matched=len(matched),
+        rows_unmatched=len(unmatched),
+        mode_used=mode_ran,
+        success=(not recheck_error),
+        error_msg=recheck_error,
+    )
 
     return redirect(url_for("results"))
 

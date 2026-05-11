@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+{% block title_suffix %} - Usage{% endblock %}
+
+{% block content %}
+<style>
+    .usage-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin: 16px 0; }
+    .usage-stat { background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 8px; padding: 14px 16px; }
+    .usage-stat .num { font-size: 28px; font-weight: 700; color: #111827; }
+    .usage-stat .label { font-size: 12px; color: #6b7280; text-transform: uppercase; letter-spacing: 0.04em; }
+    .usage-table { width: 100%; border-collapse: collapse; margin-top: 8px; font-size: 13px; }
+    .usage-table th, .usage-table td { text-align: left; padding: 8px 10px; border-bottom: 1px solid #e5e7eb; }
+    .usage-table th { background: #f3f4f6; font-weight: 600; color: #374151; }
+    .usage-table td.num { text-align: right; font-variant-numeric: tabular-nums; }
+    .err { color: #991b1b; font-family: monospace; font-size: 12px; }
+    .muted { color: #6b7280; }
+    h2 { margin-top: 28px; }
+</style>
+
+<div class="card">
+    <h1 style="margin: 0 0 4px 0;">Usage — last {{ days }} days</h1>
+    <p class="muted" style="margin: 0 0 16px 0;">
+        Window:
+        <a href="?token={{ request.args.get('token', '') }}&days=7">7d</a> ·
+        <a href="?token={{ request.args.get('token', '') }}&days=30">30d</a> ·
+        <a href="?token={{ request.args.get('token', '') }}&days=90">90d</a>
+    </p>
+
+    <div class="usage-grid">
+        <div class="usage-stat"><div class="num">{{ headline.uploads or 0 }}</div><div class="label">Uploads</div></div>
+        <div class="usage-stat"><div class="num">{{ headline.rechecks or 0 }}</div><div class="label">Rechecks</div></div>
+        <div class="usage-stat"><div class="num">{{ headline.unique_partners or 0 }}</div><div class="label">Unique partners</div></div>
+        <div class="usage-stat"><div class="num">{{ headline.total_rows or 0 }}</div><div class="label">Shift rows processed</div></div>
+        <div class="usage-stat"><div class="num">{{ ((headline.successes or 0) * 100 // (headline.total or 1)) }}%</div><div class="label">Success rate</div></div>
+        <div class="usage-stat"><div class="num">{{ headline.ai_fires or 0 }}</div><div class="label">AI mapper fired</div></div>
+    </div>
+</div>
+
+<div class="card">
+    <h2>Per partner</h2>
+    {% if per_partner %}
+    <table class="usage-table">
+        <thead><tr><th>Partner</th><th>ID</th><th class="num">Uploads</th><th class="num">Avg rows</th><th>Last used</th></tr></thead>
+        <tbody>
+            {% for p in per_partner %}
+            <tr>
+                <td>{{ p.company_name or '(unnamed)' }}</td>
+                <td class="muted">{{ p.company_id }}</td>
+                <td class="num">{{ p.uploads }}</td>
+                <td class="num">{{ p.avg_rows|round(0)|int if p.avg_rows else 0 }}</td>
+                <td class="muted">{{ p.last_ts | datetimeformat if p.last_ts else '' }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}<p class="muted">No upload activity yet.</p>{% endif %}
+</div>
+
+<div class="card">
+    <h2>Mode API</h2>
+    {% if mode_per_query %}
+    <table class="usage-table">
+        <thead><tr><th>Query</th><th class="num">Calls</th><th class="num">Success</th><th class="num">Avg ms</th><th class="num">p50 ms</th><th class="num">p95 ms</th></tr></thead>
+        <tbody>
+            {% for m in mode_per_query %}
+            <tr>
+                <td>{{ m.query_name }}</td>
+                <td class="num">{{ m.calls }}</td>
+                <td class="num">{{ ((m.successes or 0) * 100 // (m.calls or 1)) }}%</td>
+                <td class="num">{{ m.avg_ms|round(0)|int if m.avg_ms else 0 }}</td>
+                <td class="num">{{ mode_pct.get(m.query_name, {}).get('p50', '') }}</td>
+                <td class="num">{{ mode_pct.get(m.query_name, {}).get('p95', '') }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}<p class="muted">No Mode calls recorded.</p>{% endif %}
+</div>
+
+<div class="card">
+    <h2>Recent failures</h2>
+    {% if recent_errors %}
+    <table class="usage-table">
+        <thead><tr><th>When</th><th>Type</th><th>Partner</th><th>Error</th></tr></thead>
+        <tbody>
+            {% for e in recent_errors %}
+            <tr>
+                <td class="muted">{{ e.ts | datetimeformat }}</td>
+                <td>{{ e.event_type }}</td>
+                <td>{{ e.company_name or '—' }}</td>
+                <td class="err">{{ e.error_msg }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}<p class="muted">No failures in this window.</p>{% endif %}
+</div>
+{% endblock %}
