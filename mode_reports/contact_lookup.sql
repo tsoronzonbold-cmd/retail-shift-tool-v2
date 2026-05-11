@@ -158,10 +158,16 @@ gig_contact_shifts AS (
     bc.contact_id
 ),
 
+-- NOTE: we used to LISTAGG(business_id) here, which hits Redshift's hard
+-- 64KB limit and fails for partners with many contacts × businesses
+-- (Mosaic - Discover, ~100 rows, blew up in production on 2026-05-11).
+-- We never read business_ids on the Python side, so we just need a
+-- representative ID. Filter logic downstream uses EXISTS against
+-- base_contacts directly instead of substring matching the aggregated list.
 contact_business_agg AS (
   SELECT
     contact_id,
-    LISTAGG(business_id::VARCHAR, '|||') WITHIN GROUP (ORDER BY business_id::VARCHAR) AS business_ids
+    MAX(business_id::VARCHAR) AS business_ids
   FROM
     (SELECT DISTINCT contact_id, business_id FROM base_contacts)
   GROUP BY
@@ -234,9 +240,14 @@ filtered_contacts AS (
       OR (
         '{{ business_ids }}' != ''
         AND EXISTS (
+          -- Rewrote to query base_contacts directly instead of
+          -- LIKE-matching the aggregated business_ids string, which is
+          -- now just a representative MAX (see contact_business_agg).
           SELECT 1
-          FROM input_business_ids ibi
-          WHERE ac.business_ids LIKE '%' || ibi.business_id || '%'
+          FROM base_contacts bc
+          INNER JOIN input_business_ids ibi
+            ON bc.business_id::VARCHAR = ibi.business_id
+          WHERE bc.contact_id = ac.contact_id
         )
       )
     )
