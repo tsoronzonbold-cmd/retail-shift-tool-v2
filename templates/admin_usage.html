@@ -77,7 +77,19 @@
 </div>
 
 <div class="card">
-    <h2>Recent failures</h2>
+    <h2 style="display: flex; align-items: center; justify-content: space-between;">
+        Recent failures
+        {% if recent_errors %}
+        <form method="POST" action="{{ url_for('admin_clear_failures') }}" style="margin: 0;"
+              onsubmit="return confirm('Delete all {{ recent_errors|length }} failure entries? This cannot be undone.');">
+            <input type="hidden" name="token" value="{{ request.args.get('token', '') }}">
+            <input type="hidden" name="days" value="{{ days }}">
+            <button type="submit" style="font-size: 12px; padding: 4px 10px; background: #fef2f2; color: #991b1b; border: 1px solid #fecaca; border-radius: 6px; cursor: pointer; font-weight: 500;">
+                Clear all
+            </button>
+        </form>
+        {% endif %}
+    </h2>
     {% if recent_errors %}
     <table class="usage-table">
         <thead><tr><th>When</th><th>Type</th><th>Partner</th><th>Error</th></tr></thead>

@@ -146,6 +146,28 @@ def log_event(event_type, *, company_id="", company_name="", filename="",
         pass
 
 
+def clear_failures():
+    """Delete all event rows that recorded a failure.
+
+    Used to prune the admin dashboard after we ship fixes for known
+    failure modes — keeps "Recent failures" focused on new problems
+    instead of historical noise. Doesn't touch successful events.
+
+    Returns the number of rows deleted.
+    """
+    try:
+        # Count first so we can report
+        rows = _exec(
+            "SELECT COUNT(*) AS n FROM events WHERE success=0 OR error_msg != ''",
+            fetch=True,
+        ) or []
+        n = rows[0].get("n", 0) if rows else 0
+        _exec("DELETE FROM events WHERE success=0 OR error_msg != ''")
+        return n
+    except Exception:
+        return 0
+
+
 def log_mode_call(query_name, duration_ms, success, error_msg="", result_rows=0):
     try:
         _exec(

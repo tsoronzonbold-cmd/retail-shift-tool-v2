@@ -705,6 +705,17 @@ def admin_usage():
     return render_template("admin_usage.html", **usage_db.summary(days=days))
 
 
+@app.route("/admin/clear-failures", methods=["POST"])
+def admin_clear_failures():
+    token = os.environ.get("ADMIN_TOKEN", "")
+    if not token or request.form.get("token") != token:
+        abort(404)
+    n = usage_db.clear_failures()
+    flash(f"Cleared {n} failure event(s) from the dashboard.", "success")
+    return redirect(url_for("admin_usage", token=token,
+                            days=request.form.get("days", 30)))
+
+
 @app.route("/api/search-business")
 def api_search_business():
     # Manual address-based business override — not currently wired to any
