@@ -164,8 +164,41 @@ def _run_report_inner(parameters, query_token=None):
 
 
 def _escape_sql(value):
-    """Escape apostrophes for SQL (matches Enkhjin's escapeForSql)."""
-    return str(value).replace("'", "''")
+    """Make a string safe to embed in a single-quoted SQL literal.
+
+    The naive version (just doubling apostrophes) broke on Mosaic - Discover
+    business names — production hit:
+      ERROR: syntax error at or near "S" in context
+      "(SPLIT_PART('D.L. PERKINS & SONS LLC 71663018|||NINA..."
+    A name in the list contained a character that escaped the SQL string
+    literal. Plain apostrophes were already handled; the culprits are
+    usually smart quotes from Excel/Word, embedded newlines from
+    multi-line cells, or stray control chars.
+
+    Defensive sequence:
+      1. Normalize curly/smart quotes to their ASCII equivalents so the
+         apostrophe escape actually catches them.
+      2. Strip control characters (including NUL, embedded CR/LF/TAB)
+         since Mode's templating + Redshift literal parsing don't agree
+         on how to handle them.
+      3. Collapse runs of whitespace so the resulting string still
+         looks reasonable to the fuzzy name matcher.
+      4. Finally, double up apostrophes (standard SQL escape).
+    """
+    s = str(value)
+    # Curly quotes → straight
+    s = (s.replace("‘", "'").replace("’", "'")
+          .replace("“", '"').replace("”", '"'))
+    # Whitespace-like control chars → single space (preserves word breaks
+    # in multi-line CSV cells like "LINE1\nLINE2")
+    for ch in ("\r", "\n", "\t"):
+        s = s.replace(ch, " ")
+    # Strip any other control chars (NUL, vertical tab, etc.) entirely
+    s = "".join(ch for ch in s if ord(ch) >= 0x20)
+    # Collapse runs of whitespace
+    s = " ".join(s.split())
+    # Standard SQL escape — last step so it works on the cleaned string
+    return s.replace("'", "''")
 
 
 def check_businesses(company_id, business_list):
