@@ -337,7 +337,26 @@ def upload():
         "is_task": request.form.get("is_task_request") == "1",
         "is_anywhere": request.form.get("is_anywhere") == "1",
     }
-    shift_csv = csv_processor.generate_bulk_import_csv(matched, cfg, task_opts=task_opts)
+
+    # Live worker lookup via Mode (replaces stale roster.json as primary).
+    # One batched call resolves every unique requested-worker name; the
+    # per-row resolution then uses the dict. Names that don't resolve get
+    # flashed so the user knows to add them manually.
+    import roster_db
+    worker_live_lookup, unresolved_workers = roster_db.resolve_workers_batch(
+        matched, company_id,
+    )
+    if unresolved_workers:
+        flash(
+            f"⚠ Couldn't resolve {len(unresolved_workers)} requested worker(s): "
+            f"{', '.join(unresolved_workers)}. Add them in Django manually, "
+            f"or check spelling against the partner's CSV.",
+            "warning",
+        )
+
+    shift_csv = csv_processor.generate_bulk_import_csv(
+        matched, cfg, task_opts=task_opts, worker_live_lookup=worker_live_lookup,
+    )
 
     # Store everything in session — business CSV is generated AFTER the
     # configure step (or immediately on results if there are no new
@@ -865,7 +884,19 @@ def override_business_ids():
             "is_task": session.get("is_task_request", False),
             "is_anywhere": session.get("is_anywhere", False),
         }
-        shift_csv = csv_processor.generate_bulk_import_csv(matched, cfg, task_opts=task_opts)
+        import roster_db
+        worker_live_lookup, unresolved_workers = roster_db.resolve_workers_batch(
+            matched, company_id,
+        )
+        if unresolved_workers:
+            flash(
+                f"⚠ Couldn't resolve {len(unresolved_workers)} requested worker(s): "
+                f"{', '.join(unresolved_workers)}. Add them in Django manually.",
+                "warning",
+            )
+        shift_csv = csv_processor.generate_bulk_import_csv(
+            matched, cfg, task_opts=task_opts, worker_live_lookup=worker_live_lookup,
+        )
         biz_csv = csv_processor.generate_business_import_csv(still_unmatched, cfg) if still_unmatched else None
 
         session["matched_rows"] = matched
@@ -927,7 +958,19 @@ def recheck():
         "is_task": session.get("is_task_request", False),
         "is_anywhere": session.get("is_anywhere", False),
     }
-    shift_csv = csv_processor.generate_bulk_import_csv(matched, cfg, task_opts=task_opts)
+    import roster_db
+    worker_live_lookup, unresolved_workers = roster_db.resolve_workers_batch(
+        matched, company_id,
+    )
+    if unresolved_workers:
+        flash(
+            f"⚠ Couldn't resolve {len(unresolved_workers)} requested worker(s): "
+            f"{', '.join(unresolved_workers)}. Add them in Django manually.",
+            "warning",
+        )
+    shift_csv = csv_processor.generate_bulk_import_csv(
+        matched, cfg, task_opts=task_opts, worker_live_lookup=worker_live_lookup,
+    )
 
     # Build attribute templates for newly-verified businesses (those that
     # got a business_id assigned via Mode this round). We pull them out of

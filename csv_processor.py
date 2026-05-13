@@ -660,7 +660,7 @@ def generate_trainings_csv(new_business_ids, partner_config):
     return output.getvalue()
 
 
-def generate_bulk_import_csv(all_rows, partner_config, task_opts=None):
+def generate_bulk_import_csv(all_rows, partner_config, task_opts=None, worker_live_lookup=None):
     """Generate the final bulk import CSV for Django BulkGigRequest.
 
     Column spec from ai-playbook/refs/backend-gig.md.
@@ -765,9 +765,11 @@ def generate_bulk_import_csv(all_rows, partner_config, task_opts=None):
 
         starts_at_min = row.get("start_time", "") if is_task else ""
 
-        # Requested Worker IDs — fuzzy match against roster
+        # Requested Worker IDs — prefer live Mode lookup (worker_live_lookup),
+        # fall back to local fuzzy match against the snapshot.
         requested_worker_ids = roster_db.resolve_requested_workers(
-            row.get("requested_workers", ""), company_id
+            row.get("requested_workers", ""), company_id,
+            live_lookup=worker_live_lookup,
         )
 
         # Booking group

@@ -26,6 +26,7 @@ BUSINESS_QUERY_TOKEN = "6ec26c5336ee"   # Query 1: business check
 CONTACTS_QUERY_TOKEN = "e62e61be97f5"   # Query 2: contact lookup
 COMPANIES_QUERY_TOKEN = "eca03db2f4ec"  # Query 3: companies list
 BOOTSTRAP_QUERY_TOKEN = "d2b95ef75b11"  # Query 4: bootstrap partner
+WORKER_QUERY_TOKEN    = "ef1f48328d23"  # Query 5: worker lookup (live roster)
 
 # How long to poll Mode for results
 MAX_POLL_ATTEMPTS = 30
@@ -47,6 +48,7 @@ _QUERY_NAMES = {
     CONTACTS_QUERY_TOKEN: "contact_lookup",
     COMPANIES_QUERY_TOKEN: "companies_list",
     BOOTSTRAP_QUERY_TOKEN: "bootstrap_partner",
+    WORKER_QUERY_TOKEN: "worker_lookup",
 }
 
 
@@ -270,6 +272,58 @@ def match_contacts(company_id, business_ids=None, phone_numbers=None, emails=Non
     }
 
     return _run_report(params, query_token=CONTACTS_QUERY_TOKEN)
+
+
+def worker_query_available():
+    """True iff the WORKER query token has been wired up in Mode."""
+    return is_available() and bool(WORKER_QUERY_TOKEN)
+
+
+def match_workers(company_id, names):
+    """Resolve worker names to worker IDs via the live Mode query.
+
+    Replaces the stale roster.json snapshot for the primary lookup path.
+    Returns dict {lowercase_input_name: worker_id_str}. Names that didn't
+    match anyone in userprofile are simply absent from the dict — caller
+    is responsible for fallback / warning.
+    """
+    if not worker_query_available() or not names:
+        return {}
+
+    # Deduplicate and clean input
+    clean = []
+    seen = set()
+    for n in names:
+        s = (str(n) if n is not None else "").strip()
+        if s and s.lower() not in seen:
+            seen.add(s.lower())
+            clean.append(s)
+    if not clean:
+        return {}
+
+    params = {
+        "company_id": str(company_id),
+        "names": "|||".join(_escape_sql(n) for n in clean),
+        # Other query parameters in the shared report — all empty so
+        # the parallel queries (business_check, contact_lookup, etc.)
+        # short-circuit fast.
+        "business_names": "",
+        "addresses": "",
+        "store_ids": "",
+        "business_ids": "",
+        "phone_numbers": "",
+        "emails": "",
+        "search": "",
+    }
+
+    rows = _run_report(params, query_token=WORKER_QUERY_TOKEN)
+    result = {}
+    for r in rows:
+        input_name = (r.get("input_name") or "").strip().lower()
+        worker_id = (r.get("worker_id") or "").strip()
+        if input_name and worker_id:
+            result[input_name] = worker_id
+    return result
 
 
 def companies_query_available():

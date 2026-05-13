@@ -85,10 +85,19 @@ def fuzzy_find_worker(name, roster):
     return best_match if best_score >= FUZZY_THRESHOLD else None
 
 
-def resolve_requested_workers(cell_value, company_id):
+def resolve_requested_workers(cell_value, company_id, live_lookup=None):
     """Parse comma-separated worker names and resolve to IDs.
 
     Returns comma-separated worker IDs string (for Django CSV).
+
+    Resolution order:
+      1. live_lookup dict from Mode (if provided) — preferred, fresh data
+      2. roster.json fuzzy match — fallback for names Mode didn't find,
+         catches typos via Levenshtein
+
+    Names that resolve via neither path are dropped silently here — the
+    upload route fetches the unresolved set separately (resolve_workers_batch)
+    so it can flash a user-facing warning.
     """
     if not cell_value:
         return ""
@@ -97,17 +106,73 @@ def resolve_requested_workers(cell_value, company_id):
     if not raw:
         return ""
 
-    roster = get_roster(company_id)
-    if not roster:
+    names = [n.strip() for n in raw.split(",") if n.strip()]
+    if not names:
         return ""
 
-    # Split by comma, handle names like "Nancy Werth, Raul Aguilera, Jessica Spencer"
-    names = [n.strip() for n in raw.split(",") if n.strip()]
+    live_lookup = live_lookup or {}
+    roster = get_roster(company_id)
     matched_ids = []
 
     for name in names:
+        # Try live lookup first (Mode)
+        wid = live_lookup.get(name.lower().strip())
+        if wid:
+            matched_ids.append(str(wid))
+            continue
+        # Fall back to local fuzzy match (handles typos / aliases)
         match = fuzzy_find_worker(name, roster)
         if match:
-            matched_ids.append(match["worker_id"])
+            matched_ids.append(str(match["worker_id"]))
 
     return ",".join(matched_ids)
+
+
+def resolve_workers_batch(rows, company_id):
+    """One-shot worker resolution for a whole upload.
+
+    Scans all rows for unique requested-worker names, calls Mode once
+    (batched), then falls back to local roster.json for anything Mode
+    didn't resolve. Returns:
+
+      live_lookup: dict {lowercase_name: worker_id} — pass to
+                   resolve_requested_workers per row
+      unresolved:  list of original-case names that NEITHER Mode nor
+                   the local fuzzy match could find. Caller flashes
+                   these to the user.
+    """
+    # Collect unique names across all rows
+    seen = set()
+    unique_names = []
+    for row in rows:
+        cell = row.get("requested_workers", "") or ""
+        for n in str(cell).split(","):
+            s = n.strip()
+            if s and s.lower() not in seen:
+                seen.add(s.lower())
+                unique_names.append(s)
+
+    if not unique_names:
+        return {}, []
+
+    # 1. Live lookup via Mode
+    live_lookup = {}
+    try:
+        import mode_client
+        if mode_client.worker_query_available():
+            live_lookup = mode_client.match_workers(company_id, unique_names)
+    except Exception as e:
+        # Don't break upload on Mode failure — fuzzy fallback still works
+        print(f"[roster_db] Mode worker_lookup failed: {e}")
+
+    # 2. Identify names that still need fuzzy fallback
+    roster = get_roster(company_id)
+    unresolved = []
+    for name in unique_names:
+        if name.lower() in live_lookup:
+            continue
+        match = fuzzy_find_worker(name, roster) if roster else None
+        if not match:
+            unresolved.append(name)
+
+    return live_lookup, unresolved
