@@ -42,6 +42,33 @@ def get_fixed_rate(company_id, region_id, position_id):
     return data.get(key_no_region)
 
 
+def get_typical_markup(company_id, position_id):
+    """Return the most common markup % across a company's (any region, position).
+
+    Fallback for stores whose regionmapping_id is blank/unknown in our snapshot —
+    we still know the partner's typical markup from their other stores. Without
+    this, those stores fell through to `worker_rate × 1.0` and we emitted the
+    raw pro rate (e.g. Fred Meyer #165 on 2026-05-15: $16 instead of ~$20.48).
+
+    Returns float or None if the partner has no entries at all.
+    """
+    if not company_id or not position_id:
+        return None
+    from collections import Counter
+    data = _load()
+    cid = str(company_id)
+    pid = str(position_id)
+    markups = [
+        v["markup_percentage"]
+        for k, v in data.items()
+        if k.startswith(f"{cid}-") and k.endswith(f"-{pid}")
+        and v.get("markup_percentage")
+    ]
+    if not markups:
+        return None
+    return Counter(markups).most_common(1)[0][0]
+
+
 def calculate_adjusted_rate(csv_rate, company_id, region_id, position_id, config_rate, config_markup=0):
     """Calculate the adjusted base rate using Christian's priority logic.
 
@@ -64,7 +91,18 @@ def calculate_adjusted_rate(csv_rate, company_id, region_id, position_id, config
 
     if worker_rate and worker_rate > 0:
         # Priority 1: CSV rate + markup
-        markup = fixed["markup_percentage"] if fixed and fixed.get("markup_percentage") else config_markup
+        # Markup resolution order:
+        #   (a) exact (company, region, position) fixed-rate row
+        #   (b) typical markup across the partner's other (region, position)
+        #       rows — handles stores whose regionmapping_id is blank/missing
+        #       in our snapshot. Without this we used to emit the raw CSV
+        #       rate with no markup (Fred Meyer #165, 2026-05-15).
+        #   (c) partner_config.markup_percentage
+        markup = (
+            (fixed.get("markup_percentage") if fixed else None)
+            or get_typical_markup(company_id, position_id)
+            or config_markup
+        )
         markup_mult = 1 + (markup / 100) if markup else 1
         return worker_rate * markup_mult
 
