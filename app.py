@@ -759,12 +759,34 @@ def admin_db_status():
             info["live_ping"] = "ok"
         except Exception as e:
             info["live_ping"] = f"failed: {e}"
-    # Count events to see if writes are landing
+    # Count both tables
     try:
         n = usage_db._exec("SELECT COUNT(*) AS n FROM events", fetch=True) or []
         info["events_count"] = n[0]["n"] if n else "?"
     except Exception as e:
         info["events_count_error"] = str(e)
+    try:
+        n = usage_db._exec("SELECT COUNT(*) AS n FROM mode_calls", fetch=True) or []
+        info["mode_calls_count"] = n[0]["n"] if n else "?"
+    except Exception as e:
+        info["mode_calls_count_error"] = str(e)
+
+    # Actually attempt a test write WITHOUT swallowing the error, so we see
+    # exactly why log_event might be failing silently.
+    try:
+        usage_db._exec(
+            "INSERT INTO events (ts, event_type, company_id, company_name, filename,"
+            " rows_total, rows_matched, rows_unmatched, ai_fired, ai_status,"
+            " ai_filled_keys, mode_used, success, error_msg)"
+            " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+            (int(__import__("time").time()), "diagnostic_test", "0", "DB TEST",
+             "test", 0, 0, 0, 0, "ok", "", 0, 1, ""),
+        )
+        info["test_write"] = "ok"
+        n = usage_db._exec("SELECT COUNT(*) AS n FROM events WHERE event_type='diagnostic_test'", fetch=True) or []
+        info["test_write_visible"] = n[0]["n"] if n else 0
+    except Exception as e:
+        info["test_write_error"] = str(e)
 
     import json
     return f"<pre style='font-family: monospace; padding: 20px;'>{json.dumps(info, indent=2)}</pre>"
