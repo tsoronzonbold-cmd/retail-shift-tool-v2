@@ -788,6 +788,13 @@ def admin_db_status():
     except Exception as e:
         info["test_write_error"] = str(e)
 
+    # Surface the last few PG errors so we can debug silent failures
+    # without needing Replit deployment logs.
+    info["recent_pg_errors"] = list(usage_db._RECENT_PG_ERRORS)
+
+    # Worker identification — helps confirm split-brain across gunicorn workers
+    info["pid"] = os.getpid()
+
     import json
     return f"<pre style='font-family: monospace; padding: 20px;'>{json.dumps(info, indent=2)}</pre>"
 

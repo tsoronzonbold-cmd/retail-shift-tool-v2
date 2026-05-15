@@ -87,11 +87,26 @@ def _init_schema():
     # be created on first use.
 
 
-# Tracks Postgres availability after first connection attempt. If PG is
-# configured but unreachable (bad host, wrong creds), we fall back to SQLite
-# silently rather than 500'ing every page. _PG_DEAD stays True for the rest
-# of the process so we don't pay the connection-timeout cost per request.
+# Postgres health is checked per request, not cached at module/worker level.
+# A previous version cached "PG dead" at the gunicorn-worker level, which
+# caused inconsistent behavior: workers that hit a transient cold-start
+# timeout at import time silently routed all subsequent writes to ephemeral
+# SQLite, while sibling workers wrote to real Postgres. Same DATABASE_URL,
+# different stored data depending on which worker handled the request.
+# Per-request retries are slightly more expensive on the unhappy path but
+# avoid the split-brain.
+# _PG_DEAD kept for the diagnostic endpoint compatibility (always False now).
 _PG_DEAD = False
+
+# Capture the last few PG errors so the diagnostic endpoint can show them
+# without needing access to Replit's deployment logs.
+_RECENT_PG_ERRORS = []
+
+
+def _record_pg_error(msg):
+    _RECENT_PG_ERRORS.append(msg)
+    if len(_RECENT_PG_ERRORS) > 10:
+        _RECENT_PG_ERRORS.pop(0)
 
 
 # Run once at import. For Postgres this opens a single connection to
@@ -100,38 +115,43 @@ if _USE_PG:
     try:
         _init_schema()
     except Exception as e:
-        # PG configured but unreachable. Falling back to SQLite for the
-        # rest of the process.
-        print(f"[usage_db] Postgres init failed, falling back to SQLite: {e}")
-        _PG_DEAD = True
+        # Log it, but don't blacklist Postgres — every _exec retries from
+        # scratch. Schema creation is idempotent (CREATE TABLE IF NOT EXISTS).
+        msg = f"init: {e}"
+        print(f"[usage_db] Postgres init failed: {msg}")
+        _record_pg_error(msg)
 
 
 def _exec(sql, params=(), fetch=False):
     """Run one query. Returns rows as list of dicts if fetch=True, else None.
 
-    Handles placeholder differences (SQLite ? vs Postgres %s) by accepting
-    ? in the input and rewriting for Postgres.
+    Tries Postgres if configured. On any PG failure for this specific call,
+    falls back to SQLite for THIS call only — next call retries Postgres
+    fresh.
     """
-    global _PG_DEAD
-    if _USE_PG and not _PG_DEAD:
+    if _USE_PG:
         try:
             pg_sql = sql.replace("?", "%s")
             conn = psycopg2.connect(DATABASE_URL, connect_timeout=5)
             try:
+                # Ensure schema exists in case the import-time init failed.
+                with conn.cursor() as cur:
+                    cur.execute(_SCHEMA)
                 with conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor) as cur:
                     cur.execute(pg_sql, params)
                     if fetch:
-                        return [dict(r) for r in cur.fetchall()]
+                        result = [dict(r) for r in cur.fetchall()]
+                    else:
+                        result = None
                 conn.commit()
-                return None
+                return result
             finally:
                 conn.close()
         except Exception as e:
-            # Mark PG dead so subsequent calls fall through to SQLite without
-            # paying another timeout. Logged once per process.
-            print(f"[usage_db] Postgres unreachable, falling back to SQLite: {e}")
-            _PG_DEAD = True
-            # Fall through to SQLite below
+            msg = f"{type(e).__name__}: {e}"[:300]
+            print(f"[usage_db] Postgres call failed, falling back to SQLite: {msg}")
+            _record_pg_error(msg)
+            # Fall through to SQLite
 
     conn = sqlite3.connect(_SQLITE_PATH)
     try:
