@@ -23,19 +23,23 @@ import time
 DATABASE_URL = os.environ.get("DATABASE_URL", "")
 _USE_PG = DATABASE_URL.startswith("postgres://") or DATABASE_URL.startswith("postgresql://")
 
+# Always import sqlite — used either as the primary backend OR as a fallback
+# when DATABASE_URL is set but the Postgres host is unreachable (Replit's
+# internal "helium" hostname doesn't resolve from Deployments, for instance).
+import sqlite3
+_SQLITE_PATH = os.environ.get(
+    "USAGE_DB_PATH",
+    os.path.join(os.path.dirname(__file__), "usage.db"),
+)
+
 if _USE_PG:
     import psycopg2
     import psycopg2.extras
     _PK = "SERIAL PRIMARY KEY"
     _DATE_EXPR = "to_char(to_timestamp(ts), 'YYYY-MM-DD')"
 else:
-    import sqlite3
     _PK = "INTEGER PRIMARY KEY"
     _DATE_EXPR = "date(ts, 'unixepoch')"
-    _SQLITE_PATH = os.environ.get(
-        "USAGE_DB_PATH",
-        os.path.join(os.path.dirname(__file__), "usage.db"),
-    )
 
 _SCHEMA = f"""
 CREATE TABLE IF NOT EXISTS events (
@@ -83,15 +87,23 @@ def _init_schema():
     # be created on first use.
 
 
+# Tracks Postgres availability after first connection attempt. If PG is
+# configured but unreachable (bad host, wrong creds), we fall back to SQLite
+# silently rather than 500'ing every page. _PG_DEAD stays True for the rest
+# of the process so we don't pay the connection-timeout cost per request.
+_PG_DEAD = False
+
+
 # Run once at import. For Postgres this opens a single connection to
 # create tables; for SQLite it's deferred to first query.
 if _USE_PG:
     try:
         _init_schema()
     except Exception as e:
-        # Don't crash on import — analytics is best-effort. If the DB is
-        # misconfigured, log calls become no-ops.
-        print(f"[usage_db] Postgres init failed: {e}")
+        # PG configured but unreachable. Falling back to SQLite for the
+        # rest of the process.
+        print(f"[usage_db] Postgres init failed, falling back to SQLite: {e}")
+        _PG_DEAD = True
 
 
 def _exec(sql, params=(), fetch=False):
@@ -100,30 +112,38 @@ def _exec(sql, params=(), fetch=False):
     Handles placeholder differences (SQLite ? vs Postgres %s) by accepting
     ? in the input and rewriting for Postgres.
     """
-    if _USE_PG:
-        sql = sql.replace("?", "%s")
-        conn = psycopg2.connect(DATABASE_URL)
+    global _PG_DEAD
+    if _USE_PG and not _PG_DEAD:
         try:
-            with conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor) as cur:
-                cur.execute(sql, params)
-                if fetch:
-                    return [dict(r) for r in cur.fetchall()]
-            conn.commit()
-            return None
-        finally:
-            conn.close()
-    else:
-        conn = sqlite3.connect(_SQLITE_PATH)
-        try:
-            conn.row_factory = sqlite3.Row
-            conn.executescript(_SCHEMA)
-            cur = conn.execute(sql, params)
-            if fetch:
-                return [dict(r) for r in cur.fetchall()]
-            conn.commit()
-            return None
-        finally:
-            conn.close()
+            pg_sql = sql.replace("?", "%s")
+            conn = psycopg2.connect(DATABASE_URL, connect_timeout=5)
+            try:
+                with conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor) as cur:
+                    cur.execute(pg_sql, params)
+                    if fetch:
+                        return [dict(r) for r in cur.fetchall()]
+                conn.commit()
+                return None
+            finally:
+                conn.close()
+        except Exception as e:
+            # Mark PG dead so subsequent calls fall through to SQLite without
+            # paying another timeout. Logged once per process.
+            print(f"[usage_db] Postgres unreachable, falling back to SQLite: {e}")
+            _PG_DEAD = True
+            # Fall through to SQLite below
+
+    conn = sqlite3.connect(_SQLITE_PATH)
+    try:
+        conn.row_factory = sqlite3.Row
+        conn.executescript(_SCHEMA if not _USE_PG else _SCHEMA.replace("SERIAL PRIMARY KEY", "INTEGER PRIMARY KEY"))
+        cur = conn.execute(sql, params)
+        if fetch:
+            return [dict(r) for r in cur.fetchall()]
+        conn.commit()
+        return None
+    finally:
+        conn.close()
 
 
 def log_event(event_type, *, company_id="", company_name="", filename="",
@@ -229,12 +249,19 @@ def summary(days=30):
         (cutoff,), fetch=True,
     ) or []
 
+    # Pick the right date-bucket expression at call time, not import time,
+    # so we use the SQLite form when PG is unreachable and we've fallen back.
+    date_expr = (
+        "to_char(to_timestamp(ts), 'YYYY-MM-DD')"
+        if (_USE_PG and not _PG_DEAD)
+        else "date(ts, 'unixepoch')"
+    )
     daily = _exec(
-        f"SELECT {_DATE_EXPR} AS day,"
+        f"SELECT {date_expr} AS day,"
         " SUM(CASE WHEN event_type='upload' THEN 1 ELSE 0 END) AS uploads,"
         " SUM(CASE WHEN success=0 THEN 1 ELSE 0 END) AS failures"
         " FROM events WHERE ts >= ?"
-        f" GROUP BY {_DATE_EXPR} ORDER BY day",
+        f" GROUP BY {date_expr} ORDER BY day",
         (cutoff,), fetch=True,
     ) or []
 

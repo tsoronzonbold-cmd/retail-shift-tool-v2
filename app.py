@@ -721,18 +721,7 @@ def admin_usage():
     if not token or request.args.get("token") != token:
         abort(404)
     days = int(request.args.get("days", 30))
-    try:
-        return render_template("admin_usage.html", **usage_db.summary(days=days))
-    except Exception as e:
-        # Surface the actual exception so we can debug production 500s
-        # (Replit's generic 500 page hides the traceback). Token-gated.
-        import traceback
-        tb = traceback.format_exc()
-        return (
-            f"<pre style='font-family: monospace; padding: 20px;'>"
-            f"<strong>Dashboard error:</strong>\n\n{tb}</pre>",
-            500,
-        )
+    return render_template("admin_usage.html", **usage_db.summary(days=days))
 
 
 @app.route("/admin/clear-failures", methods=["POST"])
