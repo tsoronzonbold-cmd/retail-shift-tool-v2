@@ -724,6 +724,52 @@ def admin_usage():
     return render_template("admin_usage.html", **usage_db.summary(days=days))
 
 
+@app.route("/admin/db-status")
+def admin_db_status():
+    """Token-gated diagnostic — shows which usage_db backend is actually
+    active right now (postgres vs sqlite fallback) and whether writes
+    appear to be landing. Useful for debugging the Postgres setup."""
+    token = os.environ.get("ADMIN_TOKEN", "")
+    if not token or request.args.get("token") != token:
+        abort(404)
+
+    import socket
+    info = {
+        "use_pg_configured": usage_db._USE_PG,
+        "pg_dead": usage_db._PG_DEAD,
+        "active_backend": "sqlite" if (not usage_db._USE_PG or usage_db._PG_DEAD) else "postgres",
+        "database_url_set": bool(os.environ.get("DATABASE_URL")),
+    }
+    # Sanitize DATABASE_URL host only (no creds) for visibility
+    db_url = os.environ.get("DATABASE_URL", "")
+    if db_url:
+        try:
+            import urllib.parse
+            parsed = urllib.parse.urlparse(db_url)
+            info["database_host"] = parsed.hostname or "?"
+            info["database_port"] = parsed.port or "?"
+            info["database_name"] = (parsed.path or "/").lstrip("/") or "?"
+        except Exception:
+            info["database_url_parse_error"] = True
+
+    # Try a live ping if Postgres is configured
+    if usage_db._USE_PG and not usage_db._PG_DEAD:
+        try:
+            usage_db._exec("SELECT 1", fetch=True)
+            info["live_ping"] = "ok"
+        except Exception as e:
+            info["live_ping"] = f"failed: {e}"
+    # Count events to see if writes are landing
+    try:
+        n = usage_db._exec("SELECT COUNT(*) AS n FROM events", fetch=True) or []
+        info["events_count"] = n[0]["n"] if n else "?"
+    except Exception as e:
+        info["events_count_error"] = str(e)
+
+    import json
+    return f"<pre style='font-family: monospace; padding: 20px;'>{json.dumps(info, indent=2)}</pre>"
+
+
 @app.route("/admin/clear-failures", methods=["POST"])
 def admin_clear_failures():
     token = os.environ.get("ADMIN_TOKEN", "")
