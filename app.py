@@ -44,6 +44,7 @@ import locations_db
 import partner_config as pc
 import csv_processor
 import usage_db
+import output_validator
 import contacts_db
 import google_places
 import roster_db
@@ -370,6 +371,13 @@ def upload():
             f"markup_percentage in their partner config.",
             "warning",
         )
+
+    # Output-validator pass: surface any silent corruptions in the generated
+    # CSV (missing required fields, suspect rates, time inversions, dupes).
+    # Each violation becomes a yellow banner so the user catches issues
+    # before submitting the import to Django.
+    for warning in output_validator.validate_bulk_csv(shift_csv, matched):
+        flash(warning, "warning")
 
     # Store everything in session — business CSV is generated AFTER the
     # configure step (or immediately on results if there are no new
@@ -985,6 +993,8 @@ def override_business_ids():
         shift_csv = csv_processor.generate_bulk_import_csv(
             matched, cfg, task_opts=task_opts, worker_live_lookup=worker_live_lookup,
         )
+        for warning in output_validator.validate_bulk_csv(shift_csv, matched):
+            flash(warning, "warning")
         biz_csv = csv_processor.generate_business_import_csv(still_unmatched, cfg) if still_unmatched else None
 
         session["matched_rows"] = matched
@@ -1059,6 +1069,8 @@ def recheck():
     shift_csv = csv_processor.generate_bulk_import_csv(
         matched, cfg, task_opts=task_opts, worker_live_lookup=worker_live_lookup,
     )
+    for warning in output_validator.validate_bulk_csv(shift_csv, matched):
+        flash(warning, "warning")
 
     # Build attribute templates for newly-verified businesses (those that
     # got a business_id assigned via Mode this round). We pull them out of
