@@ -12,6 +12,14 @@ import os
 
 RATES_PATH = os.path.join(os.path.dirname(__file__), "partner_configs", "fixed_rates.json")
 
+# Sentinel used when a partner has no fixed-rate entries at all AND no
+# partner_config markup is set. 35% is the mode-most-common markup across
+# our entire fixed_rates table — sensible fallback that's almost certainly
+# closer to right than emitting the raw pro rate. When this fires, we record
+# it in DEFAULT_MARKUP_WARNINGS so the upload route can flash a warning.
+DEFAULT_MARKUP_PERCENT = 35.0
+DEFAULT_MARKUP_WARNINGS = []
+
 _cache = None
 
 
@@ -98,11 +106,24 @@ def calculate_adjusted_rate(csv_rate, company_id, region_id, position_id, config
         #       in our snapshot. Without this we used to emit the raw CSV
         #       rate with no markup (Fred Meyer #165, 2026-05-15).
         #   (c) partner_config.markup_percentage
+        #   (d) global default (35%). If we fire this, we record the
+        #       partner so the upload route can flash a warning — the
+        #       default is a guess, the human should verify against the
+        #       partner's actual rate sheet.
         markup = (
             (fixed.get("markup_percentage") if fixed else None)
             or get_typical_markup(company_id, position_id)
             or config_markup
         )
+        # Apply global default ONLY when we have a real company_id but no
+        # markup info from anywhere. Don't apply when company_id is empty
+        # (test fixtures, edge cases without partner context) — that'd
+        # silently add 35% to rates the caller meant to pass through raw.
+        if not markup and company_id:
+            markup = DEFAULT_MARKUP_PERCENT
+            cid = str(company_id)
+            if cid not in DEFAULT_MARKUP_WARNINGS:
+                DEFAULT_MARKUP_WARNINGS.append(cid)
         markup_mult = 1 + (markup / 100) if markup else 1
         return worker_rate * markup_mult
 

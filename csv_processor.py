@@ -194,6 +194,34 @@ def _shift_duration_hours(start_str, end_str):
         return None
 
 
+_REQUESTED_WORKERS_PATTERNS = [
+    r"requested\s*workers?",
+    r"workers?\s*requested",
+    r"any\s*requested",
+    r"name\s*of\s*pros?",
+    r"requested\s*pros?",
+    r"^pro.?names?$",
+]
+
+
+def _find_requested_worker_columns(df_columns):
+    """Find ALL columns that look like requested-worker columns.
+
+    Partners like Flex Shifts ship the CSV with multiple columns:
+    "Any Requested Workers 1", "Any Requested Workers 2", ...
+    Our column_mapping only stores one match, so without this we'd
+    silently drop everyone in columns 2+.
+    """
+    matches = []
+    for col in df_columns:
+        col_str = str(col).strip()
+        for pat in _REQUESTED_WORKERS_PATTERNS:
+            if re.search(pat, col_str, re.IGNORECASE):
+                matches.append(col)
+                break
+    return matches
+
+
 def parse_upload(file_content, filename, column_mapping):
     """Parse an uploaded CSV/Excel file using the partner's column mapping.
 
@@ -210,6 +238,11 @@ def parse_upload(file_content, filename, column_mapping):
 
     # Drop completely empty rows
     df = df.dropna(how="all")
+
+    # Pre-scan: ALL columns that look like requested-worker columns. Used
+    # below to merge multi-column worker lists (e.g. "Any Requested Workers 1"
+    # + "Any Requested Workers 2") into a single comma-separated cell.
+    requested_worker_cols = _find_requested_worker_columns(df.columns)
 
     rows = []
     for input_idx, (_, row) in enumerate(df.iterrows()):
@@ -235,6 +268,30 @@ def parse_upload(file_content, filename, column_mapping):
                     parsed[norm_key] = str(val).strip()
             else:
                 parsed[norm_key] = ""
+
+        # Multi-column requested workers: merge ALL matching columns'
+        # values into the single requested_workers field. Skips blanks.
+        if requested_worker_cols:
+            seen_names = set()
+            merged = []
+            # Preserve order; start with what column_mapping already gave us
+            for existing in (parsed.get("requested_workers") or "").split(","):
+                n = existing.strip()
+                if n and n.lower() not in seen_names:
+                    seen_names.add(n.lower())
+                    merged.append(n)
+            for col in requested_worker_cols:
+                v = row.get(col)
+                if v is None or pd.isna(v):
+                    continue
+                # Each cell itself can be comma-separated
+                for n in str(v).split(","):
+                    n = n.strip()
+                    if n and n.lower() not in seen_names:
+                        seen_names.add(n.lower())
+                        merged.append(n)
+            parsed["requested_workers"] = ",".join(merged)
+
         rows.append(parsed)
 
     # Auto-fill empty retailer from the most common non-empty retailer in the

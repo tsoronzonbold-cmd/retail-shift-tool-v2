@@ -342,7 +342,7 @@ def upload():
     # One batched call resolves every unique requested-worker name; the
     # per-row resolution then uses the dict. Names that don't resolve get
     # flashed so the user knows to add them manually.
-    import roster_db
+    import roster_db, rates_db
     worker_live_lookup, unresolved_workers = roster_db.resolve_workers_batch(
         matched, company_id,
     )
@@ -354,9 +354,22 @@ def upload():
             "warning",
         )
 
+    # Reset the rate-fallback warnings list so we only flash about this
+    # upload's missing-markup cases, not historical ones.
+    rates_db.DEFAULT_MARKUP_WARNINGS.clear()
+
     shift_csv = csv_processor.generate_bulk_import_csv(
         matched, cfg, task_opts=task_opts, worker_live_lookup=worker_live_lookup,
     )
+
+    if rates_db.DEFAULT_MARKUP_WARNINGS:
+        flash(
+            f"⚠ No markup configured for this partner — used global default "
+            f"{rates_db.DEFAULT_MARKUP_PERCENT:.0f}%. Verify the bill rates "
+            f"against the partner's quoted rate sheet, or set "
+            f"markup_percentage in their partner config.",
+            "warning",
+        )
 
     # Store everything in session — business CSV is generated AFTER the
     # configure step (or immediately on results if there are no new
